@@ -1,0 +1,6 @@
+.offersList{
+    display: grid;
+    grid-auto-flow: row;
+    grid-gap: 8px;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
