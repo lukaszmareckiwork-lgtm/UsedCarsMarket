@@ -4,11 +4,14 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import './index.css'
 import App from './App.tsx'
+import { MakesProvider } from './context/MakesContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <MakesProvider>
+        <App />
+      </MakesProvider>
     </BrowserRouter>
   </StrictMode>,
 )
