@@ -1,22 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./CarFilters.css";
+import { useMakes } from "../../context/MakesContext";
 
-interface ModelData {
-  model_name: string;
-  vehicle_type: string;
-  years: number[];
-}
-
-interface MakeData {
-  make_id: number;
-  make_name: string;
-  make_slug: string;
-  models: Record<string, ModelData>;
-}
 
 const CarFilters: React.FC = () => {
-  const [makes, setMakes] = useState<MakeData[]>([]);
+  const { makes, loading } = useMakes();
   const [selectedMakes, setSelectedMakes] = useState<string[]>([]);
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
   const [makeSearch, setMakeSearch] = useState("");
@@ -30,13 +19,6 @@ const CarFilters: React.FC = () => {
   const modelRef = useRef<HTMLDivElement>(null);
 
   const navigate = useNavigate();
-
-  // Load makes from JSON
-  useEffect(() => {
-    fetch("/data/cars_types_data/makes_and_models.json")
-      .then(res => res.json())
-      .then(setMakes);
-  }, []);
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -54,11 +36,11 @@ const CarFilters: React.FC = () => {
 
   // Use search params
   useEffect(() => {
-  const makesFromUrl = searchParams.get("make")?.split(",") || [];
-  const modelsFromUrl = searchParams.get("model")?.split(",") || [];
+    const makesFromUrl = searchParams.get("make")?.split(",") || [];
+    const modelsFromUrl = searchParams.get("model")?.split(",") || [];
 
-  setSelectedMakes(makesFromUrl);
-  setSelectedModels(modelsFromUrl);
+    setSelectedMakes(makesFromUrl);
+    setSelectedModels(modelsFromUrl);
   }, [searchParams]);
 
   const filteredMakes = makes.filter(m =>
@@ -84,6 +66,8 @@ const CarFilters: React.FC = () => {
 
   // --- Toggle functions ---
   const toggleMake = (slug: string) => {
+    if (loading) return;
+
     let updated: string[];
     if (selectedMakes.includes(slug)) {
       updated = selectedMakes.filter(s => s !== slug);
@@ -104,6 +88,8 @@ const CarFilters: React.FC = () => {
   };
 
   const toggleModel = (name: string) => {
+    if (loading) return;
+
     let updated: string[];
     if (selectedModels.includes(name)) {
       updated = selectedModels.filter(m => m !== name);
@@ -142,18 +128,21 @@ const CarFilters: React.FC = () => {
       {/* Make Dropdown */}
       <div className="car-filter-dropdown" ref={makeRef}>
         <div
-          className="car-filter-header"
-          onClick={() => setMakeDropdownOpen(prev => !prev)}
+          className={`car-filter-header ${loading ? "disabled" : ""}`}
+          onClick={() => !loading && setMakeDropdownOpen(prev => !prev)}
         >
-          Marka pojazdu {selectedMakes.length > 0 ? `(${selectedMakes.length})` : ""}
-          <span>{makeDropdownOpen ? "▲" : "▼"}</span>
+          Manufacturer {selectedMakes.length > 0 ? `(${selectedMakes.length})` : ""}
+          {loading ? 
+              <div className="loader small" /> : 
+              <span>{makeDropdownOpen ? "▲" : "▼"}</span>
+          }
         </div>
 
         {makeDropdownOpen && (
           <div className="car-filter-options">
             <input
               type="text"
-              placeholder="Szukaj marki"
+              placeholder="Search manufacturer"
               value={makeSearch}
               onChange={e => setMakeSearch(e.target.value)}
             />
@@ -165,7 +154,7 @@ const CarFilters: React.FC = () => {
                 checked={selectedMakes.length === makes.length}
                 onChange={selectAllMakes}
               />
-              Wszystkie
+              All
             </label>
 
             {filteredMakes.map(m => (
@@ -185,18 +174,21 @@ const CarFilters: React.FC = () => {
       {/* Model Dropdown */}
       <div className="car-filter-dropdown" ref={modelRef}>
         <div
-          className={`car-filter-header ${selectedMakes.length === 0 ? "disabled" : ""}`}
-          onClick={() => selectedMakes.length > 0 && setModelDropdownOpen(prev => !prev)}
+          className={`car-filter-header ${loading || selectedMakes.length === 0 ? "disabled" : ""}`}
+          onClick={() => !loading && selectedMakes.length > 0 && setModelDropdownOpen(prev => !prev)}
         >
-          Model pojazdu {selectedModels.length > 0 ? `(${selectedModels.length})` : ""}
-          <span>{modelDropdownOpen ? "▲" : "▼"}</span>
+          Model {selectedModels.length > 0 ? `(${selectedModels.length})` : ""}
+          {loading ? 
+              <div className="loader small" /> : 
+              <span>{modelDropdownOpen ? "▲" : "▼"}</span>
+          }
         </div>
 
         {modelDropdownOpen && selectedMakes.length > 0 && (
           <div className="car-filter-options">
             <input
               type="text"
-              placeholder="Szukaj modelu"
+              placeholder="Serach model"
               value={modelSearch}
               onChange={e => setModelSearch(e.target.value)}
             />
