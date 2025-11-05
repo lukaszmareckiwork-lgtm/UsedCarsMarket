@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import OffersList from './Components/OffersList/OffersList'
 import type { OfferProps } from './Data/OfferProps'
+import CarFilters from './Components/CarFilters/CarFilters'
 
 const offersData: OfferProps[] = [
   {
@@ -32,6 +33,7 @@ function App() {
   return (
     <>
       <div>
+        <CarFilters/>
         <OffersList offers={offersData} />;
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
