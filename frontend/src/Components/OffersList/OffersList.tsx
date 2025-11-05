@@ -10,9 +10,6 @@ const OffersList: React.FC<{offers: OfferProps[]}> = ({offers}): JSX.Element => 
       {offers.map((offer, i) => (
         <Offer key={i} offerProps={offer} />
       ))}
-        {/* <Offer location={props.at(0)?.location as string}/>
-        <Offer/>
-        <Offer/> */}
     </div>
   )
 }
