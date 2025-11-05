@@ -1,0 +1,31 @@
+.paramWithIconTerm{
+    display: none;
+}
+
+.paramWithIconDsc>svg {
+    height: auto;
+    width: auto;
+}
+
+.paramWithIconDsc{
+    height: 18px;
+    display: grid;
+    grid-auto-flow: column;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    grid-template-columns: max-content;
+    -webkit-column-gap: 4px;
+    column-gap: 4px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    white-space: nowrap;
+}
+
+.paramIcon{
+    height: 24px;
+    width: 24px;
+    color: #020309;
+}
