@@ -1,0 +1,30 @@
+.main-search {
+  width: 100%;
+}
+
+.main-search-grid {
+  margin: 16px auto;
+  max-width: 1366px;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  grid-gap: 16px;
+  grid-template-areas:
+    "resultsHeading"
+    "results";
+}
+
+@media screen and (min-width: 1024px) {
+  .main-search-grid {
+    grid-gap: 16px;
+    grid-template-columns: 300px repeat(5, 1fr);
+    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-areas:
+      "breadcrumbs breadcrumbs breadcrumbs breadcrumbs breadcrumbs breadcrumbs"
+      "resultsHeading resultsHeading resultsHeading resultsHeading saveSearch sorting"
+      "filters facetsNav facetsNav facetsNav facetsNav ."
+      "filters results results results results results"
+      "filters results results results results results";
+  }
+}

@@ -124,7 +124,7 @@ const CarFilters: React.FC = () => {
   };
 
   return (
-    <div className="car-filters">
+    <section className="car-filters">
       {/* Make Dropdown */}
       <div className="car-filter-dropdown" ref={makeRef}>
         <div
@@ -200,7 +200,7 @@ const CarFilters: React.FC = () => {
                 checked={selectedModels.length === availableModels.length}
                 onChange={selectAllModels}
               />
-              Wszystkie
+              All
             </label>
 
             {filteredModels.map(modelName => (
@@ -216,7 +216,7 @@ const CarFilters: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
