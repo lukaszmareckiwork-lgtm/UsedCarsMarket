@@ -17,46 +17,10 @@ export interface DropdownItemData {
     displayName: string;
 }
 
-
-
-//   const selectAllItems = () => {
-//     if (selectedItems.length === makes.length) {
-//       setSelectedItems([]);
-//       setSelectedModels([]);
-//       updateUrl([], []);
-//     } else {
-//       const allMakes = makes.map(m => m.make_slug);
-//       setSelectedItems(allMakes);
-//       setSelectedModels([]);
-//       updateUrl(allMakes, []);
-//     }
-//   };
-
-// --- Toggle functions ---
-
-
-//   const toggleModel = (name: string) => {
-//     if (loading) return;
-
-//     let updated: string[];
-//     if (selectedModels.includes(name)) {
-//       updated = selectedModels.filter(m => m !== name);
-//     } else {
-//       updated = [...selectedModels, name];
-//     }
-//     setSelectedModels(updated);
-//     updateUrl(selectedMakes, updated);
-//   };
-
 const FiltersDropdown = (props: Props) => {
-    // setItems(props.items);
-    // setSelectedItems(props.selectedItems);
-
+ 
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    // const [loading, setLoading] = useState(false);
     const [searchInput, setSearch] = useState("");
-    // const [items, setItems] = useState<ItemData[]>([]);
-    // const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
     const ref = useRef<HTMLDivElement>(null);
 
