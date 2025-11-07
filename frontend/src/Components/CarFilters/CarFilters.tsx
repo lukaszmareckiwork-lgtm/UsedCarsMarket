@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./CarFilters.css";
 import { useMakes } from "../../context/MakesContext";
+import FiltersDropdown, { type DropdownItemData } from "../FiltersDropdown/FiltersDropdown";
 
 
 const CarFilters: React.FC = () => {
@@ -47,12 +48,14 @@ const CarFilters: React.FC = () => {
     m.make_name.toLowerCase().includes(makeSearch.toLowerCase())
   );
 
-  const availableModels = selectedMakes
-    .map(slug => makes.find(m => m.make_slug === slug))
-    .filter(Boolean)
-    .flatMap(m => Object.keys(m!.models));
+  const getAvailableModels = (selMakes: string[] = selectedMakes) => {
+    return selMakes
+      .map(slug => makes.find(m => m.make_slug === slug))
+      .filter(Boolean)
+      .flatMap(m => Object.keys(m!.models));
+  }
 
-  const filteredModels = availableModels.filter(modelName =>
+  const filteredModels = getAvailableModels().filter(modelName =>
     modelName.toLowerCase().includes(modelSearch.toLowerCase())
   );
 
@@ -114,6 +117,8 @@ const CarFilters: React.FC = () => {
   };
 
   const selectAllModels = () => {
+    const availableModels = getAvailableModels();
+
     if (selectedModels.length === availableModels.length) {
       setSelectedModels([]);
       updateUrl(selectedMakes, []);
@@ -123,8 +128,48 @@ const CarFilters: React.FC = () => {
     }
   };
 
+  const getDropdownMakes = () => {
+    const dropdownItems: DropdownItemData[] = makes.map(m => ({
+      id: m.make_id,
+      simplifiedName: m.make_slug,
+      displayName: m.make_name,
+    }));
+
+    return dropdownItems;
+  };
+
+  const getDropdownModels = () => {
+    const dropdownItems: DropdownItemData[] = getAvailableModels().map((modelName, index) => ({
+      id: index,
+      simplifiedName: modelName,
+      displayName: modelName,
+    }));
+
+    return dropdownItems;
+  };
+
+  const onMakesSelected = (selMakes: string[]) => {
+    setSelectedMakes(selMakes);
+
+    // Keep only selected models that are still available
+    const validModels = getAvailableModels(selMakes)
+      .filter(model => selectedModels.includes(model));
+    setSelectedModels(validModels);
+
+    updateUrl(selMakes, validModels);
+  };
+
+  const onModelsSelected = (selModels: string[]) => {
+    setSelectedModels(selModels);
+    updateUrl(selectedMakes, selModels);
+  };
+
   return (
     <section className="car-filters">
+
+      <FiltersDropdown items={getDropdownMakes()} selectedItems={selectedMakes} handleItemSelected={onMakesSelected} loading={loading} forceDisable={false} headerText="Manufacturer" searchInputPlaceholder="Search manufacturer" />
+      <FiltersDropdown items={getDropdownModels()} selectedItems={selectedModels} handleItemSelected={onModelsSelected} loading={loading} forceDisable={selectedMakes.length === 0} headerText="Model" searchInputPlaceholder="Search model" />
+
       {/* Make Dropdown */}
       <div className="car-filter-dropdown" ref={makeRef}>
         <div
@@ -132,9 +177,9 @@ const CarFilters: React.FC = () => {
           onClick={() => !loading && setMakeDropdownOpen(prev => !prev)}
         >
           Manufacturer {selectedMakes.length > 0 ? `(${selectedMakes.length})` : ""}
-          {loading ? 
-              <div className="loader small" /> : 
-              <span>{makeDropdownOpen ? "▲" : "▼"}</span>
+          {loading ?
+            <div className="loader small" /> :
+            <span>{makeDropdownOpen ? "▲" : "▼"}</span>
           }
         </div>
 
@@ -178,9 +223,9 @@ const CarFilters: React.FC = () => {
           onClick={() => !loading && selectedMakes.length > 0 && setModelDropdownOpen(prev => !prev)}
         >
           Model {selectedModels.length > 0 ? `(${selectedModels.length})` : ""}
-          {loading ? 
-              <div className="loader small" /> : 
-              <span>{modelDropdownOpen ? "▲" : "▼"}</span>
+          {loading ?
+            <div className="loader small" /> :
+            <span>{modelDropdownOpen ? "▲" : "▼"}</span>
           }
         </div>
 
@@ -197,7 +242,7 @@ const CarFilters: React.FC = () => {
             <label className="select-all">
               <input
                 type="checkbox"
-                checked={selectedModels.length === availableModels.length}
+                checked={selectedModels.length === getAvailableModels().length}
                 onChange={selectAllModels}
               />
               All
