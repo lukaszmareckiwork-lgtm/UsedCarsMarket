@@ -23,7 +23,7 @@
     grid-template-areas:
       "breadcrumbs breadcrumbs breadcrumbs breadcrumbs breadcrumbs breadcrumbs"
       "resultsHeading resultsHeading resultsHeading resultsHeading saveSearch sorting"
-      "filters facetsNav facetsNav facetsNav facetsNav ."
+      "facetsNav facetsNav facetsNav facetsNav facetsNav ."
       "filters results results results results results"
       "filters results results results results results";
   }
