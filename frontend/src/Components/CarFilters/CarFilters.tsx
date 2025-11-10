@@ -42,7 +42,7 @@ const CarFilters: React.FC = () => {
     const params = new URLSearchParams();
     if (updMakesString.length) params.set("make", updMakesString.join(","));
     if (updModelsString.length) params.set("model", updModelsString.join(","));
-    navigate(`/osobowe${params.toString() ? `?${params.toString()}` : ""}`);
+    navigate(`/passenger-cars${params.toString() ? `?${params.toString()}` : ""}`);
   };
 
   const getAvailableModels = (selMakes: MakeData[] = selectedMakes) => {
