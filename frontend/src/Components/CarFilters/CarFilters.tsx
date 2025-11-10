@@ -26,8 +26,8 @@ const CarFilters: React.FC = () => {
 
     const availableModels = getAvailableModels(makesToSelect);
 
-    const modelsToSelect = modelsFromUrl.flatMap(name =>
-      availableModels.filter(m => m.model_name === name)
+    const modelsToSelect = modelsFromUrl.flatMap(id =>
+      availableModels.filter(m => m.model_id === Number.parseInt(id))
     );
 
     setSelectedMakes(makesToSelect);
@@ -37,7 +37,7 @@ const CarFilters: React.FC = () => {
   // Update URL dynamically
   const updateUrl = (updatedMakes: MakeData[], updatedModels: ModelData[]) => {
     const updMakesString = updatedMakes.map(make => make.make_slug)
-    const updModelsString = updatedModels.map(model => model.model_name)
+    const updModelsString = updatedModels.map(model => model.model_id)
     
     const params = new URLSearchParams();
     if (updMakesString.length) params.set("make", updMakesString.join(","));
