@@ -1,93 +1,26 @@
 .car-filters {
-  display: flex;
-  gap: 16px;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
+    --range-gap: 8px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    gap: 16px;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    align-self: start;
+
+    grid-area: resultsHeading;
 }
 
-.car-filter-dropdown {
-  position: relative;
-  width: 200px;
-}
-
-.car-filter-header {
-  background-color: #ffffff;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  user-select: none;
-}
-
-.car-filter-header.disabled {
-  background-color: #ffffff;
-  color: #999;
-  cursor: not-allowed;
-}
-
-.car-filter-options {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  max-height: 280px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  background-color: #fff;
-  z-index: 1000;
-  padding: 8px 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.car-filter-options input[type="text"] {
-  width: 90%;
-  padding: 6px 8px;
-  margin: 0 8px 8px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.car-filter-options label {
-  display: flex;
-  align-items: center;
-  padding: 4px 12px;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.15s;
-}
-
-.car-filter-options label:hover {
-  background-color: #f0f0f0;
-}
-
-.car-filter-options label input[type="checkbox"] {
-  margin-right: 8px;
-  cursor: pointer;
-}
-
-.car-filter-options label.select-all {
-  font-weight: bold;
-  color: #000;
-}
-
-.car-filter-options label.select-all:hover {
-  background-color: #e8e8e8;
-}
-
-.car-filter-options::-webkit-scrollbar {
-  width: 6px;
-}
-
-.car-filter-options::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
-}
-
-.car-filter-options::-webkit-scrollbar-track {
-  background-color: transparent;
-}
+@media screen and (min-width: 1024px) {
+    .car-filters {
+        /* display: block; */
+        grid-area: filters;
+    }
+} 
