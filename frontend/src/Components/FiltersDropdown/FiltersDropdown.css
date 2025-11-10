@@ -32,6 +32,10 @@
     align-items: center;
     user-select: none;
     height: 100%;
+
+    font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .car-filter-header.disabled {
@@ -54,6 +58,10 @@
   z-index: 1000;
   padding: 8px 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+    font-size: 12px;
+    font-weight: 400;
 }
 
 .car-filter-options input[type="text"] {
