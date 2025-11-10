@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
-interface ModelData {
+export interface ModelData {
+    model_id: number;
     model_name: string;
     vehicle_type: string;
     years: number[];
 }
 
-interface MakeData {
+export interface MakeData {
     make_id: number;
     make_name: string;
     make_slug: string;
@@ -27,7 +28,7 @@ export const MakesProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         setLoading(true);
 
-        // Simulate slow network (2 seconds)
+        // Simulate slow network (1 second)
         setTimeout(() => {
             fetch("/data/cars_types_data/makes_and_models.json")
                 .then(res => res.json())
@@ -35,7 +36,7 @@ export const MakesProvider = ({ children }: { children: ReactNode }) => {
                     setMakes(data);
                     setLoading(false);
                 });
-        }, 2000);
+        }, 1000);
     }, []);
 
     return (

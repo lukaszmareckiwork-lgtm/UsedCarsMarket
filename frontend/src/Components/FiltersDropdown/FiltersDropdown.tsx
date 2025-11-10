@@ -1,24 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react'
-import "./FiltersDropdown.css"
+import React, { useEffect, useRef, useState } from 'react';
+import "./FiltersDropdown.css";
 
-interface Props {
-    items: DropdownItemData[];
-    selectedItems: string[];//by simplified name
-    handleItemSelected: (selectedItems: string[]) => void;
+interface FiltersDropdownProps<T> {
+    items: T[];
+    selectedItems: T[];
+    handleItemSelected: (selectedItems: T[]) => void;
     loading: boolean;
     forceDisable: boolean;
     headerText: string;
     searchInputPlaceholder: string;
+
+    /**
+     * Function to extract the unique key from an item.
+     * Used as the `key` prop when rendering dropdown options.
+     */
+    getId: (item: T) => React.Key;
+
+    /**
+     * Function to extract a simplified name for the item.
+     * Used for filtering/searching in the dropdown input.
+     */
+    getSimplifiedName: (item: T) => string;
+
+    /**
+     * Function to extract the display name for the item.
+     * Used as the visible text for dropdown options.
+     */
+    getDisplayName: (item: T) => string;
 }
 
-export interface DropdownItemData {
-    id: React.Key;
-    simplifiedName: string;
-    displayName: string;
-}
-
-const FiltersDropdown = (props: Props) => {
- 
+function FiltersDropdown<T>(props: FiltersDropdownProps<T>) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [searchInput, setSearch] = useState("");
 
@@ -35,30 +46,30 @@ const FiltersDropdown = (props: Props) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const toggleItem = (itemSimplifiedName: string) => {
+    const toggleItem = (item: T) => {
         if (props.loading) return;
 
-        let updated: string[];
-        if (props.selectedItems.includes(itemSimplifiedName)) {
-            updated = props.selectedItems.filter(s => s !== itemSimplifiedName);
-            props.handleItemSelected(updated);
-        } else {
-            updated = [...props.selectedItems, itemSimplifiedName];
-            props.handleItemSelected(updated);
-        }
+        const updated = props.selectedItems.includes(item)
+            ? props.selectedItems.filter(s => s !== item)
+            : [...props.selectedItems, item];
+
+        props.handleItemSelected(updated);
     };
+
+    const isAllSelected = () =>
+        props.selectedItems.length === props.items.length
 
     const selectAllItems = () => {
-        if (props.selectedItems.length === props.items.length) {
+        if (isAllSelected()) {
             props.handleItemSelected([]);
         } else {
-            const allItems = props.items.map(i => i.simplifiedName);
-            props.handleItemSelected(allItems);
+            props.handleItemSelected([...props.items]);
         }
     };
 
-    const filteredItems = props.items.filter(itemName =>
-        itemName.simplifiedName.includes(searchInput.toLowerCase())
+    // Items filtered by search input
+    const filteredItems = props.items.filter(item =>
+        props.getSimplifiedName(item).toLowerCase().includes(searchInput.toLowerCase())
     );
 
     return (
@@ -68,10 +79,7 @@ const FiltersDropdown = (props: Props) => {
                 onClick={() => !props.loading && !props.forceDisable && setDropdownOpen(prev => !prev)}
             >
                 {props.headerText} {props.selectedItems.length > 0 ? `(${props.selectedItems.length})` : ""}
-                {props.loading ?
-                    <div className="loader small" /> :
-                    <span>{dropdownOpen ? "▲" : "▼"}</span>
-                }
+                {props.loading ? <div className="loader small" /> : <span>{dropdownOpen ? "▲" : "▼"}</span>}
             </div>
 
             {dropdownOpen && (
@@ -83,31 +91,31 @@ const FiltersDropdown = (props: Props) => {
                         onChange={e => setSearch(e.target.value)}
                     />
 
-                    {/* Select All */}
-                    {!searchInput && (<label className="select-all">
-                        <input
-                            type="checkbox"
-                            checked={props.selectedItems.length === props.items.length}
-                            onChange={selectAllItems}
-                        />
-                        All
-                    </label>
-                    )}
-
-                    {filteredItems.map(i => (
-                        <label key={i.id}>
+                    {!searchInput && (
+                        <label className="select-all">
                             <input
                                 type="checkbox"
-                                checked={props.selectedItems.includes(i.simplifiedName)}
-                                onChange={() => toggleItem(i.simplifiedName)}
+                                checked={isAllSelected()}
+                                onChange={selectAllItems}
                             />
-                            {i.displayName}
+                            All
+                        </label>
+                    )}
+
+                    {filteredItems.map(item => (
+                        <label key={props.getId(item)}>
+                            <input
+                                type="checkbox"
+                                checked={props.selectedItems.includes(item)}
+                                onChange={() => toggleItem(item)}
+                            />
+                            {props.getDisplayName(item)}
                         </label>
                     ))}
                 </div>
             )}
         </div>
-    )
+    );
 }
 
-export default FiltersDropdown
+export default FiltersDropdown;
