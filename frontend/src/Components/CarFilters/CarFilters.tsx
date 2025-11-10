@@ -1,230 +1,104 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./CarFilters.css";
+import { useMakes, type MakeData, type ModelData } from "../../context/MakesContext";
+import FiltersDropdown from "../FiltersDropdown/FiltersDropdown";
 
-interface ModelData {
-  model_name: string;
-  vehicle_type: string;
-  years: number[];
-}
-
-interface MakeData {
-  make_id: number;
-  make_name: string;
-  make_slug: string;
-  models: Record<string, ModelData>;
-}
 
 const CarFilters: React.FC = () => {
-  const [makes, setMakes] = useState<MakeData[]>([]);
-  const [selectedMakes, setSelectedMakes] = useState<string[]>([]);
-  const [selectedModels, setSelectedModels] = useState<string[]>([]);
-  const [makeSearch, setMakeSearch] = useState("");
-  const [modelSearch, setModelSearch] = useState("");
+  const { makes, loading } = useMakes();
+  const [selectedMakes, setSelectedMakes] = useState<MakeData[]>([]);
+  const [selectedModels, setSelectedModels] = useState<ModelData[]>([]);
   const [searchParams] = useSearchParams();
-
-  const [makeDropdownOpen, setMakeDropdownOpen] = useState(false);
-  const [modelDropdownOpen, setModelDropdownOpen] = useState(false);
-
-  const makeRef = useRef<HTMLDivElement>(null);
-  const modelRef = useRef<HTMLDivElement>(null);
 
   const navigate = useNavigate();
 
-  // Load makes from JSON
+  // Use URL search params
   useEffect(() => {
-    fetch("/data/cars_types_data/makes_and_models.json")
-      .then(res => res.json())
-      .then(setMakes);
-  }, []);
+    if (makes.length === 0) return;
 
-  // Close dropdowns on outside click
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (makeRef.current && !makeRef.current.contains(e.target as Node)) {
-        setMakeDropdownOpen(false);
-      }
-      if (modelRef.current && !modelRef.current.contains(e.target as Node)) {
-        setModelDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    const makesFromUrl = searchParams.get("make")?.split(",") || [];
+    const modelsFromUrl = searchParams.get("model")?.split(",") || [];
 
-  // Use search params
-  useEffect(() => {
-  const makesFromUrl = searchParams.get("make")?.split(",") || [];
-  const modelsFromUrl = searchParams.get("model")?.split(",") || [];
+    const makesToSelect = makesFromUrl
+      .map(makeSlug => makes.find(make => make.make_slug === makeSlug))
+      .filter((m): m is MakeData => m !== undefined);
 
-  setSelectedMakes(makesFromUrl);
-  setSelectedModels(modelsFromUrl);
-  }, [searchParams]);
+    const availableModels = getAvailableModels(makesToSelect);
 
-  const filteredMakes = makes.filter(m =>
-    m.make_name.toLowerCase().includes(makeSearch.toLowerCase())
-  );
+    const modelsToSelect = modelsFromUrl.flatMap(id =>
+      availableModels.filter(m => m.model_id === Number.parseInt(id))
+    );
 
-  const availableModels = selectedMakes
-    .map(slug => makes.find(m => m.make_slug === slug))
-    .filter(Boolean)
-    .flatMap(m => Object.keys(m!.models));
+    setSelectedMakes(makesToSelect);
+    setSelectedModels(modelsToSelect);
+  }, [searchParams, makes]);
 
-  const filteredModels = availableModels.filter(modelName =>
-    modelName.toLowerCase().includes(modelSearch.toLowerCase())
-  );
-
-  // --- Helper: update URL dynamically ---
-  const updateUrl = (updatedMakes: string[], updatedModels: string[]) => {
+  // Update URL dynamically
+  const updateUrl = (updatedMakes: MakeData[], updatedModels: ModelData[]) => {
+    const updMakesString = updatedMakes.map(make => make.make_slug)
+    const updModelsString = updatedModels.map(model => model.model_id)
+    
     const params = new URLSearchParams();
-    if (updatedMakes.length) params.set("make", updatedMakes.join(","));
-    if (updatedModels.length) params.set("model", updatedModels.join(","));
+    if (updMakesString.length) params.set("make", updMakesString.join(","));
+    if (updModelsString.length) params.set("model", updModelsString.join(","));
     navigate(`/osobowe${params.toString() ? `?${params.toString()}` : ""}`);
   };
 
-  // --- Toggle functions ---
-  const toggleMake = (slug: string) => {
-    let updated: string[];
-    if (selectedMakes.includes(slug)) {
-      updated = selectedMakes.filter(s => s !== slug);
-      // Remove associated models
-      const modelsToRemove = Object.keys(
-        makes.find(m => m.make_slug === slug)!.models
-      );
-      const newModels = selectedModels.filter(m => !modelsToRemove.includes(m));
-      setSelectedModels(newModels);
-      setSelectedMakes(updated);
-      updateUrl(updated, newModels);
-    } else {
-      updated = [...selectedMakes, slug];
-      setSelectedMakes(updated);
-      setSelectedModels(selectedModels);
-      updateUrl(updated, selectedModels);
-    }
+  const getAvailableModels = (selMakes: MakeData[] = selectedMakes) => {
+    return selMakes
+      .flatMap(makeData => Object.values(makeData?.models))
+      .filter(Boolean)
+  }
+
+  const onMakesSelected = (selMakes: MakeData[]) => {
+    setSelectedMakes(selMakes);
+
+    // Keep only selected models that are still available
+    const validModels = getAvailableModels(selMakes)
+      .filter(model => selectedModels.includes(model));
+    setSelectedModels(validModels);
+
+    updateUrl(selMakes, validModels);
   };
 
-  const toggleModel = (name: string) => {
-    let updated: string[];
-    if (selectedModels.includes(name)) {
-      updated = selectedModels.filter(m => m !== name);
-    } else {
-      updated = [...selectedModels, name];
-    }
-    setSelectedModels(updated);
-    updateUrl(selectedMakes, updated);
-  };
-
-  const selectAllMakes = () => {
-    if (selectedMakes.length === makes.length) {
-      setSelectedMakes([]);
-      setSelectedModels([]);
-      updateUrl([], []);
-    } else {
-      const allMakes = makes.map(m => m.make_slug);
-      setSelectedMakes(allMakes);
-      setSelectedModels([]);
-      updateUrl(allMakes, []);
-    }
-  };
-
-  const selectAllModels = () => {
-    if (selectedModels.length === availableModels.length) {
-      setSelectedModels([]);
-      updateUrl(selectedMakes, []);
-    } else {
-      setSelectedModels(availableModels);
-      updateUrl(selectedMakes, availableModels);
-    }
+  const onModelsSelected = (selModels: ModelData[]) => {
+    setSelectedModels(selModels);
+    updateUrl(selectedMakes, selModels);
   };
 
   return (
-    <div className="car-filters">
-      {/* Make Dropdown */}
-      <div className="car-filter-dropdown" ref={makeRef}>
-        <div
-          className="car-filter-header"
-          onClick={() => setMakeDropdownOpen(prev => !prev)}
-        >
-          Marka pojazdu {selectedMakes.length > 0 ? `(${selectedMakes.length})` : ""}
-          <span>{makeDropdownOpen ? "▲" : "▼"}</span>
-        </div>
+    <section className="car-filters">
 
-        {makeDropdownOpen && (
-          <div className="car-filter-options">
-            <input
-              type="text"
-              placeholder="Szukaj marki"
-              value={makeSearch}
-              onChange={e => setMakeSearch(e.target.value)}
-            />
+      <FiltersDropdown
+        items={makes}
+        selectedItems={selectedMakes}
+        handleItemSelected={onMakesSelected}
 
-            {/* Select All */}
-            <label className="select-all">
-              <input
-                type="checkbox"
-                checked={selectedMakes.length === makes.length}
-                onChange={selectAllMakes}
-              />
-              Wszystkie
-            </label>
+        getId={(make) => make.make_id}
+        getDisplayName={(make) => make.make_name}
+        getSimplifiedName={(make) => make.make_slug}
 
-            {filteredMakes.map(m => (
-              <label key={m.make_id}>
-                <input
-                  type="checkbox"
-                  checked={selectedMakes.includes(m.make_slug)}
-                  onChange={() => toggleMake(m.make_slug)}
-                />
-                {m.make_name}
-              </label>
-            ))}
-          </div>
-        )}
-      </div>
+        loading={loading}
+        forceDisable={false}
+        headerText="Manufacturer"
+        searchInputPlaceholder="Search manufacturer" />
 
-      {/* Model Dropdown */}
-      <div className="car-filter-dropdown" ref={modelRef}>
-        <div
-          className={`car-filter-header ${selectedMakes.length === 0 ? "disabled" : ""}`}
-          onClick={() => selectedMakes.length > 0 && setModelDropdownOpen(prev => !prev)}
-        >
-          Model pojazdu {selectedModels.length > 0 ? `(${selectedModels.length})` : ""}
-          <span>{modelDropdownOpen ? "▲" : "▼"}</span>
-        </div>
+      <FiltersDropdown
+        items={getAvailableModels()}
+        selectedItems={selectedModels}
+        handleItemSelected={onModelsSelected}
 
-        {modelDropdownOpen && selectedMakes.length > 0 && (
-          <div className="car-filter-options">
-            <input
-              type="text"
-              placeholder="Szukaj modelu"
-              value={modelSearch}
-              onChange={e => setModelSearch(e.target.value)}
-            />
+        getId={(model) => model.model_id}
+        getDisplayName={(model) => model.model_name}
+        getSimplifiedName={(model) => model.model_name.toLocaleLowerCase()}
 
-            {/* Select All */}
-            <label className="select-all">
-              <input
-                type="checkbox"
-                checked={selectedModels.length === availableModels.length}
-                onChange={selectAllModels}
-              />
-              Wszystkie
-            </label>
-
-            {filteredModels.map(modelName => (
-              <label key={modelName}>
-                <input
-                  type="checkbox"
-                  checked={selectedModels.includes(modelName)}
-                  onChange={() => toggleModel(modelName)}
-                />
-                {modelName}
-              </label>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+        loading={loading}
+        forceDisable={selectedMakes.length === 0}
+        headerText="Model"
+        searchInputPlaceholder="Search model" />
+        
+    </section>
   );
 };
 
