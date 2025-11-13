@@ -45,16 +45,18 @@
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 6px;
+  
 }
 
-.param-field-error {
+/* .param-field-error {
   border: 1px solid #d9534f !important;
   box-shadow: 0 0 0 1px #d9534f !important;
-}
+} */
 
 .param-input input:focus {
   outline: none;
-  border: 2px solid #007bff;
+  border-color: #2684FF;
+  box-shadow: 0 0 0 1px #2684FF;
 }
 
 .param-input label {
@@ -115,11 +117,38 @@
   margin-top: 2rem;
 }
 
-.param-error {
+/* .param-error {
   color: #d93025;
   font-size: 0.85rem;
   margin-top: 4px;
   font-weight: 500;
+  min-height: 1em;
+} */
+
+/* .param-error.disabled {
+  color: transparent;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  font-weight: 500;
+  min-height: 1ch;
+} */
+
+.param-error {
+  min-height: 1em;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  color: #d9534f;
+  visibility: hidden; /* hidden but takes up space */
+  line-height: 1em;
+}
+
+.param-error.visible {
+  visibility: visible; /* show error */
+}
+
+.param-field-error {
+  border-color: #d9534f !important;
+  box-shadow: 0 0 0 1px #d9534f !important;
 }
 
 .param-field.no-spin::-webkit-inner-spin-button,
