@@ -28,22 +28,21 @@ const AddOffer: React.FC = () => {
       model: "",
       year: undefined,
       mileage: undefined,
-      fuelType: FuelTypeEnum.Petrol,
+      fuelType: undefined,
       engineDisplacement: undefined,
       enginePower: undefined,
-      transmission: TransmissionTypeEnum.Manual,
+      transmission: undefined,
       color: "",
       vin: "",
-
       title: "",
       subtitle: "",
       description: "",
       features: [],
       photos: [],
       location: "",
-      sellerType: SellerTypeEnum.Private,
+      sellerType: undefined,
       price: undefined,
-      currency: CurrencyTypeEnum.Pln,
+      currency: CurrencyTypeEnum.Usd,
       createdDate: new Date(),
     },
   });
@@ -66,7 +65,7 @@ const AddOffer: React.FC = () => {
     <form className="add-offer-form" onSubmit={handleSubmit(onSubmit)}>
       <h2>Add a New Offer</h2>
 
-      {/* ===== VEHICLE INFORMATION ===== */}
+      {/* VEHICLE INFORMATION */}
       <section className="form-section">
         <h3>Vehicle Information</h3>
         <div className="form-grid">
@@ -126,28 +125,6 @@ const AddOffer: React.FC = () => {
           />
 
           <ParamInput
-            name="engineDisplacement"
-            label="Engine Displacement (cc)"
-            type="number"
-            control={control}
-            rules={{
-              min: { value: 50, message: "Too small" },
-              max: { value: 10000, message: "Too large" },
-            }}
-          />
-
-          <ParamInput
-            name="enginePower"
-            label="Engine Power (HP)"
-            type="number"
-            control={control}
-            rules={{
-              min: { value: 10, message: "Too low" },
-              max: { value: 2000, message: "Too high" },
-            }}
-          />
-
-          <ParamInput
             name="transmission"
             label="Transmission"
             control={control}
@@ -159,11 +136,30 @@ const AddOffer: React.FC = () => {
           />
 
           <ParamInput
-            name="color"
-            label="Color"
+            name="engineDisplacement"
+            label="Engine Displacement (cc)"
+            type="number"
             control={control}
-            placeholder="e.g. Red"
+            rules={{
+              min: { value: 50, message: "Too small" },
+              max: { value: 10000, message: "Too large" },
+            }}
+            placeholder="e.g. 1998"
           />
+
+          <ParamInput
+            name="enginePower"
+            label="Engine Power (HP)"
+            type="number"
+            control={control}
+            rules={{
+              min: { value: 10, message: "Too low" },
+              max: { value: 2000, message: "Too high" },
+            }}
+            placeholder="e.g. 160"
+          />
+
+          <ParamInput name="color" label="Color" control={control} placeholder="e.g. Red" />
 
           <ParamInput
             name="vin"
@@ -171,15 +167,13 @@ const AddOffer: React.FC = () => {
             control={control}
             placeholder="17-character Vehicle Identification Number"
             rules={{
-              // required: "VIN is required",
               pattern: { value: /^[A-HJ-NPR-Z0-9]{17}$/, message: "Invalid VIN format" },
             }}
           />
-
         </div>
       </section>
 
-      {/* ===== OFFER DETAILS ===== */}
+      {/* OFFER DETAILS */}
       <section className="form-section">
         <h3>Offer Details</h3>
         <div className="form-grid">
@@ -187,19 +181,14 @@ const AddOffer: React.FC = () => {
             name="title"
             label="Title"
             control={control}
-            placeholder="Enter offer title"
+            placeholder="Enter offer title..."
             rules={{
               required: "Title is required",
               minLength: { value: 5, message: "Title too short" },
             }}
           />
 
-          <ParamInput
-            name="subtitle"
-            label="Subtitle"
-            control={control}
-            placeholder="Short tagline"
-          />
+          <ParamInput name="subtitle" label="Subtitle" control={control} placeholder="Enter offer subtitle..." />
 
           <ParamInput
             name="description"
@@ -207,12 +196,9 @@ const AddOffer: React.FC = () => {
             control={control}
             type="textarea"
             placeholder="Add details about your car..."
-            rules={{
-              minLength: { value: 20, message: "Description too short" },
-            }}
+            rules={{ minLength: { value: 20, message: "Description too short" } }}
           />
 
-          {/* Features */}
           <ParamInput
             name="features"
             label="Features"
@@ -224,15 +210,9 @@ const AddOffer: React.FC = () => {
             }))}
           />
 
-          {/* Photos */}
           <div className="param-input">
             <label>Photos</label>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={(e) => handlePhotoUpload(e.target.files)}
-            />
+            <input type="file" multiple accept="image/*" onChange={(e) => handlePhotoUpload(e.target.files)} />
             <div className="photo-previews">
               {previewUrls.map((url, i) => (
                 <img key={i} src={url} alt={`Preview ${i}`} />
@@ -240,7 +220,6 @@ const AddOffer: React.FC = () => {
             </div>
           </div>
 
-          {/* Location */}
           <ParamInput
             name="location"
             label="Location"
@@ -260,7 +239,6 @@ const AddOffer: React.FC = () => {
             }))}
           />
 
-          {/* Price + Currency */}
           <div className="param-input price-field">
             <ParamInput
               name="price"
@@ -286,7 +264,6 @@ const AddOffer: React.FC = () => {
         </div>
       </section>
 
-      {/* ===== BUTTONS ===== */}
       <div className="form-buttons">
         <button type="submit">Submit Offer</button>
         <button type="button" onClick={() => reset()}>
