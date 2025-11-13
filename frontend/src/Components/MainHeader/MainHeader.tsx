@@ -1,9 +1,12 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import "./MainHeader.css";
 
 const MainHeader = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const isAddOfferPage = location.pathname === '/add-offer';
 
     return (
         <div className='mainHeader'>
@@ -13,12 +16,12 @@ const MainHeader = () => {
                 </Link>
             </div>
             <div className='mainHeader-right'>
-                <button
+                {!isAddOfferPage && <button
                     className='mainHeader-addOfferButton'
                     onClick={() => navigate('/add-offer')}
                 >
                     Add offer
-                </button>
+                </button>}
             </div>
         </div>
     );
