@@ -43,11 +43,14 @@ export function ParamInput<T extends FieldValues>({
             case "textarea":
               return (
                 <>
-                  <textarea {...field} placeholder={placeholder} 
-                  // className="param-field param-textarea" 
-                  className={`param-field param-textarea ${error ? "param-field-error" : ""}`}
+                  <textarea
+                    {...field}
+                    placeholder={placeholder}
+                    className={`param-field param-textarea ${error ? "param-field-error" : ""}`}
                   />
-                  {error && <p className="param-error">{error.message}</p>}
+                  <p className={`param-error ${error ? "visible" : ""}`}>
+                    {error?.message || " "}
+                  </p>
                 </>
               );
 
@@ -59,13 +62,14 @@ export function ParamInput<T extends FieldValues>({
                     {...field}
                     placeholder={placeholder}
                     value={field.value ?? ""}
-                    // className="param-field no-spin"
                     className={`param-field no-spin ${error ? "param-field-error" : ""}`}
                   />
-                  {error && <p className="param-error">{error.message}</p>}
+                  <p className={`param-error ${error ? "visible" : ""}`}>
+                    {error?.message || " "}
+                  </p>
                 </>
               );
-              
+
             case "select":
               return (
                 <>
@@ -74,13 +78,9 @@ export function ParamInput<T extends FieldValues>({
                     className="param-field"
                     options={options}
                     placeholder={placeholder}
-                    onChange={(selected) =>
-                      field.onChange(selected?.value)
-                    }
+                    onChange={(selected) => field.onChange(selected?.value)}
                     value={
-                      options?.filter((opt) =>
-                        (field.value as string) === opt.value
-                      ) || []
+                      options?.find((opt) => opt.value === field.value) || null
                     }
                     styles={{
                       control: (base) => ({
@@ -92,7 +92,9 @@ export function ParamInput<T extends FieldValues>({
                       }),
                     }}
                   />
-                  {error && <p className="param-error">{error.message}</p>}
+                  <p className={`param-error ${error ? "visible" : ""}`}>
+                    {error?.message || " "}
+                  </p>
                 </>
               );
 
@@ -110,7 +112,7 @@ export function ParamInput<T extends FieldValues>({
                     }
                     value={
                       options?.filter((opt) =>
-                        (field.value as string[] || []).includes(opt.value)
+                        (field.value as string[] | undefined)?.includes(opt.value)
                       ) || []
                     }
                     styles={{
@@ -123,9 +125,12 @@ export function ParamInput<T extends FieldValues>({
                       }),
                     }}
                   />
-                  {error && <p className="error">{error.message}</p>}
+                  <p className={`param-error ${error ? "visible" : ""}`}>
+                    {error?.message || " "}
+                  </p>
                 </>
               );
+
             default:
               return (
                 <>
@@ -133,9 +138,11 @@ export function ParamInput<T extends FieldValues>({
                     type="text"
                     {...field}
                     placeholder={placeholder}
-                    className="param-field"
+                    className={`param-field ${error ? "param-field-error" : ""}`}
                   />
-                  {error && <p className="param-error">{error.message}</p>}
+                  <p className={`param-error ${error ? "visible" : ""}`}>
+                    {error?.message || " "}
+                  </p>
                 </>
               );
           }

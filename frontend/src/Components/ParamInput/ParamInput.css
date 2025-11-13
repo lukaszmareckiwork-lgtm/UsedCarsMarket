@@ -1,13 +1,13 @@
 /* .param-input {
-  display: flex;
+   display: flex;
   flex-direction: column;
   gap: 4px;
   margin-bottom: 16px;
-}
-
-.param-label {
-  font-weight: 600;
 } */
+
+/* .param-label {
+  font-weight: 600;
+}  */
 
 /* .param-input-field {
   padding: 8px;
