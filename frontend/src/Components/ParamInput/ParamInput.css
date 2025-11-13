@@ -1,0 +1,138 @@
+/* --- Container --- */
+.param-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+/* Input styles */
+.param-input input,
+.param-input select,
+.param-input textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px; 
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+}
+
+.param-input input:focus,
+.param-input select:focus,
+.param-input textarea:focus {
+  outline: none;
+  border-color: #2684ff;
+  box-shadow: 0 0 0 1px #2684ff;
+}
+
+.param-input label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.param-error {
+  min-height: 1em;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  color: #d9534f;
+  visibility: hidden;
+  line-height: 1em;
+}
+
+.param-error.visible {
+  visibility: visible;
+}
+
+.param-field-error {
+  border-color: #d9534f !important;
+  box-shadow: 0 0 0 1px #d9534f !important;
+}
+
+/* Prevent number spinners */
+.no-spin::-webkit-inner-spin-button,
+.no-spin::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-spin {
+  -moz-appearance: textfield;
+}
+
+/* Textarea */
+.param-textarea textarea {
+  min-height: 120px;
+  resize: vertical;
+  grid-column: span 2;
+}
+
+/* File previews */
+.photo-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.photo-previews img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Price fields */
+.price-field {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+/* --- Label --- */
+.param-label {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: #333;
+}
+
+/* --- Textarea specific --- */
+.param-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* --- Error border (matches react-select error) --- */
+.param-field-error {
+  border-color: #d9534f !important;
+  box-shadow: 0 0 0 1px #d9534f !important;
+}
+
+/* --- Error text (with reserved space to prevent layout shift) --- */
+.param-error {
+  color: #d9534f;
+  font-size: 0.85rem;
+  line-height: 1em;
+  margin-top: 0.25rem;
+  min-height: 1.2em; /* prevents layout jump */
+}
+
+/* Remove inner focus ring / tiny border in React Select */
+.react-select__control input {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.react-select__control--is-focused {
+  box-shadow: 0 0 0 1px #2684FF !important;
+}
+
+.react-select__input input {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  box-shadow: none !important;
+  outline: none !important;
+}
