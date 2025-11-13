@@ -4,26 +4,37 @@
   background: #fff;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  margin: 2rem auto 2rem;
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
 }
 
 .add-offer-form h2 {
   color: #024aa8;
   margin-bottom: 2rem;
   text-align: center;
+
+  font-size: var(--fontSizeHeadlineLarge);
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  font-weight: var(--font-weight-bold);
 }
 
 .form-section {
-  background: #f9fbfd;
+  background: #f6fbff;
   border-radius: 10px;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.075);
 }
 
 .form-section h3 {
   color: #024aa8;
   margin-bottom: 1rem;
+
+  font-size: var(--fontSizeHeadlineMedium);
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  font-weight: var(--fontWeightMedium);
 }
 
 .form-grid {
@@ -38,78 +49,7 @@
   }
 }
 
-.param-input input,
-.param-input select,
-.param-input textarea {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  
-}
-
-/* .param-field-error {
-  border: 1px solid #d9534f !important;
-  box-shadow: 0 0 0 1px #d9534f !important;
-} */
-
-.param-input input:focus {
-  outline: none;
-  border-color: #2684FF;
-  box-shadow: 0 0 0 1px #2684FF;
-}
-
-.param-input label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.feature-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.tag {
-  background: #e7f0ff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.9rem;
-}
-
-.tag button {
-  background: none;
-  border: none;
-  color: #555;
-  cursor: pointer;
-}
-
-.photo-previews {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.photo-previews img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-}
-
-.price-field {
-  display: flex;
-  gap: 10px;
-  align-items: baseline;
-}
-
+/* Buttons container */
 .form-buttons {
   display: flex;
   justify-content: flex-end;
@@ -117,79 +57,36 @@
   margin-top: 2rem;
 }
 
-/* .param-error {
-  color: #d93025;
-  font-size: 0.85rem;
-  margin-top: 4px;
-  font-weight: 500;
-  min-height: 1em;
-} */
-
-/* .param-error.disabled {
-  color: transparent;
-  font-size: 0.85rem;
-  margin-top: 4px;
-  font-weight: 500;
-  min-height: 1ch;
-} */
-
-.param-error {
-  min-height: 1em;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-  color: #d9534f;
-  visibility: hidden; /* hidden but takes up space */
-  line-height: 1em;
-}
-
-.param-error.visible {
-  visibility: visible; /* show error */
-}
-
-.param-field-error {
-  border-color: #d9534f !important;
-  box-shadow: 0 0 0 1px #d9534f !important;
-}
-
-.param-field.no-spin::-webkit-inner-spin-button,
-.param-field.no-spin::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.param-field.no-spin {
-  -moz-appearance: textfield;
-}
-
-.param-textarea textarea {
-  min-height: 120px;
-  resize: vertical;
-  grid-column: span 2;
-}
-
-.param-multiselect {
-  display: grid;
-  gap: 4px;
-  padding: 4px 0;
-}
-
-.param-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Common button styles */
+.form-buttons button {
+  padding: 0.6rem 1.2rem;
   font-size: 0.95rem;
-  background: #fafafa;
+  font-weight: 600;
   border-radius: 6px;
-  padding: 6px 8px;
-  border: 1px solid #ddd;
+  border: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.param-checkbox:hover {
-  background: #f0f0f0;
+/* Submit button (primary) */
+.form-buttons button[type="submit"] {
+  background-color: #024aa8;
+  color: #fff;
 }
 
-.param-checkbox input[type="checkbox"] {
-  accent-color: #007bff;
-  transform: scale(1.1);
+.form-buttons button[type="submit"]:hover {
+  background-color: #01387f;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Reset button (secondary) */
+.form-buttons button[type="button"] {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.form-buttons button[type="button"]:hover {
+  background-color: #e0e0e0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }

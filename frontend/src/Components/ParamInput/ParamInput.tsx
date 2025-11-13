@@ -1,6 +1,7 @@
 import React from "react";
 import Select from "react-select";
 import { Controller, type Control, type FieldValues, type Path } from "react-hook-form";
+import './ParamInput.css'
 
 interface ParamInputProps<T extends FieldValues> {
   name: Path<T>;
@@ -76,6 +77,7 @@ export function ParamInput<T extends FieldValues>({
                   <Select
                     {...field}
                     className="param-field"
+                    classNamePrefix="react-select"
                     options={options}
                     placeholder={placeholder}
                     onChange={(selected) => field.onChange(selected?.value)}
