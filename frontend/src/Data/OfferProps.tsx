@@ -136,8 +136,10 @@ export function getReadableFeatureType(featureType: FeatureTypeEnum): string {
 }
 
 export interface OfferProps {
-  make: string;
-  model: string;
+  offerId: string;
+
+  makeId: number;
+  modelId: number;
   year: number;
   mileage: number;
 
