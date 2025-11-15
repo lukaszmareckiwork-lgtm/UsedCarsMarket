@@ -3,12 +3,12 @@ import Select from "react-select";
 import { Controller, type Control, type FieldValues, type Path } from "react-hook-form";
 import './ParamInput.css'
 
-interface ParamInputProps<T extends FieldValues> {
+interface ParamInputProps<T extends FieldValues, G> {
   name: Path<T>;
   label: string;
   control: Control<T>;
   type?: "text" | "number" | "select" | "textarea" | "multiselect";
-  options?: { value: string; label: string }[];
+  options?: { value: G; label: string }[];
   placeholder?: string;
   rules?: {
     required?: string;
@@ -20,7 +20,7 @@ interface ParamInputProps<T extends FieldValues> {
   };
 }
 
-export function ParamInput<T extends FieldValues>({
+export function ParamInput<T extends FieldValues, G>({
   name,
   label,
   control,
@@ -28,7 +28,7 @@ export function ParamInput<T extends FieldValues>({
   options,
   placeholder,
   rules,
-}: ParamInputProps<T>) {
+}: ParamInputProps<T,G>) {
   return (
     <div className={`param-input ${type === "textarea" ? "param-textarea" : ""}`}>
       <label className="param-label">{label}</label>
@@ -114,7 +114,7 @@ export function ParamInput<T extends FieldValues>({
                     }
                     value={
                       options?.filter((opt) =>
-                        (field.value as string[] | undefined)?.includes(opt.value)
+                        (field.value as G[] | undefined)?.includes(opt.value)
                       ) || []
                     }
                     styles={{

@@ -15,7 +15,7 @@ import {
   FeatureTypeEnum,
   getReadableFeatureType,
 } from "../../Data/OfferProps";
-import { useMakes } from "../../context/MakesContext";
+import { useMakes, type MakeData } from "../../context/MakesContext";
 
 const AddOffer: React.FC = () => {
   const { makes } = useMakes();
@@ -24,8 +24,9 @@ const AddOffer: React.FC = () => {
   const { control, handleSubmit, reset, watch, setValue } = useForm<OfferProps>({
     mode: "onChange",
     defaultValues: {
-      make: "",
-      model: "",
+      offerId: undefined,
+      makeId: undefined,
+      modelId: undefined,
       year: undefined,
       mileage: undefined,
       fuelType: undefined,
@@ -47,10 +48,11 @@ const AddOffer: React.FC = () => {
     },
   });
 
-  const selectedMake = makes.find((m) => m.make_name === watch("make"));
+  const selectedMake = makes.find((m) => m.make_id === watch("makeId"));
   const availableModels = selectedMake ? Object.values(selectedMake.models) : [];
 
   const onSubmit: SubmitHandler<OfferProps> = (data) => {
+    data.offerId = crypto.randomUUID();
     console.log("✅ Offer submitted:", data);
   };
 
@@ -70,21 +72,21 @@ const AddOffer: React.FC = () => {
         <h3>Vehicle Information</h3>
         <div className="form-grid">
           <ParamInput
-            name="make"
+            name="makeId"
             label="Make"
             control={control}
             type="select"
-            options={makes.map((m) => ({ value: m.make_name, label: m.make_name }))}
+            options={makes.map((m) => ({ value: m.make_id, label: m.make_name }))}
             rules={{ required: "Make is required" }}
           />
 
           <ParamInput
-            name="model"
+            name="modelId"
             label="Model"
             control={control}
             type="select"
             options={availableModels.map((m) => ({
-              value: m.model_name,
+              value: m.model_id,
               label: m.model_name,
             }))}
             rules={{ required: "Model is required" }}
