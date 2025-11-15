@@ -1,17 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import "./CarFilters.css";
+import "./OffersFiltersControls.css";
 import { useMakes, type MakeData, type ModelData } from "../../context/MakesContext";
 import FiltersDropdown from "../FiltersDropdown/FiltersDropdown";
 
+export interface OffersFiltersControlsResult{
+  selMakes: MakeData[];
+  selModels: ModelData[];
 
-const CarFilters: React.FC = () => {
+}
+
+interface Props{
+  handleFiltersResult: (filtersResult: OffersFiltersControlsResult) => void; 
+}
+
+const OffersFiltersControls = ({ handleFiltersResult }: Props) => {
   const { makes, loading } = useMakes();
   const [selectedMakes, setSelectedMakes] = useState<MakeData[]>([]);
   const [selectedModels, setSelectedModels] = useState<ModelData[]>([]);
   const [searchParams] = useSearchParams();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const filtersResult: OffersFiltersControlsResult = {
+      selMakes: selectedMakes,
+      selModels: selectedModels,
+    };
+
+    handleFiltersResult(filtersResult);
+  }, [selectedModels, selectedMakes]);
 
   // Use URL search params
   useEffect(() => {
@@ -102,4 +120,4 @@ const CarFilters: React.FC = () => {
   );
 };
 
-export default CarFilters;
+export default OffersFiltersControls;
