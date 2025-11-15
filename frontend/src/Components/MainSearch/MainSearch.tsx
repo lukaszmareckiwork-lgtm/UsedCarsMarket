@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./MainSearch.css";
 import OffersList from '../OffersList/OffersList';
-import CarFilters from '../CarFilters/CarFilters';
+import OffersFiltersControls from '../OffersFiltersControls/OffersFiltersControls';
 import { CurrencyTypeEnum, FeatureTypeEnum, FuelTypeEnum, SellerTypeEnum, TransmissionTypeEnum, type OfferProps } from '../../Data/OfferProps';
+import OffersFilters from '../OffersFilters/OffersFilters';
 
 const offersData: OfferProps[] = [
   {
-    make: "BMW",
-    model: "320d",
+    offerId: "test_0",
+
+    makeId: 452,//BMW
+    modelId: 2172,//320i
     year: 2020,
     mileage: 85000,
     fuelType: FuelTypeEnum.Diesel,
@@ -34,8 +37,10 @@ const offersData: OfferProps[] = [
     createdDate: new Date("2025-10-20T05:17:30"),
   },
   {
-    make: "Audi",
-    model: "A4",
+    offerId: "test_1",
+
+    makeId: 582,//AUDI
+    modelId: 3146,//A4
     year: 2021,
     mileage: 62000,
     fuelType: FuelTypeEnum.Diesel,
@@ -64,11 +69,17 @@ const offersData: OfferProps[] = [
 ];
 
 const MainSearch = () => {
+  const [filteredOffers, setFilteredOffers] = useState<OfferProps[]>([])
+
+  // const handleFilteredOffers = (filteredOffers: OfferProps[]) => {
+
+  // };
+
     return (
         <div className='main-search'>
             <div className='main-search-grid'>
-                <CarFilters />
-                <OffersList offers={offersData} />
+                <OffersFilters allOffers={offersData} handleFilteredOffers={setFilteredOffers}/>
+                <OffersList offers={filteredOffers} />
             </div>
         </div>
     )
