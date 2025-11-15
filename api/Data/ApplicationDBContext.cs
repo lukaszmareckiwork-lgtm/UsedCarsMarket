@@ -12,7 +12,7 @@ namespace api.Data
         public ApplicationDBContext(DbContextOptions options)
             : base(options)
         {
-            
+
         }
 
         public DbSet<Offer> Offers { get; set; }
@@ -34,13 +34,13 @@ namespace api.Data
                       .HasDefaultValueSql("NEWID()"); // SQL Server auto-generates if null
 
                 // Features stored as comma-separated string
-                var featuresConverter = new ValueConverter<List<FeatureType>, string>(
-                    v => v != null ? string.Join(',', v) : null,
-                    v => !string.IsNullOrEmpty(v) 
-                        ? v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                           .Select(f => Enum.Parse<FeatureType>(f))
-                           .ToList()
-                        : new List<FeatureType>()
+                var featuresConverter = new ValueConverter<List<FeatureType>?, string>(
+                    v => v == null ? string.Empty : string.Join(',', v),
+                    v => string.IsNullOrEmpty(v)
+                        ? new List<FeatureType>()
+                        : v.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                        .Select(f => Enum.Parse<FeatureType>(f))
+                        .ToList()
                 );
 
                 entity.Property(o => o.Features)
