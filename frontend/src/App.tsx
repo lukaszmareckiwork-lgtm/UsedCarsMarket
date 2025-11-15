@@ -1,8 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import MainHeader from './Components/MainHeader/MainHeader';
 import MainSearch from './Components/MainSearch/MainSearch';
-import AddOffer from './Components/AddOffer/AddOffer';
+import AddOfferForm from './Components/AddOfferForm/AddOfferForm';
 import './App.css';
+import AddOffer from "./Components/AddOffer/AddOffer";
 
 function App() {
   return (
