@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace api.Models
 {
@@ -43,6 +44,7 @@ namespace api.Models
         Sunroof
     }
 
+    // [ValidateNever]
     public class Offer
     {
         // Primary key: integer for performance
