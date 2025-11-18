@@ -7,6 +7,7 @@ using api.Dtos.Offer;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
@@ -22,18 +23,19 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var offers = _context.Offers.ToList()
-                .Select(o => o.OfferDto());
+            var offers = await _context.Offers.ToListAsync();
+            
+            var offersDtos = offers.Select(o => o.OfferDto());
 
-            return Ok(offers);
+            return Ok(offersDtos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var offer = _context.Offers.Find(id);
+            var offer = await _context.Offers.FindAsync(id);
 
             if (offer == null)
                 return NotFound();
@@ -42,29 +44,30 @@ namespace api.Controllers
         }
 
         [HttpGet("preview")]
-        public IActionResult GetAllPreview()
+        public async Task<IActionResult> GetAllPreview()
         {
-            var offers = _context.Offers.ToList()
-                .Select(o => o.OfferPreviewDto());
+            var offers = await _context.Offers.ToListAsync();
 
-            return Ok(offers);
+            var offersDtos = offers.Select(o => o.OfferPreviewDto());
+
+            return Ok(offersDtos);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateOfferRequestDto createOfferRequestDto)
+        public async Task<IActionResult> Create([FromBody] CreateOfferRequestDto createOfferRequestDto)
         {
             var offerModel = createOfferRequestDto.ToOfferFromCreateDto();
-            _context.Offers.Add(offerModel);
-            _context.SaveChanges();
+            await _context.Offers.AddAsync(offerModel);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetById), new { id = offerModel.Id }, offerModel.OfferDto());
         }
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] UpdateOfferRequestDto updateOfferRequestDto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateOfferRequestDto updateOfferRequestDto)
         {
-            var offerModel = _context.Offers.FirstOrDefault(o => o.Id == id);
+            var offerModel = await _context.Offers.FirstOrDefaultAsync(o => o.Id == id);
 
             if(offerModel == null)
                 return NotFound();
@@ -75,22 +78,22 @@ namespace api.Controllers
             //ADD EVRYTHING THAT WE WANT TO UPDATE
             offerModel.Description = updateOfferRequestDto.Description;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             
             return Ok(offerModel.OfferDto());
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var offerModel = _context.Offers.FirstOrDefault(o => o.Id == id);
+            var offerModel = await _context.Offers.FirstOrDefaultAsync(o => o.Id == id);
 
             if(offerModel == null)
                 return NotFound();
             
             _context.Offers.Remove(offerModel);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
