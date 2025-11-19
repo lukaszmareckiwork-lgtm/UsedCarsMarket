@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Offer;
+using api.Helpers;
+using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,39 +17,46 @@ namespace api.Controllers
     [ApiController]
     public class OfferController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
-
-        public OfferController(ApplicationDBContext context)
+        private readonly IOfferRepository _offerRepo;
+        public OfferController(IOfferRepository offerRepo)
         {
-            _context = context;
+            _offerRepo = offerRepo;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] OfferQueryObject query)
         {
-            var offers = await _context.Offers.ToListAsync();
+            if(!ModelState.IsValid)
+                return BadRequest();
+            
+            var offers = await _offerRepo.GetAllAsync(query);
             
             var offersDtos = offers.Select(o => o.OfferDto());
 
             return Ok(offersDtos);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var offer = await _context.Offers.FindAsync(id);
+            if(!ModelState.IsValid)
+                return BadRequest();
+
+            var offer = await _offerRepo.GetByIdAsync(id);
 
             if (offer == null)
                 return NotFound();
 
-            return Ok(offer.OfferDto());
+            return Ok(offer!.OfferDto());
         }
 
         [HttpGet("preview")]
-        public async Task<IActionResult> GetAllPreview()
+        public async Task<IActionResult> GetAllPreview([FromQuery] OfferQueryObject query)
         {
-            var offers = await _context.Offers.ToListAsync();
+            if(!ModelState.IsValid)
+                return BadRequest();
 
+            var offers = await _offerRepo.GetAllAsync(query);
             var offersDtos = offers.Select(o => o.OfferPreviewDto());
 
             return Ok(offersDtos);
@@ -56,44 +65,41 @@ namespace api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOfferRequestDto createOfferRequestDto)
         {
+            if(!ModelState.IsValid)
+                return BadRequest();
+
             var offerModel = createOfferRequestDto.ToOfferFromCreateDto();
-            await _context.Offers.AddAsync(offerModel);
-            await _context.SaveChangesAsync();
+            await _offerRepo.CreateAsync(offerModel);
 
             return CreatedAtAction(nameof(GetById), new { id = offerModel.Id }, offerModel.OfferDto());
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateOfferRequestDto updateOfferRequestDto)
         {
-            var offerModel = await _context.Offers.FirstOrDefaultAsync(o => o.Id == id);
+            if(!ModelState.IsValid)
+                return BadRequest();
+
+            var offerModel = await _offerRepo.UpdateAsync(id, updateOfferRequestDto);
 
             if(offerModel == null)
                 return NotFound();
-
-            offerModel.Guid = updateOfferRequestDto.Guid;
-            offerModel.MakeId = updateOfferRequestDto.MakeId;
-            offerModel.ModelId = updateOfferRequestDto.ModelId;
-            //ADD EVRYTHING THAT WE WANT TO UPDATE
-            offerModel.Description = updateOfferRequestDto.Description;
-
-            await _context.SaveChangesAsync();
             
-            return Ok(offerModel.OfferDto());
+            return Ok(offerModel!.OfferDto());
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var offerModel = await _context.Offers.FirstOrDefaultAsync(o => o.Id == id);
+            if(!ModelState.IsValid)
+                return BadRequest();
+                
+            var offerModel = await _offerRepo.DeleteAsync(id);
 
             if(offerModel == null)
                 return NotFound();
-            
-            _context.Offers.Remove(offerModel);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
