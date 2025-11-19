@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace api.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<AppUser>
     {
         public ApplicationDBContext(DbContextOptions options)
             : base(options)
@@ -20,6 +22,26 @@ namespace api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            var roles = new List<IdentityRole>
+            {
+                new IdentityRole
+                {
+                    Id = "0",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                    ConcurrencyStamp = "0",
+                },
+                new IdentityRole
+                {
+                    Id = "1",
+                    Name = "User",
+                    NormalizedName = "USER",
+                    ConcurrencyStamp = "1",
+                }
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
 
             // Table configuration
             modelBuilder.Entity<Offer>(entity =>

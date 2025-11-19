@@ -224,3 +224,5 @@ C:\Users\XARDAS_PL\Documents\SVN\UsedCarsMarket\api\bin\Debug\net10.0\runtimes\w
 C:\Users\XARDAS_PL\Documents\SVN\UsedCarsMarket\api\bin\Debug\net10.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\XARDAS_PL\Documents\SVN\UsedCarsMarket\api\bin\Debug\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\XARDAS_PL\Documents\SVN\UsedCarsMarket\api\bin\Debug\net10.0\runtimes\win\lib\net9.0\System.Windows.Extensions.dll
+C:\Users\XARDAS_PL\Documents\SVN\UsedCarsMarket\api\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\XARDAS_PL\Documents\SVN\UsedCarsMarket\api\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
