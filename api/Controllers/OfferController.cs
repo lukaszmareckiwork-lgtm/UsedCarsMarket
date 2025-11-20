@@ -29,7 +29,6 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] OfferQueryObject query)
         {
             if(!ModelState.IsValid)
@@ -62,13 +61,14 @@ namespace api.Controllers
             if(!ModelState.IsValid)
                 return BadRequest();
 
-            var offers = await _offerRepo.GetAllAsync(query);
-            var offersDtos = offers.Select(o => o.OfferPreviewDto()).ToList();
+            var offers = await _offerRepo.GetAllPreviewAsync(query);
+            var offersDtos = offers.ToList();
 
             return Ok(offersDtos);
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateOfferRequestDto createOfferRequestDto)
         {
             if(!ModelState.IsValid)
@@ -87,6 +87,7 @@ namespace api.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateOfferRequestDto updateOfferRequestDto)
         {
             if(!ModelState.IsValid)
@@ -102,6 +103,7 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if(!ModelState.IsValid)
