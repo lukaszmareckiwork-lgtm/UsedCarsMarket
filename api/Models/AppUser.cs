@@ -8,6 +8,6 @@ namespace api.Models
 {
     public class AppUser : IdentityUser
     {
-        public List<FavouriteOffer> FavouriteOffers { get; set; } = new();
+        public List<FavouriteOffer> FavouriteOffers { get; set; } = [];
     }
 }
