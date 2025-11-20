@@ -48,6 +48,70 @@ namespace api.Repository
             return await offers.Include(o => o.AppUser).Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
+        public async Task<List<OfferPreviewDto>> GetAllPreviewAsync(OfferQueryObject query)
+        {
+            var offers = _context.Offers.AsQueryable();
+
+            // Filter by CreatedBy
+            if (!string.IsNullOrEmpty(query.CreatedBy))
+                offers = offers.Where(o => o.AppUserId == query.CreatedBy);
+
+            // Filter by models
+            if (query.ModelIds != null && query.ModelIds.Any())
+            {
+                offers = offers.Where(o => query.ModelIds.Contains(o.ModelId));
+            }
+            // Filter by makes
+            else if (query.MakeIds != null && query.MakeIds.Any())
+            {
+                offers = offers.Where(o => query.MakeIds.Contains(o.MakeId));
+            }
+
+            // Sorting
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
+                {
+                    offers = query.SortDescending
+                        ? offers.OrderByDescending(o => o.Price)
+                        : offers.OrderBy(o => o.Price);
+                }
+            }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+            // Dto projection in "Select" to save db resources
+            return await offers
+                .Skip(skipNumber)
+                .Take(query.PageSize)
+                .Select(o => new OfferPreviewDto
+                {
+                    Id = o.Id,
+                    Guid = o.Guid,
+                    CreatedBy = o.AppUserId,
+
+                    Year = o.Year,
+                    Mileage = o.Mileage,
+                    FuelType = o.FuelType,
+                    Transmission = o.Transmission,
+
+                    Title = o.Title,
+                    Subtitle = o.Subtitle,
+
+                    Photos = null,
+
+                    Location = o.Location,
+
+                    SellerType = o.SellerType,
+
+                    Price = o.Price,
+                    Currency = o.Currency,
+
+                    CreatedDate = o.CreatedDate
+                })
+                .ToListAsync();
+        }
+
         public async Task<Offer?> GetByIdAsync(int id)
         {
             return await _context.Offers.Include(o => o.AppUser).FirstOrDefaultAsync(x => x.Id == id);
