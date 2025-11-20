@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Offer;
+using api.Extensions;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,9 +21,11 @@ namespace api.Controllers
     public class OfferController : ControllerBase
     {
         private readonly IOfferRepository _offerRepo;
-        public OfferController(IOfferRepository offerRepo)
+        private readonly UserManager<AppUser> _userManager;
+        public OfferController(IOfferRepository offerRepo, UserManager<AppUser> userManager)
         {
             _offerRepo = offerRepo;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -33,7 +37,7 @@ namespace api.Controllers
             
             var offers = await _offerRepo.GetAllAsync(query);
             
-            var offersDtos = offers.Select(o => o.OfferDto());
+            var offersDtos = offers.Select(o => o.OfferDto()).ToList();
 
             return Ok(offersDtos);
         }
@@ -59,7 +63,7 @@ namespace api.Controllers
                 return BadRequest();
 
             var offers = await _offerRepo.GetAllAsync(query);
-            var offersDtos = offers.Select(o => o.OfferPreviewDto());
+            var offersDtos = offers.Select(o => o.OfferPreviewDto()).ToList();
 
             return Ok(offersDtos);
         }
@@ -70,7 +74,12 @@ namespace api.Controllers
             if(!ModelState.IsValid)
                 return BadRequest();
 
+            var email = User.GetEmail();
+            var appUser = await _userManager.FindByEmailAsync(email);
+
             var offerModel = createOfferRequestDto.ToOfferFromCreateDto();
+            offerModel.AppUserId = appUser.Id;
+
             await _offerRepo.CreateAsync(offerModel);
 
             return CreatedAtAction(nameof(GetById), new { id = offerModel.Id }, offerModel.OfferDto());
