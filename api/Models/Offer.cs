@@ -44,12 +44,15 @@ namespace api.Models
         Sunroof
     }
 
+    [Table("Offers")]
     public class Offer
     {
         [Key]
         public int Id { get; set; }
 
         public Guid? Guid { get; set; }
+
+        public List<FavouriteOffer> FavouriteOffers { get; set; }
 
         public int MakeId { get; set; }
         public int ModelId { get; set; }
