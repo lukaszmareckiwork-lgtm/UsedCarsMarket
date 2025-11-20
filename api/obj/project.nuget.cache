@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "OBEsVvyl1UQ=",
+  "dgSpecHash": "UN+gekU+HQQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\XARDAS_PL\\Documents\\SVN\\UsedCarsMarket\\api\\api.csproj",
   "expectedPackageFiles": [
@@ -9,7 +9,6 @@
     "C:\\Users\\XARDAS_PL\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\XARDAS_PL\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.0\\microsoft.aspnetcore.authentication.jwtbearer.10.0.0.nupkg.sha512",
     "C:\\Users\\XARDAS_PL\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\10.0.0\\microsoft.aspnetcore.identity.entityframeworkcore.10.0.0.nupkg.sha512",
-    "C:\\Users\\XARDAS_PL\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.0-rc.2.25502.107\\microsoft.aspnetcore.openapi.10.0.0-rc.2.25502.107.nupkg.sha512",
     "C:\\Users\\XARDAS_PL\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
     "C:\\Users\\XARDAS_PL\\.nuget\\packages\\microsoft.bcl.cryptography\\9.0.4\\microsoft.bcl.cryptography.9.0.4.nupkg.sha512",
     "C:\\Users\\XARDAS_PL\\.nuget\\packages\\microsoft.build\\17.7.2\\microsoft.build.17.7.2.nupkg.sha512",
@@ -83,7 +82,7 @@
     {
       "code": "NU1510",
       "level": "Warning",
-      "message": "Element PackageReference Microsoft.Extensions.Identity.Core nie zostanie oczyszczony. Rozważ usunięcie tego pakietu z zależności, ponieważ prawdopodobnie nie jest on potrzebny.",
+      "message": "PackageReference Microsoft.Extensions.Identity.Core will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
       "projectPath": "C:\\Users\\XARDAS_PL\\Documents\\SVN\\UsedCarsMarket\\api\\api.csproj",
       "warningLevel": 1,
       "filePath": "C:\\Users\\XARDAS_PL\\Documents\\SVN\\UsedCarsMarket\\api\\api.csproj",
