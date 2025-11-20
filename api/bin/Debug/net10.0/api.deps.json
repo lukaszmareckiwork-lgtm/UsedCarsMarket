@@ -10,7 +10,6 @@
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.0",
-          "Microsoft.AspNetCore.OpenApi": "10.0.0-rc.2.25502.107",
           "Microsoft.EntityFrameworkCore.Design": "10.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "10.0.0",
           "Swashbuckle.AspNetCore": "10.0.1"
@@ -72,17 +71,6 @@
           "lib/net10.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll": {
             "assemblyVersion": "10.0.0.0",
             "fileVersion": "10.0.25.52411"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.OpenApi/10.0.0-rc.2.25502.107": {
-        "dependencies": {
-          "Microsoft.OpenApi": "2.3.0"
-        },
-        "runtime": {
-          "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.25.50307"
           }
         }
       },
@@ -1092,13 +1080,6 @@
       "sha512": "sha512-mH1+58nbX5RWSd8hajSnXSdpQ1MN3oca488Zd+DvKX2nPTAyTVNRzubMV06BmPcjOZ9waLr/AjwcNiCQ8bCscQ==",
       "path": "microsoft.aspnetcore.identity.entityframeworkcore/10.0.0",
       "hashPath": "microsoft.aspnetcore.identity.entityframeworkcore.10.0.0.nupkg.sha512"
-    },
-    "Microsoft.AspNetCore.OpenApi/10.0.0-rc.2.25502.107": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-50Egznb0tgVvITuuQQhhQ2fCQqKsy+I7Cy2QopLZziDw/IRhvM+L5ZKA7AdsEr4x/lmuB0HnZPKjD8eRjkbVog==",
-      "path": "microsoft.aspnetcore.openapi/10.0.0-rc.2.25502.107",
-      "hashPath": "microsoft.aspnetcore.openapi.10.0.0-rc.2.25502.107.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
       "type": "package",
