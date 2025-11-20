@@ -20,6 +20,9 @@ namespace api.Repository
         {
             var offers = _context.Offers.AsQueryable();
 
+            if (!string.IsNullOrEmpty(query.CreatedBy))
+                offers = offers.Where(o => o.AppUserId == query.CreatedBy);
+
             // If models selected → filter by models
             if (query.ModelIds != null && query.ModelIds.Any())
             {
@@ -42,12 +45,12 @@ namespace api.Repository
 
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
 
-            return await offers.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+            return await offers.Include(o => o.AppUser).Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Offer?> GetByIdAsync(int id)
         {
-            return await _context.Offers.FindAsync(id);
+            return await _context.Offers.Include(o => o.AppUser).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Offer> CreateAsync(Offer offerModel)

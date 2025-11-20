@@ -54,6 +54,9 @@ namespace api.Models
 
         public List<FavouriteOffer> FavouriteOffers { get; set; }
 
+        public string? AppUserId { get; set; }
+        public AppUser? AppUser { get; set; }
+
         public int MakeId { get; set; }
         public int ModelId { get; set; }
 
