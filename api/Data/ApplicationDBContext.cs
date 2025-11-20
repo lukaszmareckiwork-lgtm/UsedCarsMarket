@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace api.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<AppUser>
     {
         public ApplicationDBContext(DbContextOptions options)
             : base(options)
@@ -16,13 +18,46 @@ namespace api.Data
         }
 
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<FavouriteOffer> FavouriteOffers { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
+
+            builder.Entity<FavouriteOffer>(x => x.HasKey(fo => new { fo.AppUserId, fo.OfferId }));
+
+            builder.Entity<FavouriteOffer>()
+                .HasOne(fo => fo.AppUser)
+                .WithMany(u => u.FavouriteOffers)
+                .HasForeignKey(fo => fo.AppUserId);
+
+            builder.Entity<FavouriteOffer>()
+                .HasOne(fo => fo.Offer)
+                .WithMany(o => o.FavouriteOffers)
+                .HasForeignKey(o => o.OfferId);
+
+            var roles = new List<IdentityRole>
+            {
+                new IdentityRole
+                {
+                    Id = "0",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                    ConcurrencyStamp = "0",
+                },
+                new IdentityRole
+                {
+                    Id = "1",
+                    Name = "User",
+                    NormalizedName = "USER",
+                    ConcurrencyStamp = "1",
+                }
+            };
+
+            builder.Entity<IdentityRole>().HasData(roles);
 
             // Table configuration
-            modelBuilder.Entity<Offer>(entity =>
+            builder.Entity<Offer>(entity =>
             {
                 entity.ToTable("Offers");
 
