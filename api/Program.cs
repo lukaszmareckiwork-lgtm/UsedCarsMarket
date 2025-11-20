@@ -73,6 +73,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IOfferRepository, OfferRepostiory>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IFavouriteOffersRepository, FavouriteOffersRepository>();
 
 var app = builder.Build();
 

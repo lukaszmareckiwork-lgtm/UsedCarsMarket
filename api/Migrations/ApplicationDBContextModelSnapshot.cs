@@ -236,6 +236,21 @@ namespace api.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("api.Models.FavouriteOffer", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("OfferId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId", "OfferId");
+
+                    b.HasIndex("OfferId");
+
+                    b.ToTable("FavouriteOffers");
+                });
+
             modelBuilder.Entity("api.Models.Offer", b =>
                 {
                     b.Property<int>("Id")
@@ -370,6 +385,35 @@ namespace api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("api.Models.FavouriteOffer", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany("FavouriteOffers")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.Offer", "Offer")
+                        .WithMany("FavouriteOffers")
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Offer");
+                });
+
+            modelBuilder.Entity("api.Models.AppUser", b =>
+                {
+                    b.Navigation("FavouriteOffers");
+                });
+
+            modelBuilder.Entity("api.Models.Offer", b =>
+                {
+                    b.Navigation("FavouriteOffers");
                 });
 #pragma warning restore 612, 618
         }

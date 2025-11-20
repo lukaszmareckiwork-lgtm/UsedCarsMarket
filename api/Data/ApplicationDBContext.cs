@@ -18,10 +18,23 @@ namespace api.Data
         }
 
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<FavouriteOffer> FavouriteOffers { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
+
+            builder.Entity<FavouriteOffer>(x => x.HasKey(fo => new { fo.AppUserId, fo.OfferId }));
+
+            builder.Entity<FavouriteOffer>()
+                .HasOne(fo => fo.AppUser)
+                .WithMany(u => u.FavouriteOffers)
+                .HasForeignKey(fo => fo.AppUserId);
+
+            builder.Entity<FavouriteOffer>()
+                .HasOne(fo => fo.Offer)
+                .WithMany(o => o.FavouriteOffers)
+                .HasForeignKey(o => o.OfferId);
 
             var roles = new List<IdentityRole>
             {
@@ -41,10 +54,10 @@ namespace api.Data
                 }
             };
 
-            modelBuilder.Entity<IdentityRole>().HasData(roles);
+            builder.Entity<IdentityRole>().HasData(roles);
 
             // Table configuration
-            modelBuilder.Entity<Offer>(entity =>
+            builder.Entity<Offer>(entity =>
             {
                 entity.ToTable("Offers");
 
