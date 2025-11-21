@@ -1,4 +1,5 @@
 using api.Data;
+using api.Dtos.Common;
 using api.Dtos.Offer;
 using api.Helpers;
 using api.Interfaces;
@@ -16,39 +17,49 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<List<Offer>> GetAllAsync(OfferQueryObject query)
+        public async Task<PagedResult<Offer>> GetAllAsync(OfferQueryObject query)
         {
             var offers = _context.Offers.AsQueryable();
 
+            // get only created by user
             if (!string.IsNullOrEmpty(query.CreatedBy))
                 offers = offers.Where(o => o.AppUserId == query.CreatedBy);
 
             // If models selected → filter by models
             if (query.ModelIds != null && query.ModelIds.Any())
-            {
                 offers = offers.Where(o => query.ModelIds.Contains(o.ModelId));
-            }
-            // Else if makes selected → filter by makes
             else if (query.MakeIds != null && query.MakeIds.Any())
-            {
                 offers = offers.Where(o => query.MakeIds.Contains(o.MakeId));
-            }
 
             // Sort By
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {
-                if(query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
-                {
-                    offers = query.SortDescending ? offers.OrderByDescending(x => x.Price) : offers.OrderBy(x => x.Price);
-                }
+                if (query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
+                    offers = query.SortDescending
+                        ? offers.OrderByDescending(x => x.Price)
+                        : offers.OrderBy(x => x.Price);
             }
 
-            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            var totalCount = await offers.CountAsync(); // count BEFORE pagination
 
-            return await offers.Include(o => o.AppUser).Skip(skipNumber).Take(query.PageSize).ToListAsync();
+            var skip = (query.PageNumber - 1) * query.PageSize;
+
+            var items = await offers
+                .Include(o => o.AppUser)
+                .Skip(skip)
+                .Take(query.PageSize)
+                .ToListAsync();
+
+            return new PagedResult<Offer>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = query.PageNumber,
+                PageSize = query.PageSize
+            };
         }
 
-        public async Task<List<OfferPreviewDto>> GetAllPreviewAsync(OfferQueryObject query)
+        public async Task<PagedResult<OfferPreviewDto>> GetAllPreviewAsync(OfferQueryObject query)
         {
             var offers = _context.Offers.AsQueryable();
 
@@ -73,16 +84,19 @@ namespace api.Repository
                 if (query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
                 {
                     offers = query.SortDescending
-                        ? offers.OrderByDescending(o => o.Price)
-                        : offers.OrderBy(o => o.Price);
+                        ? offers.OrderBy(o => o.Price)
+                        : offers.OrderByDescending(o => o.Price);
                 }
             }
 
-            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            // Count BEFORE pagination
+            var totalCount = await offers.CountAsync();
 
-            // Dto projection in "Select" to save db resources
-            return await offers
-                .Skip(skipNumber)
+            var skip = (query.PageNumber - 1) * query.PageSize;
+
+            // DTO projection happens inside the query
+            var items = await offers
+                .Skip(skip)
                 .Take(query.PageSize)
                 .Select(o => new OfferPreviewDto
                 {
@@ -98,7 +112,7 @@ namespace api.Repository
                     Title = o.Title,
                     Subtitle = o.Subtitle,
 
-                    Photos = null,
+                    Photos = null, // ← populate later when you implement a photo table
 
                     Location = o.Location,
 
@@ -110,6 +124,14 @@ namespace api.Repository
                     CreatedDate = o.CreatedDate
                 })
                 .ToListAsync();
+
+            return new PagedResult<OfferPreviewDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = query.PageNumber,
+                PageSize = query.PageSize
+            };
         }
 
         public async Task<Offer?> GetByIdAsync(int id)
