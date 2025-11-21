@@ -11,6 +11,8 @@ namespace api.Dtos.Offer
          public int Id { get; set; }
         public Guid? Guid { get; set; }
 
+        public string CreatedBy { get; set; } = string.Empty;
+
         // Foreign keys
         public int MakeId { get; set; }
         public int ModelId { get; set; }

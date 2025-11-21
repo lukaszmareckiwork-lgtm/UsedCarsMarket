@@ -15,6 +15,7 @@ namespace api.Mappers
             {
                 Id = offer.Id,
                 Guid = offer.Guid,
+                CreatedBy = offer.AppUserId,
 
                 MakeId = offer.MakeId,
                 ModelId = offer.ModelId,
@@ -54,6 +55,7 @@ namespace api.Mappers
             {
                 Id = offer.Id,
                 Guid = offer.Guid,
+                CreatedBy = offer.AppUserId,
 
                 Year = offer.Year,
                 Mileage = offer.Mileage,
