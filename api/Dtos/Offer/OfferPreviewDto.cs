@@ -10,6 +10,8 @@ namespace api.Dtos.Offer
     {
         public int Id { get; set; }
         public Guid? Guid { get; set; }
+        
+        public string CreatedBy { get; set; } = string.Empty;
 
         // Basic info
         public int Year { get; set; }

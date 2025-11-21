@@ -29,12 +29,14 @@ namespace api.Data
             builder.Entity<FavouriteOffer>()
                 .HasOne(fo => fo.AppUser)
                 .WithMany(u => u.FavouriteOffers)
-                .HasForeignKey(fo => fo.AppUserId);
+                .HasForeignKey(fo => fo.AppUserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<FavouriteOffer>()
                 .HasOne(fo => fo.Offer)
                 .WithMany(o => o.FavouriteOffers)
-                .HasForeignKey(o => o.OfferId);
+                .HasForeignKey(o => o.OfferId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             var roles = new List<IdentityRole>
             {
@@ -55,6 +57,12 @@ namespace api.Data
             };
 
             builder.Entity<IdentityRole>().HasData(roles);
+
+            builder.Entity<Offer>()
+                .HasOne(o => o.AppUser)
+                .WithMany()
+                .HasForeignKey(o => o.AppUserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Table configuration
             builder.Entity<Offer>(entity =>

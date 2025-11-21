@@ -1,4 +1,5 @@
 using api.Data;
+using api.Dtos.Common;
 using api.Dtos.Offer;
 using api.Helpers;
 using api.Interfaces;
@@ -16,38 +17,126 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<List<Offer>> GetAllAsync(OfferQueryObject query)
+        public async Task<PagedResult<Offer>> GetAllAsync(OfferQueryObject query)
         {
             var offers = _context.Offers.AsQueryable();
 
+            // get only created by user
+            if (!string.IsNullOrEmpty(query.CreatedBy))
+                offers = offers.Where(o => o.AppUserId == query.CreatedBy);
+
             // If models selected → filter by models
+            if (query.ModelIds != null && query.ModelIds.Any())
+                offers = offers.Where(o => query.ModelIds.Contains(o.ModelId));
+            else if (query.MakeIds != null && query.MakeIds.Any())
+                offers = offers.Where(o => query.MakeIds.Contains(o.MakeId));
+
+            // Sort By
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
+                    offers = query.SortDescending
+                        ? offers.OrderByDescending(x => x.Price)
+                        : offers.OrderBy(x => x.Price);
+            }
+
+            var totalCount = await offers.CountAsync(); // count BEFORE pagination
+
+            var skip = (query.PageNumber - 1) * query.PageSize;
+
+            var items = await offers
+                .Include(o => o.AppUser)
+                .Skip(skip)
+                .Take(query.PageSize)
+                .ToListAsync();
+
+            return new PagedResult<Offer>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = query.PageNumber,
+                PageSize = query.PageSize
+            };
+        }
+
+        public async Task<PagedResult<OfferPreviewDto>> GetAllPreviewAsync(OfferQueryObject query)
+        {
+            var offers = _context.Offers.AsQueryable();
+
+            // Filter by CreatedBy
+            if (!string.IsNullOrEmpty(query.CreatedBy))
+                offers = offers.Where(o => o.AppUserId == query.CreatedBy);
+
+            // Filter by models
             if (query.ModelIds != null && query.ModelIds.Any())
             {
                 offers = offers.Where(o => query.ModelIds.Contains(o.ModelId));
             }
-            // Else if makes selected → filter by makes
+            // Filter by makes
             else if (query.MakeIds != null && query.MakeIds.Any())
             {
                 offers = offers.Where(o => query.MakeIds.Contains(o.MakeId));
             }
 
-            // Sort By
+            // Sorting
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {
-                if(query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
+                if (query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
                 {
-                    offers = query.SortDescending ? offers.OrderByDescending(x => x.Price) : offers.OrderBy(x => x.Price);
+                    offers = query.SortDescending
+                        ? offers.OrderBy(o => o.Price)
+                        : offers.OrderByDescending(o => o.Price);
                 }
             }
 
-            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            // Count BEFORE pagination
+            var totalCount = await offers.CountAsync();
 
-            return await offers.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+            var skip = (query.PageNumber - 1) * query.PageSize;
+
+            // DTO projection happens inside the query
+            var items = await offers
+                .Skip(skip)
+                .Take(query.PageSize)
+                .Select(o => new OfferPreviewDto
+                {
+                    Id = o.Id,
+                    Guid = o.Guid,
+                    CreatedBy = o.AppUserId,
+
+                    Year = o.Year,
+                    Mileage = o.Mileage,
+                    FuelType = o.FuelType,
+                    Transmission = o.Transmission,
+
+                    Title = o.Title,
+                    Subtitle = o.Subtitle,
+
+                    Photos = null, // ← populate later when you implement a photo table
+
+                    Location = o.Location,
+
+                    SellerType = o.SellerType,
+
+                    Price = o.Price,
+                    Currency = o.Currency,
+
+                    CreatedDate = o.CreatedDate
+                })
+                .ToListAsync();
+
+            return new PagedResult<OfferPreviewDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = query.PageNumber,
+                PageSize = query.PageSize
+            };
         }
 
         public async Task<Offer?> GetByIdAsync(int id)
         {
-            return await _context.Offers.FindAsync(id);
+            return await _context.Offers.Include(o => o.AppUser).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Offer> CreateAsync(Offer offerModel)
