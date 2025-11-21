@@ -48,7 +48,23 @@ Thumbs.db
 *.mov
 *.wmv
 
-bin/
-obj/
-api/bin/
-api/obj/
+# Global bin/obj ignore
+**/bin/
+**/obj/
+
+# Node
+**/node_modules/
+
+# Build artifacts
+dist/
+build/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+
+# System
+.DS_Store
