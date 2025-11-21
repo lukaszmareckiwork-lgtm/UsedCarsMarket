@@ -16,6 +16,12 @@ const MainHeader = () => {
                 </Link>
             </div>
             <div className='mainHeader-right'>
+                {<button
+                    className='mainHeader-loginButton'
+                    onClick={() => navigate('/login')}
+                >
+                    Login
+                </button>}
                 {!isAddOfferPage && <button
                     className='mainHeader-addOfferButton'
                     onClick={() => navigate('/add-offer')}
