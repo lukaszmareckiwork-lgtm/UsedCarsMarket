@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using api.Models;
+
+namespace api.Interfaces
+{
+    public interface IFavouriteOffersRepository
+    {
+        Task<List<Offer>> GetUserFavouriteOffers(AppUser user);
+        Task<FavouriteOffer> CreateAsync(FavouriteOffer favouriteOffer);
+        Task<FavouriteOffer?> DeleteAsync(AppUser user, int offerId);
+    }
+}
