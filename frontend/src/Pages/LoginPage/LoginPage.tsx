@@ -12,7 +12,7 @@ type LoginFormInputs = {
 
 const validation = Yup.object().shape({
   email: Yup.string().required("Email is required").email(),
-  password: Yup.string().required("PAssword is required"),
+  password: Yup.string().required("Password is required"),
 });
 
 const LoginPage = () => {
