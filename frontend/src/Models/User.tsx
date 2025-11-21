@@ -1,5 +1,5 @@
 export type UserProfileToken = {
-    userName: string,
+    userName: string,// "N"ame - required by db
     email: string,
     token: string
 }
