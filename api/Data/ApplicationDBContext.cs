@@ -76,14 +76,14 @@ namespace api.Data
                 entity.Property(o => o.Guid)
                       .HasDefaultValueSql("NEWID()"); // SQL Server auto-generates if null
 
-                // Features stored as comma-separated string
+                // Features stored as comma-separated integers
                 var featuresConverter = new ValueConverter<List<FeatureType>?, string>(
-                    v => v == null ? string.Empty : string.Join(',', v),
+                    v => v == null ? string.Empty : string.Join(',', v.Select(f => (int)f)),
                     v => string.IsNullOrEmpty(v)
                         ? new List<FeatureType>()
                         : v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                        .Select(f => Enum.Parse<FeatureType>(f))
-                        .ToList()
+                           .Select(f => (FeatureType)int.Parse(f))
+                           .ToList()
                 );
 
                 entity.Property(o => o.Features)
