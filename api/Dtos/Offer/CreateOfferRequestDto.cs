@@ -30,6 +30,7 @@ namespace api.Dtos.Offer
         [Required(ErrorMessage = "Transmission type is required.")]
         public TransmissionType Transmission { get; set; }
 
+        public string? Vin { get; set; }
         public string? Color { get; set; }
 
         public List<FeatureType>? Features { get; set; }
