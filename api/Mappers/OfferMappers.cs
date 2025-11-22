@@ -96,12 +96,14 @@ namespace api.Mappers
                 EnginePower = requestDto.EnginePower,
                 Transmission = requestDto.Transmission,
 
+                Vin = requestDto.Vin,
                 Color = requestDto.Color,
 
                 Features = requestDto.Features,
 
                 Title = requestDto.Title,
                 Subtitle = requestDto.Subtitle,
+                Description = requestDto.Description,
 
                 Photos = requestDto.Photos,
 
@@ -112,7 +114,7 @@ namespace api.Mappers
                 Price = requestDto.Price,
                 Currency = requestDto.Currency,
 
-                CreatedDate = requestDto.CreatedDate
+                // CreatedDate = requestDto.CreatedDate
             };
         }
     }
