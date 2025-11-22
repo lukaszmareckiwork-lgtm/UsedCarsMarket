@@ -1,7 +1,12 @@
 import React from "react";
 import Select from "react-select";
-import { Controller, type Control, type FieldValues, type Path } from "react-hook-form";
-import './ParamInput.css'
+import {
+  Controller,
+  type Control,
+  type FieldValues,
+  type Path,
+} from "react-hook-form";
+import "./ParamInput.css";
 
 interface ParamInputProps<T extends FieldValues, G> {
   name: Path<T>;
@@ -18,6 +23,7 @@ interface ParamInputProps<T extends FieldValues, G> {
     maxLength?: { value: number; message: string };
     pattern?: { value: RegExp; message: string };
   };
+  numeric?: boolean;
 }
 
 export function ParamInput<T extends FieldValues, G>({
@@ -28,17 +34,22 @@ export function ParamInput<T extends FieldValues, G>({
   options,
   placeholder,
   rules,
-}: ParamInputProps<T,G>) {
+  numeric = false,
+}: ParamInputProps<T, G>) {
   return (
-    <div className={`param-input ${type === "textarea" ? "param-textarea" : ""}`}>
+    <div
+      className={`param-input ${type === "textarea" ? "param-textarea" : ""}`}
+    >
       <label className="param-label">{label}</label>
-
       <Controller
         name={name}
         control={control}
         rules={rules}
         render={({ field, fieldState }) => {
           const error = fieldState?.error;
+
+          const handleChange = (value: any) =>
+            numeric ? Number(value) : value;
 
           switch (type) {
             case "textarea":
@@ -47,7 +58,9 @@ export function ParamInput<T extends FieldValues, G>({
                   <textarea
                     {...field}
                     placeholder={placeholder}
-                    className={`param-field param-textarea ${error ? "param-field-error" : ""}`}
+                    className={`param-field param-textarea ${
+                      error ? "param-field-error" : ""
+                    }`}
                   />
                   <p className={`param-error ${error ? "visible" : ""}`}>
                     {error?.message || " "}
@@ -63,7 +76,12 @@ export function ParamInput<T extends FieldValues, G>({
                     {...field}
                     placeholder={placeholder}
                     value={field.value ?? ""}
-                    className={`param-field no-spin ${error ? "param-field-error" : ""}`}
+                    onChange={(e) =>
+                      field.onChange(handleChange(e.target.value))
+                    }
+                    className={`param-field no-spin ${
+                      error ? "param-field-error" : ""
+                    }`}
                   />
                   <p className={`param-error ${error ? "visible" : ""}`}>
                     {error?.message || " "}
@@ -80,7 +98,9 @@ export function ParamInput<T extends FieldValues, G>({
                     classNamePrefix="react-select"
                     options={options}
                     placeholder={placeholder}
-                    onChange={(selected) => field.onChange(selected?.value)}
+                    onChange={(selected) =>
+                      field.onChange(handleChange(selected?.value))
+                    }
                     value={
                       options?.find((opt) => opt.value === field.value) || null
                     }
@@ -88,9 +108,7 @@ export function ParamInput<T extends FieldValues, G>({
                       control: (base) => ({
                         ...base,
                         borderColor: error ? "#d9534f" : base.borderColor,
-                        boxShadow: error
-                          ? "0 0 0 1px #d9534f"
-                          : base.boxShadow,
+                        boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
                       }),
                     }}
                   />
@@ -101,6 +119,11 @@ export function ParamInput<T extends FieldValues, G>({
               );
 
             case "multiselect":
+              // Ensure field.value is always an array
+              const currentValues: G[] = Array.isArray(field.value)
+                ? field.value
+                : [];
+
               return (
                 <>
                   <Select
@@ -110,20 +133,21 @@ export function ParamInput<T extends FieldValues, G>({
                     placeholder={placeholder}
                     classNamePrefix="react-select"
                     onChange={(selected) =>
-                      field.onChange(selected?.map((opt) => opt.value) || [])
+                      field.onChange(
+                        (selected?.map((opt) => handleChange(opt.value)) ||
+                          []) as G[]
+                      )
                     }
                     value={
                       options?.filter((opt) =>
-                        (field.value as G[] | undefined)?.includes(opt.value)
+                        currentValues.includes(opt.value as G)
                       ) || []
                     }
                     styles={{
                       control: (base) => ({
                         ...base,
                         borderColor: error ? "#d9534f" : base.borderColor,
-                        boxShadow: error
-                          ? "0 0 0 1px #d9534f"
-                          : base.boxShadow,
+                        boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
                       }),
                     }}
                   />
@@ -140,7 +164,9 @@ export function ParamInput<T extends FieldValues, G>({
                     type="text"
                     {...field}
                     placeholder={placeholder}
-                    className={`param-field ${error ? "param-field-error" : ""}`}
+                    className={`param-field ${
+                      error ? "param-field-error" : ""
+                    }`}
                   />
                   <p className={`param-error ${error ? "visible" : ""}`}>
                     {error?.message || " "}
