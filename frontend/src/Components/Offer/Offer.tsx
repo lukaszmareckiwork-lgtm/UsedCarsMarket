@@ -27,7 +27,7 @@ const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JS
                 <p className='offerInfoPanelListElemText'>{offerProps.location}</p>
               </li>
               <li className='offerInfoPanelListElem'>
-                <p className='offerInfoPanelListElemText'>{getReadableSellerType(offerProps.sellerType)} • Published: {offerProps.createdDate.toLocaleDateString("pl-PL")}, {offerProps.createdDate.toLocaleTimeString("pl-PL")}</p>
+                <p className='offerInfoPanelListElemText'>{getReadableSellerType(offerProps.sellerType)} • Published: {offerProps.createdDate.toLocaleString("pl-PL")}, {offerProps.createdDate.toLocaleString("pl-PL")}</p>
               </li>
             </ul>
           </div>

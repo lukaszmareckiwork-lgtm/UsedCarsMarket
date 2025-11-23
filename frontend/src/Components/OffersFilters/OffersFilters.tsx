@@ -1,35 +1,42 @@
-import React from 'react'
 import "./OffersFilters.css"
 import OffersFiltersControls, { type OffersFiltersControlsResult } from '../OffersFiltersControls/OffersFiltersControls'
 import type { OfferProps } from '../../Data/OfferProps'
+import { offerGetApi } from '../../Services/OfferService';
 
 interface Props{
-    allOffers: OfferProps[];
     handleFilteredOffers: (filteredOffers: OfferProps[]) => void;
+    handleLoadingOffers: (isLoadingOffers: boolean) => void;
 }
 
-const OffersFilters = ( { allOffers, handleFilteredOffers }: Props) => {
+const OffersFilters = ( { handleFilteredOffers, handleLoadingOffers }: Props) => {
+  // const [loading, setLoading] = useState<boolean>();
 
-    const handleFiltersResult = (fRes: OffersFiltersControlsResult) => {
-        let filteredOffers = [...allOffers];
+  function normalizeOffer(o: OfferProps): OfferProps {
+    return {
+      ...o,
+      createdDate: new Date(o.createdDate),
+    };
+  }
 
-        filteredOffers = filteredOffers.filter(offer => {
-            if (fRes.selModels.length > 0) {
-                return fRes.selModels.some(m => m.model_id === offer.modelId);
-            }
+  const getOffers = (fRes: OffersFiltersControlsResult) => {
+    handleLoadingOffers(true);
 
-            if (fRes.selMakes.length > 0) {
-                return fRes.selMakes.some(m => m.make_id === offer.makeId);
-            }
+    const makes = fRes.selMakes.map((x) => x.make_id);
+    const models = fRes.selModels.map((x) => x.model_id);
 
-            return true; // nothing selected → include all
-        });
+    offerGetApi(makes, models)?.then((res) => {
+      handleLoadingOffers(false);
+      const offers = res?.data!.items!.map(normalizeOffer);
+      handleFilteredOffers(offers);
+    });
+  };
 
-        handleFilteredOffers(filteredOffers);
-      }
   return (
-    <OffersFiltersControls handleFiltersResult={handleFiltersResult}/>
-  )
+    <OffersFiltersControls
+      handleFiltersResult={getOffers}
+      handleLoadingTimeout={handleLoadingOffers}
+    />
+  );
 }
 
 export default OffersFilters

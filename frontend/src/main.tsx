@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App.tsx";
-import { MakesProvider } from "./context/MakesContext.tsx";
+import { MakesProvider } from "./Context/MakesContext.tsx";
 import { UserProvider } from "./Context/useAuth.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
