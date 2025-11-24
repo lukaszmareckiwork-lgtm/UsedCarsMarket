@@ -28,6 +28,7 @@ export const handleError = (error: any) => {
 
   if (isAxiosError(error)) {
     const err = error.response;
+    message = error?.message;
 
     if (Array.isArray(err?.data?.errors)) {
       message = err.data.errors.map((e: any) => e.description).join(", ");

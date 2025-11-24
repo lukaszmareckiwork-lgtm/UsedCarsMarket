@@ -5,6 +5,15 @@ import type { PagedResult } from "../Helpers/PagedResult";
 
 const api = "http://localhost:5261/api/offer/";
 
+const getOfferFiltersQuery = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[]) =>{
+  const paginationQuery = `PageNumber=${pageNumber}&PageSize=${pageSize}`;
+  const makesQuery = makeIds.length ? `&MakeIds=${makeIds.join("&MakeIds=")}` : "";
+  const modelsQuery = modelIds.length ? `&ModelIds=${modelIds.join("&ModelIds=")}` : "";
+
+  const query = `${paginationQuery}${makesQuery}${modelsQuery}`;
+  return query;
+}
+
 export const offerPostApi = (offerProps: OfferProps) => {
   try {
     const data = axios.post<OfferProps>(api, offerProps, {
@@ -19,17 +28,40 @@ export const offerPostApi = (offerProps: OfferProps) => {
   }
 };
 
-export const offerGetApi = (makeIds: number[], modelIds: number[]) => {
+export const offerGetApi = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[]) => {
   try {
-    const makesQuery = makeIds.length ? `MakeIds=${makeIds.join("&MakeIds=")}` : "";
-    const modelsQuery = modelIds.length ? `ModelIds=${modelIds.join("&ModelIds=")}` : "";
-
-    const query = `${makesQuery}${modelsQuery}`;
+    const query = getOfferFiltersQuery(pageNumber, pageSize, makeIds, modelIds);
 
     console.log(`offerGetApi - query: ${api}${query}`);
-    const data = axios.get<PagedResult<OfferProps>>(`${api}?${query}`);
+    const data = axios
+      .get<PagedResult<OfferProps>>(`${api}?${query}`)
+      .catch((error) => {
+        console.log(`offerGetApi - error: ${error}`);
+        handleError(error);
+      });
+
     return data;
   } catch (error) {
+    console.log(`offerGetApi - error: ${error}`);
+    handleError(error);
+  }
+};
+
+export const offerPreviewGetApi = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[]) => {
+  try {
+    const query = getOfferFiltersQuery(pageNumber, pageSize, makeIds, modelIds);
+
+    console.log(`offerGetApi - query: ${api}${query}`);
+    const data = axios
+      .get<PagedResult<OfferProps>>(`${api}preview?${query}`)
+      .catch((error) => {
+        console.log(`offerGetApi - error: ${error}`);
+        handleError(error);
+      });
+
+    return data;
+  } catch (error) {
+    console.log(`offerGetApi - error: ${error}`);
     handleError(error);
   }
 };

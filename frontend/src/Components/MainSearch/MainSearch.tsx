@@ -3,6 +3,8 @@ import "./MainSearch.css";
 import OffersList from '../OffersList/OffersList';
 import { type OfferProps } from '../../Data/OfferProps';
 import OffersFilters from '../OffersFilters/OffersFilters';
+import type { PagedResult } from '../../Helpers/PagedResult';
+import ReactPaginate from 'react-paginate';
 
 // const offersData: OfferProps[] = [
 //   {
@@ -68,17 +70,40 @@ import OffersFilters from '../OffersFilters/OffersFilters';
 // ];
 
 const MainSearch = () => {
-  const [filteredOffers, setFilteredOffers] = useState<OfferProps[]>([])
+  const [pagedOffers, setPagedOffers] = useState<PagedResult<OfferProps> | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [pageNumber, setPageNumber] = useState(1);
+  const pageSize = 2;
+
+  const handlePageChange = (e: { selected: number }) => {
+    setPageNumber(e.selected + 1);
+  };
+
   return (
-      <div className='main-search'>
-          <div className='main-search-grid'>
-              <OffersFilters handleFilteredOffers={setFilteredOffers} handleLoadingOffers={setLoading}/>
-              <OffersList offers={filteredOffers} isLoadingOffers={loading} />
-          </div>
+    <div className="main-search">
+      <div className="main-search-grid">
+        <OffersFilters
+          pageNumber={pageNumber}
+          pageSize={pageSize}
+          handleFilteredOffers={setPagedOffers}
+          handleLoadingOffers={setLoading}
+        />
+        <OffersList offers={pagedOffers?.items} isLoadingOffers={loading} />
+        {pagedOffers && pagedOffers.totalCount > pageSize && (
+          <ReactPaginate
+            className="main-search-pagination"
+            previousLabel="<"
+            nextLabel=">"
+            breakLabel="..."
+            pageCount={Math.ceil(pagedOffers.totalCount / pageSize)}
+            onPageChange={handlePageChange}
+            forcePage={pageNumber - 1}
+          />
+        )}
       </div>
-  )
+    </div>
+  );
 }
 
 export default MainSearch
