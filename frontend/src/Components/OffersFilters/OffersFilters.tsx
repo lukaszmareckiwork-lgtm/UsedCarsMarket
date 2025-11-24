@@ -1,15 +1,19 @@
 import "./OffersFilters.css"
 import OffersFiltersControls, { type OffersFiltersControlsResult } from '../OffersFiltersControls/OffersFiltersControls'
 import type { OfferProps } from '../../Data/OfferProps'
-import { offerGetApi } from '../../Services/OfferService';
+import { offerPreviewGetApi } from '../../Services/OfferService';
+import type { PagedResult } from "../../Helpers/PagedResult";
+import { useEffect, useState } from "react";
 
 interface Props{
-    handleFilteredOffers: (filteredOffers: OfferProps[]) => void;
-    handleLoadingOffers: (isLoadingOffers: boolean) => void;
+  pageNumber: number;
+  pageSize: number;
+  handleFilteredOffers: (filteredOffers: PagedResult<OfferProps>) => void;
+  handleLoadingOffers: (isLoadingOffers: boolean) => void;
 }
 
-const OffersFilters = ( { handleFilteredOffers, handleLoadingOffers }: Props) => {
-  // const [loading, setLoading] = useState<boolean>();
+const OffersFilters = ( { pageNumber, pageSize, handleFilteredOffers, handleLoadingOffers }: Props) => {
+  const [filtersResult, setFiltersResult] = useState<OffersFiltersControlsResult | null>(null);
 
   function normalizeOffer(o: OfferProps): OfferProps {
     return {
@@ -18,16 +22,29 @@ const OffersFilters = ( { handleFilteredOffers, handleLoadingOffers }: Props) =>
     };
   }
 
+  useEffect(() =>{
+    if(filtersResult == null)
+      return;
+
+    getOffers(filtersResult);
+  }, [pageNumber, pageSize])
+
   const getOffers = (fRes: OffersFiltersControlsResult) => {
+    setFiltersResult(fRes);
     handleLoadingOffers(true);
 
     const makes = fRes.selMakes.map((x) => x.make_id);
     const models = fRes.selModels.map((x) => x.model_id);
 
-    offerGetApi(makes, models)?.then((res) => {
+    offerPreviewGetApi(pageNumber, pageSize, makes, models)?.then((res) => {
       handleLoadingOffers(false);
-      const offers = res?.data!.items!.map(normalizeOffer);
-      handleFilteredOffers(offers);
+
+      if(res?.data != undefined){
+        const data = res.data;
+        const offers = res.data.items!.map(normalizeOffer) ?? [];
+        data.items = offers;
+        handleFilteredOffers(data);
+      }
     });
   };
 
