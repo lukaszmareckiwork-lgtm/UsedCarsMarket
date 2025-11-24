@@ -89,6 +89,8 @@ const MainSearch = () => {
           handleFilteredOffers={setPagedOffers}
           handleLoadingOffers={setLoading}
         />
+        <span className="main-search-offers-category-title">Passenger Cars</span>
+        <span className="main-search-offers-amount">Offers found: {pagedOffers?.totalCount}</span>
         <OffersList offers={pagedOffers?.items} isLoadingOffers={loading} />
         {pagedOffers && pagedOffers.totalCount > pageSize && (
           <ReactPaginate

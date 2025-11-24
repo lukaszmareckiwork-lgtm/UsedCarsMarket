@@ -24,11 +24,30 @@
     grid-template-areas:
       "breadcrumbs breadcrumbs breadcrumbs breadcrumbs breadcrumbs breadcrumbs"
       "resultsHeading resultsHeading resultsHeading resultsHeading saveSearch sorting"
-      "facetsNav facetsNav facetsNav facetsNav facetsNav ."
+      ". facetsNav facetsNav facetsNav facetsNav facetsNav"
       "filters results results results results results"
       "filters results results results results results"
       "filters pagination pagination pagination pagination pagination";
   }
+}
+
+.main-search-offers-category-title {
+  grid-area: resultsHeading;
+
+  font-size: 20px;
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  font-weight: var(--font-weight-medium);
+}
+
+.main-search-offers-amount {
+  grid-area: facetsNav;
+
+  display: flex;
+  align-items: flex-end;
+
+  font-size: 16px;
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  font-weight: var(--font-weight-medium);
 }
 
 .main-search-pagination {
