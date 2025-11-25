@@ -117,28 +117,9 @@
   pointer-events: none;
 }
 
-/* Loader Spinner */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
- 
-.loader.small {
-  position: relative;
-  width: 16px;
-  height: 16px;
-}
-
-.loader.small::after {
-  content: "";
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #ccc;        /* background gray */
-  border-top-color: #007bff;     /* blue spinner */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.car-filters-dropdown-arrow {
+  display: inline-flex;
+  margin-right: 6px;
+  font-size: 18px;
+  align-items: center;
 }

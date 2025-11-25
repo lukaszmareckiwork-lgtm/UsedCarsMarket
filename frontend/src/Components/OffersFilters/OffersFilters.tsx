@@ -1,35 +1,59 @@
-import React from 'react'
 import "./OffersFilters.css"
 import OffersFiltersControls, { type OffersFiltersControlsResult } from '../OffersFiltersControls/OffersFiltersControls'
 import type { OfferProps } from '../../Data/OfferProps'
+import { offerPreviewGetApi } from '../../Services/OfferService';
+import type { PagedResult } from "../../Helpers/PagedResult";
+import { useEffect, useState } from "react";
 
 interface Props{
-    allOffers: OfferProps[];
-    handleFilteredOffers: (filteredOffers: OfferProps[]) => void;
+  pageNumber: number;
+  pageSize: number;
+  handleFilteredOffers: (filteredOffers: PagedResult<OfferProps>) => void;
+  handleLoadingOffers: (isLoadingOffers: boolean) => void;
 }
 
-const OffersFilters = ( { allOffers, handleFilteredOffers }: Props) => {
+const OffersFilters = ( { pageNumber, pageSize, handleFilteredOffers, handleLoadingOffers }: Props) => {
+  const [filtersResult, setFiltersResult] = useState<OffersFiltersControlsResult | null>(null);
 
-    const handleFiltersResult = (fRes: OffersFiltersControlsResult) => {
-        let filteredOffers = [...allOffers];
+  function normalizeOffer(o: OfferProps): OfferProps {
+    return {
+      ...o,
+      createdDate: new Date(o.createdDate),
+    };
+  }
 
-        filteredOffers = filteredOffers.filter(offer => {
-            if (fRes.selModels.length > 0) {
-                return fRes.selModels.some(m => m.model_id === offer.modelId);
-            }
+  useEffect(() =>{
+    if(filtersResult == null)
+      return;
 
-            if (fRes.selMakes.length > 0) {
-                return fRes.selMakes.some(m => m.make_id === offer.makeId);
-            }
+    getOffers(filtersResult);
+  }, [pageNumber, pageSize])
 
-            return true; // nothing selected → include all
-        });
+  const getOffers = (fRes: OffersFiltersControlsResult) => {
+    setFiltersResult(fRes);
+    handleLoadingOffers(true);
 
-        handleFilteredOffers(filteredOffers);
+    const makes = fRes.selMakes.map((x) => x.make_id);
+    const models = fRes.selModels.map((x) => x.model_id);
+
+    offerPreviewGetApi(pageNumber, pageSize, makes, models)?.then((res) => {
+      handleLoadingOffers(false);
+
+      if(res?.data != undefined){
+        const data = res.data;
+        const offers = res.data.items!.map(normalizeOffer) ?? [];
+        data.items = offers;
+        handleFilteredOffers(data);
       }
+    });
+  };
+
   return (
-    <OffersFiltersControls handleFiltersResult={handleFiltersResult}/>
-  )
+    <OffersFiltersControls
+      handleFiltersResult={getOffers}
+      handleLoadingTimeout={handleLoadingOffers}
+    />
+  );
 }
 
 export default OffersFilters
