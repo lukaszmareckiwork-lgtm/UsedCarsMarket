@@ -15,7 +15,7 @@ import {
   getReadableFeatureType,
   type OfferProps,
 } from "../../Data/OfferProps";
-import { useMakes } from "../../context/MakesContext";
+import { useMakes } from "../../Context/MakesContext";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 

@@ -142,5 +142,5 @@ export interface OfferProps {
   price: number;
   currency: CurrencyTypeEnum;
 
-  createdDate: Date;
+  createdDate: Date | string;
 }
