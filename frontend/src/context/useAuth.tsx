@@ -5,11 +5,12 @@ import { loginApi, registerApi } from "../Services/AuthService";
 import { toast } from "react-toastify";
 import React from "react";
 import axios from "axios";
+import type { SellerTypeEnum } from "../Data/OfferProps";
 
 type UserContextType = {
   user: UserProfile | null;
   token: string | null;
-  registerUser: (email: string, username: string, password: string) => void;
+  registerUser: (email: string, username: string, phone: string, sellerType: SellerTypeEnum, password: string) => void;
   loginUser: (username: string, password: string) => void;
   logoutUser: () => void;
   isLoggedIn: () => boolean;
@@ -41,9 +42,11 @@ export const UserProvider = ({ children }: Props) => {
   const registerUser = async (
     email: string,
     username: string,
-    password: string
+    phone: string,
+    sellerType: SellerTypeEnum,
+    password: string,
   ) => {
-    await registerApi(username, email, password)
+    await registerApi(username, email, phone, sellerType, password)
       .then((res) => {
         console.log("Calling register API with:", email, password);
         if (res) {
