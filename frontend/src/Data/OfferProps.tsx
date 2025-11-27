@@ -1,5 +1,8 @@
 // ===============================
 // Seller Type
+
+import type { SellerDto } from "./SellerDto";
+
 // ===============================
 export const SellerTypeEnum = {
   Private: 0,
@@ -9,8 +12,8 @@ export type SellerTypeEnum = number;
 
 export function getReadableSellerType(sellerType: SellerTypeEnum): string {
   switch (sellerType) {
-    case SellerTypeEnum.Private: return "Private";
-    case SellerTypeEnum.Institutional: return "Institutional";
+    case SellerTypeEnum.Private: return "Private Seller";
+    case SellerTypeEnum.Institutional: return "Institutional Seller";
     default: return "Unknown";
   }
 }
@@ -63,18 +66,19 @@ export function getReadableTransmissionType(transmissionType: TransmissionTypeEn
 // Currency Type
 // ===============================
 export const CurrencyTypeEnum = {
-  Usd: 0,
-  Eur: 1,
-  Pln: 2,
+  Usd: "Usd",
+  Eur: "Eur",
+  Pln: "Pln",
 } as const;
+
 export type CurrencyTypeEnum = (typeof CurrencyTypeEnum)[keyof typeof CurrencyTypeEnum];
 
 
 export function getReadableCurrencyType(currencyType: CurrencyTypeEnum): string {
   switch (currencyType) {
-    case CurrencyTypeEnum.Usd: return "USD";
-    case CurrencyTypeEnum.Eur: return "EUR";
-    case CurrencyTypeEnum.Pln: return "PLN";
+    case "Usd": return "USD";
+    case "Eur": return "EUR";
+    case "Pln": return "PLN";
     default: return "Invalid Currency";
   }
 }
@@ -116,12 +120,14 @@ export function getReadableFeatureType(featureType: FeatureTypeEnum): string {
 // Offer Props Interface
 // ===============================
 export interface OfferProps {
-  offerId: string;
+  id: number;
 
   makeId: number;
   modelId: number;
   year: number;
   mileage: number;
+
+  sellerDto: SellerDto;
 
   fuelType: FuelTypeEnum;
   engineDisplacement: number;
@@ -137,7 +143,6 @@ export interface OfferProps {
   photos?: File[];
 
   location: string;
-  sellerType: SellerTypeEnum;
 
   price: number;
   currency: CurrencyTypeEnum;

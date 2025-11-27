@@ -5,11 +5,9 @@ import "./AddOfferForm.css";
 import {
   FuelTypeEnum,
   TransmissionTypeEnum,
-  SellerTypeEnum,
   CurrencyTypeEnum,
   getReadableFuelType,
   getReadableTransmissionType,
-  getReadableSellerType,
   getReadableCurrencyType,
   FeatureTypeEnum,
   getReadableFeatureType,
@@ -67,7 +65,7 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
     {
       mode: "onChange",
       defaultValues: {
-        offerId: "",
+        id: 0,
         makeId: 0,
         modelId: 0,
         year: new Date().getFullYear(),
@@ -84,7 +82,6 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
         features: [],
         photos: [],
         location: "",
-        sellerType: SellerTypeEnum.Private,
         price: 0,
         currency: CurrencyTypeEnum.Usd,
         createdDate: new Date(),
@@ -99,7 +96,7 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
     : [];
 
   const onSubmit: SubmitHandler<OfferProps> = (data) => {
-    data.offerId = crypto.randomUUID();
+    // data.id = crypto.randomUUID();
     handleOfferFormSubmit(data);
   };
 
@@ -255,15 +252,6 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
             label="Location"
             control={control}
             placeholder="City / Region"
-          />
-          <ParamInput
-            name="sellerType"
-            label="Seller Type"
-            control={control}
-            type="select"
-            options={toOption(SellerTypeEnum, getReadableSellerType)}
-            numeric
-            placeholder="Select seller type"
           />
           <ParamInput
             name="price"

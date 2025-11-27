@@ -1,0 +1,36 @@
+.hidden-string {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.hidden-string-not-shown {
+    display: flex;
+    gap: 8px;
+}
+
+.hidden-string-show-button {
+    border-radius: 4px;
+    background-color: #0071CE;
+    border: none;
+
+    color: #FFFFFF;
+    font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+    font-size: 11px;
+    font-weight: 500;
+
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+
+    text-decoration: none;
+}
+
+.hidden-string-show-button:hover {
+  background: #2f86ce;
+}
+
+.hidden-string-show-button:active {
+  background: #0071CE;
+}
