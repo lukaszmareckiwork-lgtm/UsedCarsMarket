@@ -65,3 +65,21 @@ export const offerPreviewGetApi = (pageNumber: number, pageSize: number, makeIds
     handleError(error);
   }
 };
+
+export const offerGetSingleApi = (offerId: number) => {
+  try { 
+    console.log(`offerGetSingleApi - :${api}${offerId}`);
+
+    const data = axios
+      .get<OfferProps>(`${api}${offerId}`)
+      .catch((error) => {
+        console.log(`offerGetApi - error: ${error}`);
+        handleError(error);
+      });
+
+    return data;
+  } catch (error) {
+    console.log(`offerGetApi - error: ${error}`);
+    handleError(error);
+  }
+};
