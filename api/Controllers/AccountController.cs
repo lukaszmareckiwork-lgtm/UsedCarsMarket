@@ -43,6 +43,8 @@ namespace api.Controllers
                {
                     UserName = user.UserName,
                     Email = user.Email,
+                    Phone = user.PhoneNumber,
+                    SellerType = user.SellerType,
                     Token = _tokenService.CreateToken(user),
                }
             );
@@ -60,6 +62,8 @@ namespace api.Controllers
                 {
                     UserName = registerDto.Username,
                     Email = registerDto.Email,
+                    PhoneNumber = registerDto.Phone,
+                    SellerType = registerDto.SellerType,
                 };
 
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
@@ -74,6 +78,8 @@ namespace api.Controllers
                             {
                                 UserName = appUser.UserName,
                                 Email = appUser.Email,
+                                Phone = appUser.PhoneNumber,
+                                SellerType = appUser.SellerType,
                                 Token = _tokenService.CreateToken(appUser),
                             }
                         );
