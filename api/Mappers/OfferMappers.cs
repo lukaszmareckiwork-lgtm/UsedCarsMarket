@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using api.Dtos.Account;
 using api.Dtos.Offer;
 using api.Models;
 
@@ -15,7 +17,15 @@ namespace api.Mappers
             {
                 Id = offer.Id,
                 Guid = offer.Guid,
-                CreatedBy = offer.AppUserId,
+                
+                SellerDto = new SellerDto
+                {
+                    UserId = offer.AppUser?.Id ?? "",
+                    Username = offer.AppUser?.UserName ?? "",
+                    PhoneNumber = offer.AppUser?.PhoneNumber ?? "",
+                    Email = offer.AppUser?.Email ?? "",
+                    SellerType = offer.AppUser?.SellerType ?? SellerType.Private,
+                },
 
                 MakeId = offer.MakeId,
                 ModelId = offer.ModelId,
@@ -29,6 +39,7 @@ namespace api.Mappers
                 Transmission = offer.Transmission,
 
                 Color = offer.Color,
+                Vin = offer.Vin,
 
                 Features = offer.Features,
 
@@ -40,8 +51,6 @@ namespace api.Mappers
 
                 Location = offer.Location,
 
-                SellerType = offer.SellerType,
-
                 Price = offer.Price,
                 Currency = offer.Currency,
 
@@ -49,35 +58,70 @@ namespace api.Mappers
             };
         }
 
-        public static OfferPreviewDto OfferPreviewDto(this Offer offer)
-        {
-            return new OfferPreviewDto()
-            {
-                Id = offer.Id,
-                Guid = offer.Guid,
-                CreatedBy = offer.AppUserId,
+        // public static OfferPreviewDto OfferPreviewDto(this Offer offer)
+        // {
+        //     return new OfferPreviewDto()
+        //     {
+        //         Id = offer.Id,
+        //         Guid = offer.Guid,
 
-                Year = offer.Year,
-                Mileage = offer.Mileage,
+        //         SellerDto = new SellerDto
+        //         {
+        //             // UserId = offer.AppUser?.Id ?? "",
+        //             // Username = offer.AppUser?.UserName ?? "",
+        //             // PhoneNumber = offer.AppUser?.PhoneNumber ?? "",
+        //             // Email = offer.AppUser?.Email ?? "",
+        //             SellerType = offer.AppUser?.SellerType ?? SellerType.Private,
+        //         },
+
+        //         Year = offer.Year,
+        //         Mileage = offer.Mileage,
                 
-                FuelType = offer.FuelType,
-                Transmission = offer.Transmission,
+        //         FuelType = offer.FuelType,
+        //         Transmission = offer.Transmission,
+        //         EngineDisplacement = offer.EngineDisplacement,
+        //         EnginePower = offer.EnginePower,
 
-                Title = offer.Title,
-                Subtitle = offer.Subtitle,
+        //         Title = offer.Title,
+        //         Subtitle = offer.Subtitle,
 
-                Photos = offer.Photos,
+        //         Photos = offer.Photos,
 
-                Location = offer.Location,
+        //         Location = offer.Location,
 
-                SellerType = offer.SellerType,
+        //         Price = offer.Price,
+        //         Currency = offer.Currency,
 
-                Price = offer.Price,
-                Currency = offer.Currency,
+        //         CreatedDate = offer.CreatedDate
+        //     };
+        // }
 
-                CreatedDate = offer.CreatedDate
-            };
-        }
+        /// <summary>
+        /// Projection instead of mapper method for use in LINQ queries
+        /// </summary>
+        public static readonly Expression<Func<Offer, OfferPreviewDto>> ProjToOfferPreviewDto =
+        o => new OfferPreviewDto
+        {
+            Id = o.Id,
+            Guid = o.Guid,
+            SellerDto = new SellerDto
+            {
+                SellerType = o.AppUser!.SellerType
+            },
+            Year = o.Year,
+            Mileage = o.Mileage,
+            FuelType = o.FuelType,
+            Transmission = o.Transmission,
+            EngineDisplacement = o.EngineDisplacement,
+            EnginePower = o.EnginePower,
+            Title = o.Title,
+            Subtitle = o.Subtitle,
+            Photos = null,
+            Location = o.Location,
+            Price = o.Price,
+            Currency = o.Currency,
+            CreatedDate = o.CreatedDate
+        };
 
         public static Offer ToOfferFromCreateDto(this CreateOfferRequestDto requestDto)
         {
@@ -108,8 +152,6 @@ namespace api.Mappers
                 Photos = requestDto.Photos,
 
                 Location = requestDto.Location,
-
-                SellerType = requestDto.SellerType,
 
                 Price = requestDto.Price,
                 Currency = requestDto.Currency,

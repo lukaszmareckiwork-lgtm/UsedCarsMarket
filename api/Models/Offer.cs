@@ -64,7 +64,7 @@ namespace api.Models
         public int Mileage { get; set; }
         public FuelType FuelType { get; set; }
 
-        public int? EngineDisplacement { get; set; }
+        public decimal? EngineDisplacement { get; set; }
         public int? EnginePower { get; set; }
         public TransmissionType Transmission { get; set; }
 
@@ -80,7 +80,6 @@ namespace api.Models
         public List<byte[]>? Photos { get; set; }
 
         public string Location { get; set; } = string.Empty;
-        public SellerType SellerType { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
