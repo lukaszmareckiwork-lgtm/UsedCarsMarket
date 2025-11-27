@@ -49,9 +49,6 @@ namespace api.Dtos.Offer
         [Required(ErrorMessage = "Location is required.")]
         public string Location { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "SellerType is required.")]
-        public SellerType SellerType { get; set; }
-
         [Required(ErrorMessage = "Price is required.")]
         public decimal Price { get; set; }
 
