@@ -37,7 +37,7 @@ export const handleError = (error: any) => {
         .flat()
         .join(", ");
     } else if (err?.data) {
-      message = typeof err.data === "string" ? err.data : JSON.stringify(err.data);
+      // message = typeof err.data === "string" ? err.data : JSON.stringify(err.data);
     } else if (err?.status === 401) {
       message = "Please login!";
       window.history.pushState({}, "LoginPage", "/login");
