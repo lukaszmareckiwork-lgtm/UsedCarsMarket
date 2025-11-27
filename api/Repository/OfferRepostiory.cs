@@ -1,8 +1,10 @@
 using api.Data;
+using api.Dtos.Account;
 using api.Dtos.Common;
 using api.Dtos.Offer;
 using api.Helpers;
 using api.Interfaces;
+using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -98,31 +100,7 @@ namespace api.Repository
             var items = await offers
                 .Skip(skip)
                 .Take(query.PageSize)
-                .Select(o => new OfferPreviewDto
-                {
-                    Id = o.Id,
-                    Guid = o.Guid,
-                    CreatedBy = o.AppUserId,
-
-                    Year = o.Year,
-                    Mileage = o.Mileage,
-                    FuelType = o.FuelType,
-                    Transmission = o.Transmission,
-
-                    Title = o.Title,
-                    Subtitle = o.Subtitle,
-
-                    Photos = null, // ← populate later when you implement a photo table
-
-                    Location = o.Location,
-
-                    SellerType = o.SellerType,
-
-                    Price = o.Price,
-                    Currency = o.Currency,
-
-                    CreatedDate = o.CreatedDate
-                })
+                .Select(OfferMappers.ProjToOfferPreviewDto)       
                 .ToListAsync();
 
             return new PagedResult<OfferPreviewDto>
