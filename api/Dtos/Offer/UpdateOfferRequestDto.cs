@@ -44,7 +44,7 @@ namespace api.Dtos.Offer
 
         public string? Description { get; set; }
 
-        public List<byte[]>? Photos { get; set; }
+        public List<string>? Photos { get; set; }
 
         [Required(ErrorMessage = "Location is required.")]
         public string Location { get; set; } = string.Empty;
