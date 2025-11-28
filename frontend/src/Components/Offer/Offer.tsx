@@ -1,8 +1,9 @@
 import './Offer.css'
 import AddFavouriteButton from '../AddFavouriteButton/AddFavouriteButton'
 import type { JSX } from 'react/jsx-runtime'
-import { getReadableSellerType, type OfferProps } from '../../Data/OfferProps'
+import { getReadableCurrencyType, getReadableSellerType, type OfferProps } from '../../Data/OfferProps'
 import ParamsWithIcons from '../ParamsWithIcons/ParamsWithIcons'
+import PhotoViewer from '../DetailsPage/PhotoViewer/PhotoViewer'
 
 const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JSX.Element => {
 
@@ -12,7 +13,8 @@ const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JS
         <a href={`/offer/details/${offerProps.id}`}></a>
         <section className='offerSection'>
           <div className='offerImageHolder'>
-            <img className='offerImage' alt='' loading='eager' src='https://ireland.apollo.olxcdn.com/v1/files/i6ctks32d9cz2-OTOMOTOPL/image;s=320x240'></img>
+            <PhotoViewer offerProps={offerProps} compact={true} />
+            {/* <img className='offerImage' alt='' loading='eager' src='https://ireland.apollo.olxcdn.com/v1/files/i6ctks32d9cz2-OTOMOTOPL/image;s=320x240'></img> */}
           </div>
 
           <div className='offerTitles'>
@@ -37,7 +39,7 @@ const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JS
           <div className='offerPricePanel'>
             <div className='offerPriceHolder'>
               <h3 className='offerPriceValue'>{Intl.NumberFormat("pl-PL").format(offerProps.price)}</h3>
-              <p className='offerPriceCurrency'>{offerProps.currency}</p>
+              <p className='offerPriceCurrency'>{getReadableCurrencyType(offerProps.currency)}</p>
             </div>
           </div>
 

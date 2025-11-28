@@ -43,6 +43,7 @@ const OffersFilters = ( { pageNumber, pageSize, handleFilteredOffers, handleLoad
         const data = res.data;
         const offers = res.data.items!.map(normalizeOffer) ?? [];
         data.items = offers;
+        // console.log(`offerPreviewGetApi - data: ${JSON.stringify(data)}`);
         handleFilteredOffers(data);
       }
     });

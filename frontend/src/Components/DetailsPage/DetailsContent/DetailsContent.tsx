@@ -17,7 +17,7 @@ const DetailsContent = ({ offerProps }: Props) => {
     <div className="details-content-wrapper">
       <div className="details-content">
         <DetailsItem>
-          <PhotoViewer />
+          <PhotoViewer offerProps={offerProps}/>
           <div className="details-content-title-price-wrapper">
             <span>
               <h1 className="details-content-title">{offerProps.title}</h1>
