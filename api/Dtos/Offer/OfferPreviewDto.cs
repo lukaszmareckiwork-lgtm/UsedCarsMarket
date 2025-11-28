@@ -28,7 +28,7 @@ namespace api.Dtos.Offer
         public string Subtitle { get; set; } = string.Empty;
 
         // Photos can be stored as blob or separate table
-        public List<byte[]>? Photos { get; set; }
+        public List<string>? Photos { get; set; }
 
         public string Location { get; set; } = string.Empty;
 
