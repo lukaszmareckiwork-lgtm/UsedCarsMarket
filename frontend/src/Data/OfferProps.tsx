@@ -140,7 +140,7 @@ export interface OfferProps {
   title: string;
   subtitle: string;
   description?: string;
-  photos?: File[];
+  photos?: string[];
 
   location: string;
 

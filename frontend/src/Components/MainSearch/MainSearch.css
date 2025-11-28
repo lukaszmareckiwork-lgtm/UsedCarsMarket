@@ -97,7 +97,7 @@
 
 /* Active page */
 .main-search-pagination li.selected a {
-  background-color: #3697d7;
+  background-color: #0071CE;
   color: white;
   font-weight: 600;
 }
