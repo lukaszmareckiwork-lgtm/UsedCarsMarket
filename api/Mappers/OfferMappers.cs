@@ -116,7 +116,7 @@ namespace api.Mappers
             EnginePower = o.EnginePower,
             Title = o.Title,
             Subtitle = o.Subtitle,
-            Photos = null,
+            Photos = o.Photos,
             Location = o.Location,
             Price = o.Price,
             Currency = o.Currency,
