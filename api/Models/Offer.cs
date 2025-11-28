@@ -77,7 +77,8 @@ namespace api.Models
         public string Subtitle { get; set; } = string.Empty;
         public string? Description { get; set; }
 
-        public List<byte[]>? Photos { get; set; }
+        // Photos stored as a single-level collection of strings (URLs or base64 blobs).
+        public List<string>? Photos { get; set; }
 
         public string Location { get; set; } = string.Empty;
 
