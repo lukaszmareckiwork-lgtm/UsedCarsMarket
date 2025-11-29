@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Dtos.Account;
 using api.Models;
 
@@ -38,8 +34,7 @@ namespace api.Dtos.Offer
         public string Subtitle { get; set; } = string.Empty;
         public string? Description { get; set; }
 
-        // Photos can be stored as blob or separate table
-        public List<string>? Photos { get; set; }
+        public List<PhotoDto> Photos { get; set; } = new();
 
         public string Location { get; set; } = string.Empty;
 

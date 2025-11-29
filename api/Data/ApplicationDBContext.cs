@@ -18,6 +18,7 @@ namespace api.Data
         }
 
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<Photo> Photos { get; set; }
         public DbSet<FavouriteOffer> FavouriteOffers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -99,6 +100,19 @@ namespace api.Data
                 entity.Property(o => o.Currency).HasMaxLength(3).IsRequired();
                 entity.Property(o => o.Location).IsRequired();
             });
+
+            // Table name for Photos
+            builder.Entity<Photo>(entity =>
+            {
+                entity.ToTable("Photos");
+            });
+
+            // Configure Offer <-> Photo (one-to-many)
+            builder.Entity<Offer>()
+                .HasMany(o => o.Photos)
+                .WithOne(p => p.Offer)
+                .HasForeignKey(p => p.OfferId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
