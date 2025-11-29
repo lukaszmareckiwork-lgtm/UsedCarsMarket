@@ -52,7 +52,7 @@ namespace api.Models
 
         public Guid? Guid { get; set; }
 
-        public List<FavouriteOffer> FavouriteOffers { get; set; }
+        public List<FavouriteOffer> FavouriteOffers { get; set; } = new();
 
         public string? AppUserId { get; set; }
         public AppUser? AppUser { get; set; }
@@ -64,6 +64,7 @@ namespace api.Models
         public int Mileage { get; set; }
         public FuelType FuelType { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal? EngineDisplacement { get; set; }
         public int? EnginePower { get; set; }
         public TransmissionType Transmission { get; set; }
@@ -77,8 +78,7 @@ namespace api.Models
         public string Subtitle { get; set; } = string.Empty;
         public string? Description { get; set; }
 
-        // Photos stored as a single-level collection of strings (URLs or base64 blobs).
-        public List<string>? Photos { get; set; }
+        public List<Photo> Photos { get; set; } = new();
 
         public string Location { get; set; } = string.Empty;
 
