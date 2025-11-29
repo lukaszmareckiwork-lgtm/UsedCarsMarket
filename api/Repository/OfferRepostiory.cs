@@ -50,6 +50,7 @@ namespace api.Repository
                 .Include(o => o.AppUser)
                 .Skip(skip)
                 .Take(query.PageSize)
+                .Include(o => o.Photos)
                 .ToListAsync();
 
             return new PagedResult<Offer>
@@ -100,7 +101,8 @@ namespace api.Repository
             var items = await offers
                 .Skip(skip)
                 .Take(query.PageSize)
-                .Select(OfferMappers.ProjToOfferPreviewDto)       
+                .Include(o => o.Photos)
+                .Select(OfferMappers.ProjToOfferPreviewDto)      
                 .ToListAsync();
 
             return new PagedResult<OfferPreviewDto>
@@ -114,7 +116,10 @@ namespace api.Repository
 
         public async Task<Offer?> GetByIdAsync(int id)
         {
-            return await _context.Offers.Include(o => o.AppUser).FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Offers
+                .Include(o => o.AppUser)
+                .Include(o => o.Photos)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Offer> CreateAsync(Offer offerModel)
@@ -124,21 +129,36 @@ namespace api.Repository
             return offerModel;
         }
 
-        public async Task<Offer?> UpdateAsync(int id, UpdateOfferRequestDto updateOfferRequestDto)
-        {
-            var offerModel = await _context.Offers.FirstOrDefaultAsync(o => o.Id == id);
+        // public async Task<Offer?> UpdateAsync(int id, UpdateOfferRequestDto updateOfferRequestDto)
+        // {
+        //     var offerModel = await _context.Offers.FirstOrDefaultAsync(o => o.Id == id);
 
-            if(offerModel == null)
-                return null;
+        //     if(offerModel == null)
+        //         return null;
          
-            offerModel.Guid = updateOfferRequestDto.Guid;
-            offerModel.MakeId = updateOfferRequestDto.MakeId;
-            offerModel.ModelId = updateOfferRequestDto.ModelId;
-            //ADD EVRYTHING THAT WE WANT TO UPDATE
-            offerModel.Description = updateOfferRequestDto.Description;
+        //     offerModel.Guid = updateOfferRequestDto.Guid;
+        //     offerModel.MakeId = updateOfferRequestDto.MakeId;
+        //     offerModel.ModelId = updateOfferRequestDto.ModelId;
+        //     //ADD EVRYTHING THAT WE WANT TO UPDATE
+        //     offerModel.Description = updateOfferRequestDto.Description;
+
+        //     await _context.SaveChangesAsync();
+        //     return offerModel;
+        // }
+
+        public async Task<Offer?> UpdateModelAsync(Offer offer)
+        {
+            if (offer == null) return null;
+
+            // Attach the offer if not tracked, mark modified so EF will persist changes including Photos
+            var tracked = _context.ChangeTracker.Entries<Offer>().FirstOrDefault(e => e.Entity.Id == offer.Id)?.Entity;
+            if (tracked == null)
+            {
+                _context.Offers.Update(offer);
+            }
 
             await _context.SaveChangesAsync();
-            return offerModel;
+            return offer;
         }
 
         public async Task<Offer?> DeleteAsync(int id)

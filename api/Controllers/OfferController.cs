@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using api.Service;
 
 namespace api.Controllers
 {
@@ -23,10 +24,13 @@ namespace api.Controllers
     {
         private readonly IOfferRepository _offerRepo;
         private readonly UserManager<AppUser> _userManager;
-        public OfferController(IOfferRepository offerRepo, UserManager<AppUser> userManager)
+        private readonly OfferService _offerService;
+
+        public OfferController(IOfferRepository offerRepo, UserManager<AppUser> userManager, OfferService offerService)
         {
             _offerRepo = offerRepo;
             _userManager = userManager;
+            _offerService = offerService;
         }
 
         [HttpGet]
@@ -83,7 +87,7 @@ namespace api.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] CreateOfferRequestDto createOfferRequestDto)
+        public async Task<IActionResult> Create([FromForm] CreateOfferRequestDto createOfferRequestDto, [FromForm] List<IFormFile>? files)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -91,12 +95,9 @@ namespace api.Controllers
             var email = User.GetEmail();
             var appUser = await _userManager.FindByEmailAsync(email);
 
-            var offerModel = createOfferRequestDto.ToOfferFromCreateDto();
-            offerModel.AppUserId = appUser.Id;
+            var created = await _offerService.CreateOfferAsync(createOfferRequestDto, files, appUser?.Id);
 
-            await _offerRepo.CreateAsync(offerModel);
-
-            return CreatedAtAction(nameof(GetById), new { id = offerModel.Id }, offerModel.OfferDto());
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created.OfferDto());
         }
 
         [HttpPut]
@@ -107,12 +108,12 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var offerModel = await _offerRepo.UpdateAsync(id, updateOfferRequestDto);
+            var offerModel = await _offerService.UpdateOfferAsync(id, updateOfferRequestDto);
 
             if (offerModel == null)
                 return NotFound();
 
-            return Ok(offerModel!.OfferDto());
+            return Ok(offerModel.OfferDto());
         }
 
         [HttpDelete]
@@ -123,7 +124,7 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var offerModel = await _offerRepo.DeleteAsync(id);
+            var offerModel = await _offerService.DeleteOfferAsync(id);
 
             if (offerModel == null)
                 return NotFound();
