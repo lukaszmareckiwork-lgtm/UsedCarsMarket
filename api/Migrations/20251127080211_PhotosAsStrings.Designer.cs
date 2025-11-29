@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20251127080211_PhotosAsStrings")]
+    partial class PhotosAsStrings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,6 +312,9 @@ namespace api.Migrations
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
+                    b.PrimitiveCollection<string>("Photos")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -336,42 +342,6 @@ namespace api.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("Offers", (string)null);
-                });
-
-            modelBuilder.Entity("api.Models.Photo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OfferId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UrlLarge")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UrlMedium")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UrlSmall")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OfferId");
-
-                    b.ToTable("Photos", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -454,17 +424,6 @@ namespace api.Migrations
                     b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("api.Models.Photo", b =>
-                {
-                    b.HasOne("api.Models.Offer", "Offer")
-                        .WithMany("Photos")
-                        .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Offer");
-                });
-
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
                     b.Navigation("FavouriteOffers");
@@ -473,8 +432,6 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.Offer", b =>
                 {
                     b.Navigation("FavouriteOffers");
-
-                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

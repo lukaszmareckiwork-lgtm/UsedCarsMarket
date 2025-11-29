@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using api.Dtos.Account;
 using api.Dtos.Offer;
 using api.Models;
@@ -47,7 +43,15 @@ namespace api.Mappers
                 Subtitle = offer.Subtitle,
                 Description = offer.Description,
 
-                Photos = offer.Photos,
+                Photos = offer.Photos.Select(p => new PhotoDto
+                {
+                    Id = p.Id,
+                    UrlSmall = p.UrlSmall,
+                    UrlMedium = p.UrlMedium,
+                    UrlLarge = p.UrlLarge,
+                    SortOrder = p.SortOrder,
+                    CreatedDate = p.CreatedDate
+                }).ToList(),
 
                 Location = offer.Location,
 
@@ -116,48 +120,60 @@ namespace api.Mappers
             EnginePower = o.EnginePower,
             Title = o.Title,
             Subtitle = o.Subtitle,
-            Photos = null,
+            Photos = o.Photos.Select(p => new PhotoDto {
+                Id = p.Id,
+                UrlSmall = p.UrlSmall,
+                UrlMedium = p.UrlMedium,
+                UrlLarge = p.UrlLarge,
+                SortOrder = p.SortOrder,
+                CreatedDate = p.CreatedDate
+            }).ToList(),
             Location = o.Location,
             Price = o.Price,
             Currency = o.Currency,
             CreatedDate = o.CreatedDate
         };
 
-        public static Offer ToOfferFromCreateDto(this CreateOfferRequestDto requestDto)
-        {
-            return new Offer()
-            {
-                Guid = requestDto.Guid,
+        // public static Offer ToOfferFromCreateDto(this CreateOfferRequestDto requestDto)
+        // {
+        //     return new Offer()
+        //     {
+        //         Guid = requestDto.Guid,
 
-                MakeId = requestDto.MakeId,
-                ModelId = requestDto.ModelId,
+        //         MakeId = requestDto.MakeId,
+        //         ModelId = requestDto.ModelId,
 
-                Year = requestDto.Year,
-                Mileage = requestDto.Mileage,
+        //         Year = requestDto.Year,
+        //         Mileage = requestDto.Mileage,
                 
-                FuelType = requestDto.FuelType,
-                EngineDisplacement = requestDto.EngineDisplacement,
-                EnginePower = requestDto.EnginePower,
-                Transmission = requestDto.Transmission,
+        //         FuelType = requestDto.FuelType,
+        //         EngineDisplacement = requestDto.EngineDisplacement,
+        //         EnginePower = requestDto.EnginePower,
+        //         Transmission = requestDto.Transmission,
 
-                Vin = requestDto.Vin,
-                Color = requestDto.Color,
+        //         Vin = requestDto.Vin,
+        //         Color = requestDto.Color,
 
-                Features = requestDto.Features,
+        //         Features = requestDto.Features,
 
-                Title = requestDto.Title,
-                Subtitle = requestDto.Subtitle,
-                Description = requestDto.Description,
+        //         Title = requestDto.Title,
+        //         Subtitle = requestDto.Subtitle,
+        //         Description = requestDto.Description,
 
-                Photos = requestDto.Photos,
+        //         Photos = requestDto.Photos?.Select(p => new Photo {
+        //             UrlSmall = p.UrlSmall,
+        //             UrlMedium = p.UrlMedium,
+        //             UrlLarge = p.UrlLarge,
+        //             SortOrder = p.SortOrder
+        //         }).ToList() ?? new List<Photo>(),
 
-                Location = requestDto.Location,
+        //         Location = requestDto.Location,
 
-                Price = requestDto.Price,
-                Currency = requestDto.Currency,
+        //         Price = requestDto.Price,
+        //         Currency = requestDto.Currency,
 
-                // CreatedDate = requestDto.CreatedDate
-            };
-        }
+        //         // CreatedDate = requestDto.CreatedDate
+        //     };
+        // }
     }
 }
