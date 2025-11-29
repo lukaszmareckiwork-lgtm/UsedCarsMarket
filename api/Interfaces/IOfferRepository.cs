@@ -11,7 +11,8 @@ namespace api.Interfaces
         Task<PagedResult<OfferPreviewDto>> GetAllPreviewAsync(OfferQueryObject query);
         Task<Offer?> GetByIdAsync(int id);
         Task<Offer> CreateAsync(Offer offer);
-        Task<Offer?> UpdateAsync(int id, UpdateOfferRequestDto offerRequestDto);
+        // Task<Offer?> UpdateAsync(int id, UpdateOfferRequestDto offerRequestDto);
+        Task<Offer?> UpdateModelAsync(Offer offer);
         Task<Offer?> DeleteAsync(int id);
         Task<bool> OfferExistsAsync(int id);
     }
