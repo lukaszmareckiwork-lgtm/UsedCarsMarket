@@ -100,12 +100,12 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
     handleOfferFormSubmit(data);
   };
 
-  const handlePhotoUpload = (files: FileList | null) => {
-    if (!files) return;
-    const arr = Array.from(files);
-    setValue("photos", arr);
-    setPreviewUrls(arr.map((f) => URL.createObjectURL(f)));
-  };
+  // const handlePhotoUpload = (files: FileList | null) => {
+  //   if (!files) return;
+  //   const arr = Array.from(files);
+  //   setValue("photos", arr);
+  //   setPreviewUrls(arr.map((f) => URL.createObjectURL(f)));
+  // };
 
   const toOption = <T extends number>(
     obj: Record<string, T>,

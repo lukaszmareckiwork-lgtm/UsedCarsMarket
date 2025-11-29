@@ -1,6 +1,7 @@
 // ===============================
 // Seller Type
 
+import type { PhotoDto } from "./PhotoDto";
 import type { SellerDto } from "./SellerDto";
 
 // ===============================
@@ -140,7 +141,7 @@ export interface OfferProps {
   title: string;
   subtitle: string;
   description?: string;
-  photos?: string[];
+  photos?: PhotoDto[];
 
   location: string;
 
