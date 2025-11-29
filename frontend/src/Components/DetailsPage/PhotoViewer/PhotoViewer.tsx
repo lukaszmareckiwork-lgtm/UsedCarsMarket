@@ -2,6 +2,7 @@ import "./PhotoViewer.css"
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import type { OfferProps } from '../../../Data/OfferProps';
+import { useState } from "react";
 
 
 interface Props {
@@ -10,23 +11,30 @@ interface Props {
 }
 
 const PhotoViewer = ({ offerProps, compact = false }: Props) => {
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   // Defensive: ensure we have an array of photo URLs (frontend types use string[])
-  const photoUrls = Array.isArray(offerProps.photos) ? offerProps.photos : [];
+  const photoDtos = Array.isArray(offerProps.photos) ? offerProps.photos : [];
 
-  const images = photoUrls.map((url) => ({
-    original: url,
-    thumbnail: url,
+  const images = photoDtos.map((dto) => ({
+    original: compact ? dto.urlSmall : dto.urlMedium,
+    thumbnail: dto.urlSmall,
+  }));
+
+  const imagesFullscreen = photoDtos.map((dto) => ({
+    original: dto.urlLarge,
+    thumbnail: dto.urlSmall,
   }));
 
   return (
     <div className="photo-viewer">
       <ImageGallery
-        items={images}
+        items={!isFullscreen ? images : imagesFullscreen}
         showPlayButton={false}
         showBullets={true}
         showIndex={true}
         showThumbnails={!compact}
         showFullscreenButton={!compact}
+        onScreenChange={ isFullscreen => setIsFullscreen(isFullscreen) }
       />
     </div>
   );
