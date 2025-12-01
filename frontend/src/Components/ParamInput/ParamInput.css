@@ -98,6 +98,22 @@
   color: #333;
 }
 
+.param-field-char-counter {
+  color: #666;
+  align-self: flex-end;
+
+  font-size: 0.85rem;
+  line-height: 1em;
+  margin-top: 0.25rem;
+  min-height: 1.2em;
+}
+
+.param-field-error-max-length {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* --- Textarea specific --- */
 .param-textarea {
   min-height: 80px;
