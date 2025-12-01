@@ -18,6 +18,7 @@ namespace api.Data
         }
 
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<Photo> Photos { get; set; }
         public DbSet<FavouriteOffer> FavouriteOffers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -76,14 +77,14 @@ namespace api.Data
                 entity.Property(o => o.Guid)
                       .HasDefaultValueSql("NEWID()"); // SQL Server auto-generates if null
 
-                // Features stored as comma-separated string
+                // Features stored as comma-separated integers
                 var featuresConverter = new ValueConverter<List<FeatureType>?, string>(
-                    v => v == null ? string.Empty : string.Join(',', v),
+                    v => v == null ? string.Empty : string.Join(',', v.Select(f => (int)f)),
                     v => string.IsNullOrEmpty(v)
                         ? new List<FeatureType>()
                         : v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                        .Select(f => Enum.Parse<FeatureType>(f))
-                        .ToList()
+                           .Select(f => (FeatureType)int.Parse(f))
+                           .ToList()
                 );
 
                 entity.Property(o => o.Features)
@@ -99,6 +100,19 @@ namespace api.Data
                 entity.Property(o => o.Currency).HasMaxLength(3).IsRequired();
                 entity.Property(o => o.Location).IsRequired();
             });
+
+            // Table name for Photos
+            builder.Entity<Photo>(entity =>
+            {
+                entity.ToTable("Photos");
+            });
+
+            // Configure Offer <-> Photo (one-to-many)
+            builder.Entity<Offer>()
+                .HasMany(o => o.Photos)
+                .WithOne(p => p.Offer)
+                .HasForeignKey(p => p.OfferId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

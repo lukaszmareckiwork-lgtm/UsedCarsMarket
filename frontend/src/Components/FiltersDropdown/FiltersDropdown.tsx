@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import "./FiltersDropdown.css";
+import Spinner from '../Spinner/Spinner';
 
 interface FiltersDropdownProps<T> {
     items: T[];
@@ -78,8 +79,17 @@ function FiltersDropdown<T>(props: FiltersDropdownProps<T>) {
                 className={`car-filter-header ${props.loading || props.forceDisable ? "disabled" : ""}`}
                 onClick={() => !props.loading && !props.forceDisable && setDropdownOpen(prev => !prev)}
             >
-                {props.headerText} {props.selectedItems.length > 0 ? `(${props.selectedItems.length})` : ""}
-                {props.loading ? <div className="loader small" /> : <span>{dropdownOpen ? "▲" : "▼"}</span>}
+                <span>
+                    {props.headerText} {props.selectedItems.length > 0 ? `(${props.selectedItems.length})` : ""}
+                </span>
+                    {props.loading ? (
+                        <Spinner size={28} />
+                        ) : (
+                        <span className='car-filters-dropdown-arrow'>
+                            {dropdownOpen ? "▲" : "▼"}
+                        </span>
+                        )
+                    }
             </div>
 
             {dropdownOpen && (

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using api.Models;
 
@@ -24,12 +22,13 @@ namespace api.Dtos.Offer
         [Required(ErrorMessage = "FuelType is required.")]
         public FuelType FuelType { get; set; }
 
-        public int? EngineDisplacement { get; set; }
+        public decimal? EngineDisplacement { get; set; }
         public int? EnginePower { get; set; }
 
         [Required(ErrorMessage = "Transmission type is required.")]
         public TransmissionType Transmission { get; set; }
 
+        public string? Vin { get; set; }
         public string? Color { get; set; }
 
         public List<FeatureType>? Features { get; set; }
@@ -44,13 +43,10 @@ namespace api.Dtos.Offer
 
         public string? Description { get; set; }
 
-        public List<byte[]>? Photos { get; set; }
+        public List<PhotoDto> Photos { get; set; } = new();
 
         [Required(ErrorMessage = "Location is required.")]
         public string Location { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "SellerType is required.")]
-        public SellerType SellerType { get; set; }
 
         [Required(ErrorMessage = "Price is required.")]
         public decimal Price { get; set; }
