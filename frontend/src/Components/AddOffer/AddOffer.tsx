@@ -1,12 +1,12 @@
 import React from 'react'
 import AddOfferForm from '../AddOfferForm/AddOfferForm'
 import "./AddOffer.css"
-import type { OfferProps } from '../../Data/OfferProps'
 import { offerPostApi } from '../../Services/OfferService'
 import { toast } from 'react-toastify'
+import type { CreateOfferRequestDto } from '../../Data/CreateOfferRequestDto'
 
 const AddOffer = () => {
-    const handleOfferSubmit = (newOffer: OfferProps) => {
+    const handleOfferSubmit = (newOffer: CreateOfferRequestDto) => {
         console.log("handleOfferSubmit:", newOffer);
 
         //add offer to database logic
