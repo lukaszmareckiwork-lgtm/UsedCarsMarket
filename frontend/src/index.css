@@ -32,9 +32,9 @@ svg:not(:root) {
   overflow: hidden;
 }
 
-:not(svg) {
+/* :not(svg) {
     transform-origin: 0px 0px;
-}
+} */
 
 *, *::after, *::before {
     box-sizing: border-box;

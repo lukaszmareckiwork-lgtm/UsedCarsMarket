@@ -1,0 +1,18 @@
+.specs-list-item {
+    display: flex;
+    justify-content: space-between;
+
+    background-color:  rgb(236, 236, 236);
+    border-radius: 3px;
+
+    padding: 4px 12px;
+}
+
+.specs-list-item-label {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.specs-list-item-value {
+    font-size: 14px;
+}
