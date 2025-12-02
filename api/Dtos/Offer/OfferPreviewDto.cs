@@ -25,7 +25,9 @@ namespace api.Dtos.Offer
 
         public List<PhotoDto> Photos { get; set; } = new();
 
-        public string Location { get; set; } = string.Empty;
+        public string LocationName { get; set; } = string.Empty;
+        public double LocationLat { get; set; }
+        public double LocationLong { get; set; }
 
         public decimal Price { get; set; }
         public string Currency { get; set; } = "EUR";

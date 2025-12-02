@@ -44,8 +44,10 @@ namespace api.Dtos.Offer
 
         public List<PhotoDto> Photos { get; set; } = new();
 
-        [Required(ErrorMessage = "Location is required.")]
-        public string Location { get; set; } = string.Empty;
+        // [Required(ErrorMessage = "Location is required.")]
+        public string LocationName { get; set; } = string.Empty;
+        public double LocationLat { get; set; }
+        public double LocationLong { get; set; }
 
         [Required(ErrorMessage = "Price is required.")]
         public decimal Price { get; set; }
