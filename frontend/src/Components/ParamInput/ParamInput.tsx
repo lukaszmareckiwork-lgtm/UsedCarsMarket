@@ -24,6 +24,7 @@ interface ParamInputProps<T extends FieldValues, G> {
     pattern?: { value: RegExp; message: string };
   };
   numeric?: boolean;
+  maxLength?: number;
 }
 
 export function ParamInput<T extends FieldValues, G>({
@@ -35,6 +36,7 @@ export function ParamInput<T extends FieldValues, G>({
   placeholder,
   rules,
   numeric = false,
+  maxLength,
 }: ParamInputProps<T, G>) {
   return (
     <div
@@ -62,9 +64,16 @@ export function ParamInput<T extends FieldValues, G>({
                       error ? "param-field-error" : ""
                     }`}
                   />
-                  <p className={`param-error ${error ? "visible" : ""}`}>
-                    {error?.message || " "}
-                  </p>
+                  <div className="param-field-error-max-length">
+                    <p className={`param-error ${error ? "visible" : ""}`}>
+                      {error?.message || " "}
+                    </p>
+                    {maxLength && (
+                      <p className="param-field-char-counter">
+                        {field.value?.length || 0}/{maxLength}
+                      </p>
+                    )}
+                  </div>
                 </>
               );
 
@@ -73,12 +82,10 @@ export function ParamInput<T extends FieldValues, G>({
                 <>
                   <input
                     type="number"
-                    {...field}
+                    {...field }
                     placeholder={placeholder}
                     value={field.value ?? ""}
-                    onChange={(e) =>
-                      field.onChange(handleChange(e.target.value))
-                    }
+                    onChange={(e) => field.onChange(e.target.value === "" ? "" : Number(e.target.value))}
                     className={`param-field no-spin ${
                       error ? "param-field-error" : ""
                     }`}
@@ -168,9 +175,16 @@ export function ParamInput<T extends FieldValues, G>({
                       error ? "param-field-error" : ""
                     }`}
                   />
-                  <p className={`param-error ${error ? "visible" : ""}`}>
-                    {error?.message || " "}
-                  </p>
+                  <div className="param-field-error-max-length">
+                    <p className={`param-error ${error ? "visible" : ""}`}>
+                      {error?.message || " "}
+                    </p>
+                    {maxLength && (
+                      <p className="param-field-char-counter">
+                        {field.value?.length || 0}/{maxLength}
+                      </p>
+                    )}
+                  </div>
                 </>
               );
           }
