@@ -28,7 +28,7 @@ const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JS
             <ParamsWithIcons offerProps={offerProps} iconSize={18} hideLabel={true} spaceEvenly={false}/>
             <ul className='offerInfoPanelLocationDate'>
               <li className='offerInfoPanelListElem'>
-                <p className='offerInfoPanelListElemText'>{offerProps.location}</p>
+                <p className='offerInfoPanelListElemText'>{offerProps.locationName}</p>
               </li>
               <li className='offerInfoPanelListElem'>
                 <p className='offerInfoPanelListElemText'>{getReadableSellerType(offerProps.sellerDto.sellerType)} • Published: {offerProps.createdDate.toLocaleString("pl-PL")}</p>

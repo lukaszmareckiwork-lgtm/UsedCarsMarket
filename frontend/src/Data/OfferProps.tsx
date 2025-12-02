@@ -143,7 +143,9 @@ export interface OfferProps {
   description?: string;
   photos?: PhotoDto[];
 
-  location: string;
+  locationName: string;
+  locationLat: number;
+  locationLong: number;
 
   price: number;
   currency: CurrencyTypeEnum;
