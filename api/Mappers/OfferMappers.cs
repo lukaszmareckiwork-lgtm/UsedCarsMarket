@@ -53,7 +53,9 @@ namespace api.Mappers
                     CreatedDate = p.CreatedDate
                 }).ToList(),
 
-                Location = offer.Location,
+                LocationName = offer.LocationName,
+                LocationLat = offer.LocationLat,
+                LocationLong = offer.LocationLong,
 
                 Price = offer.Price,
                 Currency = offer.Currency,
@@ -128,7 +130,9 @@ namespace api.Mappers
                 SortOrder = p.SortOrder,
                 CreatedDate = p.CreatedDate
             }).ToList(),
-            Location = o.Location,
+            LocationName = o.LocationName,
+            LocationLat = o.LocationLat,
+            LocationLong = o.LocationLong,
             Price = o.Price,
             Currency = o.Currency,
             CreatedDate = o.CreatedDate

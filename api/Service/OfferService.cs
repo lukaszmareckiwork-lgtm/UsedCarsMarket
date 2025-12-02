@@ -36,7 +36,9 @@ namespace api.Service
                 Title = dto.Title,
                 Subtitle = dto.Subtitle,
                 Description = dto.Description,
-                Location = dto.Location,
+                LocationName = dto.LocationName,
+                LocationLat = dto.LocationLat,
+                LocationLong = dto.LocationLong,
                 Price = dto.Price,
                 Currency = dto.Currency,
                 AppUserId = appUserId,
@@ -98,7 +100,9 @@ namespace api.Service
             offer.Title = dto.Title;
             offer.Subtitle = dto.Subtitle;
             offer.Description = dto.Description;
-            offer.Location = dto.Location;
+            offer.LocationName = dto.LocationName;
+            offer.LocationLat = dto.LocationLat;
+            offer.LocationLong = dto.LocationLong;
             offer.Price = dto.Price;
             offer.Currency = dto.Currency;
 
