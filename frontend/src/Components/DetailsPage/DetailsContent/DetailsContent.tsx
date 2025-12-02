@@ -4,9 +4,10 @@ import { getReadableCurrencyType, type OfferProps } from '../../../Data/OfferPro
 import ParamsWithIcons from '../../ParamsWithIcons/ParamsWithIcons'
 import FeaturesList from "../FeaturesList/FeaturesList"
 import DetailsItem from "../DetailsItem/DetailsItem"
-import { FaBars, FaCar, FaList } from "react-icons/fa"
+import { FaBars, FaCar, FaList, FaMapMarkedAlt } from "react-icons/fa"
 import { IoMdSettings } from "react-icons/io"
 import SpecsList from "../SpecsList/SpecsList"
+import { LocationPicker } from "../../LocationPicker/LocationPicker"
 
 interface Props {
   offerProps: OfferProps
@@ -46,6 +47,12 @@ const DetailsContent = ({ offerProps }: Props) => {
         </DetailsItem>
         <DetailsItem label="Features" iconNode={<FaList size={22}/>}>
           <FeaturesList offerProps={offerProps} />
+        </DetailsItem>
+        <DetailsItem label="Location" iconNode={<FaMapMarkedAlt size={22}/>}>
+          <LocationPicker
+            mapboxToken={import.meta.env.VITE_MAPBOX_TOKEN || ""}
+            targetCoordinates={{lat: offerProps.locationLat, lng: offerProps.locationLong}}
+          />
         </DetailsItem>
       </div>
     </div>

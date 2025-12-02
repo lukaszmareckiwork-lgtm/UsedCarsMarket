@@ -21,6 +21,7 @@ export const offerPostApi = async (offer: CreateOfferRequestDto) => {
 
      // Define fields that need 2-decimal formatting
     const twoDecimalFields = new Set(["engineDisplacement", "price"]);
+    const intactNumberFields = new Set(["locationLat", "locationLong"]);
 
     // Append ALL primitive properties
     Object.entries(offer).forEach(([key, value]) => {
@@ -31,7 +32,9 @@ export const offerPostApi = async (offer: CreateOfferRequestDto) => {
       if (typeof value === "number") {
         if (twoDecimalFields.has(key)) {
           formData.append(key, value.toFixed(2));
-        } else {
+        } else if(intactNumberFields.has(key)) {
+          formData.append(key, value.toString());
+        }  else {
           formData.append(key, Math.floor(value).toString()); // integer, enums, IDs
         }
       } else if (value instanceof Date) {

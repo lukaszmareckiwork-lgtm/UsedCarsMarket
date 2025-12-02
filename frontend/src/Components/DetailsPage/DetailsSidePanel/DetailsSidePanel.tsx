@@ -37,7 +37,7 @@ const DetailsSidePanel = ({ offerProps }: Props) => {
               <span>Location</span>
             </div>
             <div className="details-side-panel-location-data">
-              <p>{offerProps.location}</p>
+              <p>{offerProps.locationName}</p>
             </div>
           </div>
           <Spacer size={24} />
