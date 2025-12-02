@@ -1,3 +1,4 @@
+using System.Globalization;
 using api.Data;
 using api.Interfaces;
 using api.Models;
@@ -82,6 +83,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+var culture = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(culture);
+    options.SupportedCultures = new List<CultureInfo> { culture };
+    options.SupportedUICultures = new List<CultureInfo> { culture };
+});
+
 builder.Services.AddScoped<IOfferRepository, OfferRepostiory>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IFavouriteOffersRepository, FavouriteOffersRepository>();
@@ -114,5 +126,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseRequestLocalization();
 
 app.Run();

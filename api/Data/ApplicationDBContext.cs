@@ -95,10 +95,11 @@ namespace api.Data
                       .HasColumnType("decimal(18,2)");
 
                 // MaxLength for strings
-                entity.Property(o => o.Title).HasMaxLength(200).IsRequired();
-                entity.Property(o => o.Subtitle).HasMaxLength(200).IsRequired();
+                entity.Property(o => o.Title).HasMaxLength(60).IsRequired();
+                entity.Property(o => o.Subtitle).HasMaxLength(80);
+                entity.Property(o => o.Description).HasMaxLength(2000).IsRequired();
                 entity.Property(o => o.Currency).HasMaxLength(3).IsRequired();
-                entity.Property(o => o.Location).IsRequired();
+                // entity.Property(o => o.Location).IsRequired();
             });
 
             // Table name for Photos

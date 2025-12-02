@@ -80,7 +80,9 @@ namespace api.Models
 
         public List<Photo> Photos { get; set; } = new();
 
-        public string Location { get; set; } = string.Empty;
+        public string LocationName { get; set; } = string.Empty;
+        public double LocationLat { get; set; }
+        public double LocationLong { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
