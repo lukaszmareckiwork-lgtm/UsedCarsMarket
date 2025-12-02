@@ -13,7 +13,9 @@ export interface CreateOfferRequestDto {
   title: string;
   subtitle: string;
   description?: string;
-  location: string;
+  locationName: string;
+  locationLat: number;
+  locationLong: number;
   price: number;
   currency: string;
 

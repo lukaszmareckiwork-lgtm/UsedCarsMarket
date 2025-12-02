@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { ParamInput } from "../ParamInput/ParamInput";
 import "./AddOfferForm.css";
@@ -11,13 +10,13 @@ import {
   getReadableCurrencyType,
   FeatureTypeEnum,
   getReadableFeatureType,
-  type OfferProps,
 } from "../../Data/OfferProps";
 import { useMakes } from "../../Context/MakesContext";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { CreateOfferRequestDto } from "../../Data/CreateOfferRequestDto";
 import { PhotoUploader } from "../PhotoUploader/PhotoUploader";
+import { LocationPicker } from "../LocationPicker/LocationPicker";
 
 interface Props {
   handleOfferFormSubmit: (newOffer: CreateOfferRequestDto) => void;
@@ -100,7 +99,9 @@ export const validation = Yup.object().shape({
   title: Yup.string().required("Title is required").min(5, "Title too short").max(60, "Title too long"),
   subtitle: Yup.string().required("Subtitle is required").min(5, "Subtitle too short").max(80, "Subtitle too long").nullable(),
   description: Yup.string().nullable().min(20, "Description too short").max(2000, "Description too long"),
-  location: Yup.string().required("Location is required"),
+  locationName: Yup.string(),
+  locationLat: Yup.number().required("Latitude is required"),
+  locationLong: Yup.number().required("Longitude is required"),
   price: Yup.number()
     .required("Price is required")
     .transform((_, originalValue) => {
@@ -124,7 +125,6 @@ export const validation = Yup.object().shape({
 
 const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
   const { makes } = useMakes();
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   const { control, handleSubmit, reset, watch, setValue } = useForm<CreateOfferRequestDto>(
     {
@@ -144,18 +144,16 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
         subtitle: "",
         description: "",
         features: [],
-        // photos: [],
-        location: "",
+        locationName: "",
+        locationLat: undefined,
+        locationLong: undefined,
         price: undefined,
         currency: CurrencyTypeEnum.Usd,
-        // createdDate: new Date(),
         photosFiles: [],
       },
       resolver: yupResolver(validation) as any,
     }
   );
-
-  const photos = watch("photosFiles") as File[] | undefined;
 
   const selectedMake = makes.find((m) => m.make_id === watch("makeId"));
   const availableModels = selectedMake
@@ -166,13 +164,6 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
     // data.id = crypto.randomUUID();
     handleOfferFormSubmit(data);
   };
-
-  // const handlePhotoUpload = (files: FileList | null) => {
-  //   if (!files) return;
-  //   const arr = Array.from(files);
-  //   setValue("photos", arr);
-  //   setPreviewUrls(arr.map((f) => URL.createObjectURL(f)));
-  // };
 
   const toOption = <T extends number>(
     obj: Record<string, T>,
@@ -308,7 +299,6 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
             placeholder="Add details about your car..."
             maxLength={2000}
           />
-          <PhotoUploader name="photosFiles" control={control} maxFiles={10} />
           <ParamInput
             name="features"
             label="Features"
@@ -318,12 +308,14 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
             numeric
             placeholder="Select features"
           />
-          <ParamInput
-            name="location"
-            label="Location"
-            control={control}
-            placeholder="City / Region"
-          />
+          <LocationPicker 
+            mapboxToken={import.meta.env.VITE_MAPBOX_TOKEN || ""}
+            onChange={(lat, lng, name) => {
+              setValue("locationLat", lat, { shouldValidate: true });
+              setValue("locationLong", lng, { shouldValidate: true });
+              setValue("locationName", name, { shouldValidate: true});
+            }} />
+          <PhotoUploader name="photosFiles" control={control} maxFiles={10} />
           <ParamInput
             name="price"
             label="Price"
