@@ -1,0 +1,26 @@
+.add-favourites-button-icon.is-not-favourite {
+    color: #a8a8a8;
+}
+
+.add-favourites-button {
+    /* color: #0071CE; */
+    
+}
+
+.add-favourites-button-icon {
+    color: #0071CE;
+
+    border: none;
+    background: none;
+
+    position: relative;
+    cursor: pointer;
+}
+
+.add-favourites-button-icon:hover {
+    color: #2f86ce;
+}
+
+.add-favourites-button-icon:active {
+    color: #0071CE;
+}

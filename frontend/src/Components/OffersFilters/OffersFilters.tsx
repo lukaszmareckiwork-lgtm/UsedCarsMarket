@@ -15,13 +15,6 @@ interface Props{
 const OffersFilters = ( { pageNumber, pageSize, handleFilteredOffers, handleLoadingOffers }: Props) => {
   const [filtersResult, setFiltersResult] = useState<OffersFiltersControlsResult | null>(null);
 
-  function normalizeOffer(o: OfferProps): OfferProps {
-    return {
-      ...o,
-      createdDate: new Date(o.createdDate),
-    };
-  }
-
   useEffect(() =>{
     if(filtersResult == null)
       return;
@@ -33,19 +26,16 @@ const OffersFilters = ( { pageNumber, pageSize, handleFilteredOffers, handleLoad
     setFiltersResult(fRes);
     handleLoadingOffers(true);
 
+    const onlyFavourites = fRes.onlyFavourites;
+    const createdById = fRes.createdById;//add to offer service
     const makes = fRes.selMakes.map((x) => x.make_id);
     const models = fRes.selModels.map((x) => x.model_id);
 
-    offerPreviewGetApi(pageNumber, pageSize, makes, models)?.then((res) => {
+    offerPreviewGetApi(onlyFavourites, pageNumber, pageSize, makes, models, createdById)?.then((res) => {
       handleLoadingOffers(false);
-
-      if(res?.data != undefined){
-        const data = res.data;
-        const offers = res.data.items!.map(normalizeOffer) ?? [];
-        data.items = offers;
-        // console.log(`offerPreviewGetApi - data: ${JSON.stringify(data)}`);
-        handleFilteredOffers(data);
-      }
+      
+      if(res?.data != undefined)
+        handleFilteredOffers(res?.data);
     });
   };
 

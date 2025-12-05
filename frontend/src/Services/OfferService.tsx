@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import type { OfferProps } from "../Data/OfferProps";
 import { handleError } from "../Helpers/ErrorHandler";
 import type { PagedResult } from "../Helpers/PagedResult";
@@ -6,14 +6,31 @@ import type { CreateOfferRequestDto } from "../Data/CreateOfferRequestDto";
 
 const api = "http://localhost:5261/api/offer/";
 
-const getOfferFiltersQuery = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[]) =>{
+const getOfferFiltersQuery = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[], createdById?: string) =>{
   const paginationQuery = `PageNumber=${pageNumber}&PageSize=${pageSize}`;
   const makesQuery = makeIds.length ? `&MakeIds=${makeIds.join("&MakeIds=")}` : "";
   const modelsQuery = modelIds.length ? `&ModelIds=${modelIds.join("&ModelIds=")}` : "";
 
-  const query = `${paginationQuery}${makesQuery}${modelsQuery}`;
+  const createdByQuery = createdById ? `&CreatedBy=${createdById}` : "";
+
+  const query = `${paginationQuery}${makesQuery}${modelsQuery}${createdByQuery}`;
   return query;
 }
+
+function normalizeOfferDate(o: OfferProps): OfferProps {
+    return {
+      ...o,
+      createdDate: new Date(o.createdDate),
+    };
+  }
+
+function normalizeOffersDates(promise: Promise<void | AxiosResponse<PagedResult<OfferProps>, any, {}>>){
+  return promise.then(res => {
+    if(res?.data != undefined){
+      const offers = res.data.items!.map(normalizeOfferDate) ?? [];
+      res.data.items = offers;
+    }})
+  };
 
 export const offerPostApi = async (offer: CreateOfferRequestDto) => {
   try {
@@ -72,7 +89,7 @@ export const offerPostApi = async (offer: CreateOfferRequestDto) => {
   }
 };
 
-export const offerGetApi = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[]) => {
+export const offerGetApi = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[], createdById?: string) => {
   try {
     const query = getOfferFiltersQuery(pageNumber, pageSize, makeIds, modelIds);
 
@@ -91,17 +108,22 @@ export const offerGetApi = (pageNumber: number, pageSize: number, makeIds: numbe
   }
 };
 
-export const offerPreviewGetApi = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[]) => {
+export const offerPreviewGetApi = (onlyFavourites: boolean, pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[], createdById?: string) => {
   try {
-    const query = getOfferFiltersQuery(pageNumber, pageSize, makeIds, modelIds);
+    const query = getOfferFiltersQuery(pageNumber, pageSize, makeIds, modelIds, createdById);
+    const favourites = onlyFavourites ? "/favourites" : "";
 
-    console.log(`offerGetApi - query: ${api}${query}`);
+    const finalRoute = `${api}preview${favourites}?${query}`;
+
+    console.log(`offerGetApi - finalRoute: ${finalRoute}`);
     const data = axios
-      .get<PagedResult<OfferProps>>(`${api}preview?${query}`)
+      .get<PagedResult<OfferProps>>(finalRoute)
       .catch((error) => {
         console.log(`offerGetApi - error: ${error}`);
         handleError(error);
       });
+ 
+    normalizeOffersDates(data);
 
     return data;
   } catch (error) {
