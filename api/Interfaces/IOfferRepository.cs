@@ -7,11 +7,11 @@ namespace api.Interfaces
 {
     public interface IOfferRepository
     {
-        Task<PagedResult<Offer>> GetAllAsync(OfferQueryObject query);
-        Task<PagedResult<OfferPreviewDto>> GetAllPreviewAsync(OfferQueryObject query);
+        Task<PagedResult<OfferDto>> GetAllAsync(OfferQueryObject query, string? appUserId = null);
+        Task<PagedResult<OfferPreviewDto>> GetAllPreviewAsync(OfferQueryObject query, string? appUserId = null);
+        Task<PagedResult<OfferPreviewDto>> GetAllPreviewFavouritesAsync(string appUserId, OfferQueryObject query);
         Task<Offer?> GetByIdAsync(int id);
         Task<Offer> CreateAsync(Offer offer);
-        // Task<Offer?> UpdateAsync(int id, UpdateOfferRequestDto offerRequestDto);
         Task<Offer?> UpdateModelAsync(Offer offer);
         Task<Offer?> DeleteAsync(int id);
         Task<bool> OfferExistsAsync(int id);
