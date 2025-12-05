@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using api.Data;
 using api.Dtos.Common;
 using api.Dtos.Offer;
 using api.Extensions;
@@ -13,7 +8,6 @@ using api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using api.Service;
 
 namespace api.Controllers
@@ -25,12 +19,14 @@ namespace api.Controllers
         private readonly IOfferRepository _offerRepo;
         private readonly UserManager<AppUser> _userManager;
         private readonly OfferService _offerService;
+        private readonly IFavouriteOffersRepository _favouriteOffersRepo;
 
-        public OfferController(IOfferRepository offerRepo, UserManager<AppUser> userManager, OfferService offerService)
+        public OfferController(IOfferRepository offerRepo, UserManager<AppUser> userManager, OfferService offerService, IFavouriteOffersRepository favouriteOffersRepo)
         {
             _offerRepo = offerRepo;
             _userManager = userManager;
             _offerService = offerService;
+            _favouriteOffersRepo = favouriteOffersRepo;
         }
 
         [HttpGet]
@@ -39,11 +35,19 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var result = await _offerRepo.GetAllAsync(query);
+            string? appUserId = null;
+            if (User?.Identity?.IsAuthenticated == true)
+            {
+                var email = User.GetEmail();
+                var appUser = await _userManager.FindByEmailAsync(email);
+                appUserId = appUser?.Id;
+            }
+
+            var result = await _offerRepo.GetAllAsync(query, appUserId);
 
             var dto = new PagedResult<OfferDto>
             {
-                Items = result.Items.Select(o => o.OfferDto()).ToList(),
+                Items = result.Items.ToList(),
                 TotalCount = result.TotalCount,
                 PageNumber = result.PageNumber,
                 PageSize = result.PageSize
@@ -63,7 +67,20 @@ namespace api.Controllers
             if (offer == null)
                 return NotFound();
 
-            return Ok(offer!.OfferDto());
+            var dto = offer!.OfferDto();
+
+            // If user is authenticated, include IsFavourite flag
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var email = User.GetEmail();
+                var appUser = await _userManager.FindByEmailAsync(email);
+                if (appUser != null)
+                {
+                    dto.IsFavourite = await _favouriteOffersRepo.ExistsAsync(appUser.Id, offer.Id);
+                }
+            }
+
+            return Ok(dto);
         }
 
         [HttpGet("preview")]
@@ -72,7 +89,40 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var result = await _offerRepo.GetAllPreviewAsync(query);
+            string? appUserId = null;
+            if (User?.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var email = User.GetEmail();
+                var appUser = await _userManager.FindByEmailAsync(email);
+                appUserId = appUser?.Id;
+            }
+
+            var result = await _offerRepo.GetAllPreviewAsync(query, appUserId);
+
+            var dto = new PagedResult<OfferPreviewDto>
+            {
+                Items = result.Items.ToList(),
+                TotalCount = result.TotalCount,
+                PageNumber = result.PageNumber,
+                PageSize = result.PageSize
+            };
+
+            return Ok(dto);
+        }
+
+        [HttpGet("preview/favourites")]
+        [Authorize]
+        public async Task<IActionResult> GetAllPreviewFavourites([FromQuery] OfferQueryObject query)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var email = User.GetEmail();
+            var appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser == null)
+                return Unauthorized();
+
+            var result = await _offerRepo.GetAllPreviewFavouritesAsync(appUser.Id, query);
 
             var dto = new PagedResult<OfferPreviewDto>
             {
