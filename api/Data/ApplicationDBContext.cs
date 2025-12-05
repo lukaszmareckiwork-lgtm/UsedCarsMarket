@@ -18,6 +18,7 @@ namespace api.Data
         }
 
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<Photo> Photos { get; set; }
         public DbSet<FavouriteOffer> FavouriteOffers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -29,12 +30,14 @@ namespace api.Data
             builder.Entity<FavouriteOffer>()
                 .HasOne(fo => fo.AppUser)
                 .WithMany(u => u.FavouriteOffers)
-                .HasForeignKey(fo => fo.AppUserId);
+                .HasForeignKey(fo => fo.AppUserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<FavouriteOffer>()
                 .HasOne(fo => fo.Offer)
                 .WithMany(o => o.FavouriteOffers)
-                .HasForeignKey(o => o.OfferId);
+                .HasForeignKey(o => o.OfferId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             var roles = new List<IdentityRole>
             {
@@ -56,6 +59,12 @@ namespace api.Data
 
             builder.Entity<IdentityRole>().HasData(roles);
 
+            builder.Entity<Offer>()
+                .HasOne(o => o.AppUser)
+                .WithMany()
+                .HasForeignKey(o => o.AppUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Table configuration
             builder.Entity<Offer>(entity =>
             {
@@ -68,14 +77,14 @@ namespace api.Data
                 entity.Property(o => o.Guid)
                       .HasDefaultValueSql("NEWID()"); // SQL Server auto-generates if null
 
-                // Features stored as comma-separated string
+                // Features stored as comma-separated integers
                 var featuresConverter = new ValueConverter<List<FeatureType>?, string>(
-                    v => v == null ? string.Empty : string.Join(',', v),
+                    v => v == null ? string.Empty : string.Join(',', v.Select(f => (int)f)),
                     v => string.IsNullOrEmpty(v)
                         ? new List<FeatureType>()
                         : v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                        .Select(f => Enum.Parse<FeatureType>(f))
-                        .ToList()
+                           .Select(f => (FeatureType)int.Parse(f))
+                           .ToList()
                 );
 
                 entity.Property(o => o.Features)
@@ -86,11 +95,25 @@ namespace api.Data
                       .HasColumnType("decimal(18,2)");
 
                 // MaxLength for strings
-                entity.Property(o => o.Title).HasMaxLength(200).IsRequired();
-                entity.Property(o => o.Subtitle).HasMaxLength(200).IsRequired();
+                entity.Property(o => o.Title).HasMaxLength(60).IsRequired();
+                entity.Property(o => o.Subtitle).HasMaxLength(80);
+                entity.Property(o => o.Description).HasMaxLength(2000).IsRequired();
                 entity.Property(o => o.Currency).HasMaxLength(3).IsRequired();
-                entity.Property(o => o.Location).IsRequired();
+                // entity.Property(o => o.Location).IsRequired();
             });
+
+            // Table name for Photos
+            builder.Entity<Photo>(entity =>
+            {
+                entity.ToTable("Photos");
+            });
+
+            // Configure Offer <-> Photo (one-to-many)
+            builder.Entity<Offer>()
+                .HasMany(o => o.Photos)
+                .WithOne(p => p.Offer)
+                .HasForeignKey(p => p.OfferId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

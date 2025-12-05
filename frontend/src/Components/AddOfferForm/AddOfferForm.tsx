@@ -11,68 +11,118 @@ import {
   getReadableTransmissionType,
   getReadableSellerType,
   getReadableCurrencyType,
-  type OfferProps,
   FeatureTypeEnum,
   getReadableFeatureType,
+  type OfferProps,
 } from "../../Data/OfferProps";
-import { useMakes, type MakeData } from "../../context/MakesContext";
+import { useMakes } from "../../context/MakesContext";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-interface Props{
+interface Props {
   handleOfferFormSubmit: (newOffer: OfferProps) => void;
 }
+
+export const validation = Yup.object().shape({
+  makeId: Yup.number().required("Make is required").min(1, "Select a make"),
+  modelId: Yup.number().required("Model is required").min(1, "Select a model"),
+  year: Yup.number()
+    .required("Year is required")
+    .min(1900, "Year must be >= 1900")
+    .max(
+      new Date().getFullYear(),
+      `Year cannot exceed ${new Date().getFullYear()}`
+    ),
+  mileage: Yup.number()
+    .required("Mileage is required")
+    .min(0, "Mileage cannot be negative"),
+  fuelType: Yup.number().required("Fuel type is required"),
+  transmission: Yup.number().required("Transmission is required"),
+  engineDisplacement: Yup.number().required("Engine displacement is required"),
+  enginePower: Yup.number().required("Engine power is required"),
+  color: Yup.string().nullable(),
+  vin: Yup.string()
+    .nullable()
+    .notRequired()
+    .test(
+      "vin-format",
+      "VIN must be exactly 17 characters",
+      (value) => !value || /^[A-HJ-NPR-Z0-9]{17}$/.test(value)
+    ),
+  title: Yup.string().required("Title is required").min(5, "Title too short"),
+  subtitle: Yup.string().required("Subtitle is required").min(5, "Subtitle too short").nullable(),
+  description: Yup.string().nullable().min(20, "Description too short"),
+  location: Yup.string().required("Location is required"),
+  price: Yup.number()
+    .required("Price is required")
+    .min(100, "Too cheap to be real"),
+  photos: Yup.array().of(Yup.mixed<File>()).nullable(),
+});
 
 const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
   const { makes } = useMakes();
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
-  const { control, handleSubmit, reset, watch, setValue } = useForm<OfferProps>({
-    mode: "onChange",
-    defaultValues: {
-      offerId: undefined,
-      makeId: undefined,
-      modelId: undefined,
-      year: undefined,
-      mileage: undefined,
-      fuelType: undefined,
-      engineDisplacement: undefined,
-      enginePower: undefined,
-      transmission: undefined,
-      color: "",
-      vin: "",
-      title: "",
-      subtitle: "",
-      description: "",
-      features: [],
-      photos: [],
-      location: "",
-      sellerType: undefined,
-      price: undefined,
-      currency: CurrencyTypeEnum.Usd,
-      createdDate: new Date(),
-    },
-  });
+  const { control, handleSubmit, reset, watch, setValue } = useForm<OfferProps>(
+    {
+      mode: "onChange",
+      defaultValues: {
+        offerId: "",
+        makeId: 0,
+        modelId: 0,
+        year: new Date().getFullYear(),
+        mileage: 0,
+        fuelType: FuelTypeEnum.Petrol,
+        engineDisplacement: undefined,
+        enginePower: undefined,
+        transmission: TransmissionTypeEnum.Manual,
+        color: "",
+        vin: "",
+        title: "",
+        subtitle: "",
+        description: "",
+        features: [],
+        photos: [],
+        location: "",
+        sellerType: SellerTypeEnum.Private,
+        price: 0,
+        currency: CurrencyTypeEnum.Usd,
+        createdDate: new Date(),
+      },
+      resolver: yupResolver(validation) as any,
+    }
+  );
 
   const selectedMake = makes.find((m) => m.make_id === watch("makeId"));
-  const availableModels = selectedMake ? Object.values(selectedMake.models) : [];
+  const availableModels = selectedMake
+    ? Object.values(selectedMake.models)
+    : [];
 
   const onSubmit: SubmitHandler<OfferProps> = (data) => {
     data.offerId = crypto.randomUUID();
-    console.log("✅ Offer submitted:", data);
     handleOfferFormSubmit(data);
   };
 
   const handlePhotoUpload = (files: FileList | null) => {
     if (!files) return;
-    const fileArray = Array.from(files);
-    setValue("photos", fileArray);
-    setPreviewUrls(fileArray.map((f) => URL.createObjectURL(f)));
+    const arr = Array.from(files);
+    setValue("photos", arr);
+    setPreviewUrls(arr.map((f) => URL.createObjectURL(f)));
   };
+
+  const toOption = <T extends number>(
+    obj: Record<string, T>,
+    getLabel: (v: T) => string
+  ) =>
+    Object.entries(obj)
+      .filter(([_, v]) => typeof v === "number")
+      .map(([_, v]) => ({ value: v as T, label: getLabel(v as T) }));
 
   return (
     <form className="add-offer-form" onSubmit={handleSubmit(onSubmit)}>
       <h2>Add a New Offer</h2>
 
-      {/* VEHICLE INFORMATION */}
+      {/* Vehicle Information */}
       <section className="form-section">
         <h3>Vehicle Information</h3>
         <div className="form-grid">
@@ -81,10 +131,13 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
             label="Make"
             control={control}
             type="select"
-            options={makes.map((m) => ({ value: m.make_id, label: m.make_name }))}
-            rules={{ required: "Make is required" }}
+            options={makes.map((m) => ({
+              value: m.make_id,
+              label: m.make_name,
+            }))}
+            numeric
+            placeholder="Select make"
           />
-
           <ParamInput
             name="modelId"
             label="Model"
@@ -94,93 +147,78 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
               value: m.model_id,
               label: m.model_name,
             }))}
-            rules={{ required: "Model is required" }}
+            numeric
+            placeholder="Select model"
           />
-
           <ParamInput
             name="year"
             label="Year"
             type="number"
             control={control}
-            rules={{
-              required: "Year is required",
-              min: { value: 1900, message: "Year cannot be before 1900" },
-              max: { value: new Date().getFullYear(), message: "Invalid year" },
-            }}
+            numeric
+            placeholder="e.g. 1999"
           />
-
           <ParamInput
             name="mileage"
             label="Mileage (km)"
             type="number"
             control={control}
-            rules={{
-              required: "Mileage is required",
-              min: { value: 0, message: "Mileage cannot be negative" },
-            }}
+            numeric
+            placeholder="e.g. 12345"
           />
-
           <ParamInput
             name="fuelType"
             label="Fuel Type"
             control={control}
             type="select"
-            options={Object.values(FuelTypeEnum).map((f) => ({
-              value: f,
-              label: getReadableFuelType(f),
-            }))}
+            options={toOption(FuelTypeEnum, getReadableFuelType)}
+            numeric
+            placeholder="Select fuel type"
           />
-
           <ParamInput
             name="transmission"
             label="Transmission"
             control={control}
             type="select"
-            options={Object.values(TransmissionTypeEnum).map((t) => ({
-              value: t,
-              label: getReadableTransmissionType(t),
-            }))}
+            options={toOption(
+              TransmissionTypeEnum,
+              getReadableTransmissionType
+            )}
+            numeric
+            placeholder="Select transmission"
           />
-
           <ParamInput
             name="engineDisplacement"
-            label="Engine Displacement (cc)"
+            label="Engine displacement (cc)"
             type="number"
             control={control}
-            rules={{
-              min: { value: 50, message: "Too small" },
-              max: { value: 10000, message: "Too large" },
-            }}
+            numeric
             placeholder="e.g. 1998"
           />
-
           <ParamInput
             name="enginePower"
-            label="Engine Power (HP)"
+            label="Engine power (HP)"
             type="number"
             control={control}
-            rules={{
-              min: { value: 10, message: "Too low" },
-              max: { value: 2000, message: "Too high" },
-            }}
+            numeric
             placeholder="e.g. 160"
           />
-
-          <ParamInput name="color" label="Color" control={control} placeholder="e.g. Red" />
-
+          <ParamInput
+            name="color"
+            label="Color"
+            control={control}
+            placeholder="e.g. Red"
+          />
           <ParamInput
             name="vin"
-            label="VIN Number"
+            label="VIN"
             control={control}
             placeholder="17-character Vehicle Identification Number"
-            rules={{
-              pattern: { value: /^[A-HJ-NPR-Z0-9]{17}$/, message: "Invalid VIN format" },
-            }}
           />
         </div>
       </section>
 
-      {/* OFFER DETAILS */}
+      {/* Offer Details */}
       <section className="form-section">
         <h3>Offer Details</h3>
         <div className="form-grid">
@@ -189,85 +227,65 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
             label="Title"
             control={control}
             placeholder="Enter offer title..."
-            rules={{
-              required: "Title is required",
-              minLength: { value: 5, message: "Title too short" },
-            }}
           />
-
-          <ParamInput name="subtitle" label="Subtitle" control={control} placeholder="Enter offer subtitle..." />
-
+          <ParamInput
+            name="subtitle"
+            label="Subtitle"
+            control={control}
+            placeholder="Enter offer subtitle..."
+          />
           <ParamInput
             name="description"
             label="Description"
             control={control}
             type="textarea"
             placeholder="Add details about your car..."
-            rules={{ minLength: { value: 20, message: "Description too short" } }}
           />
-
           <ParamInput
             name="features"
             label="Features"
             control={control}
             type="multiselect"
-            options={Object.values(FeatureTypeEnum).map((f) => ({
-              value: f,
-              label: getReadableFeatureType(f),
-            }))}
+            options={toOption(FeatureTypeEnum, getReadableFeatureType)}
+            numeric
+            placeholder="Select features"
           />
-
-          <div className="param-input">
-            <label>Photos</label>
-            <input type="file" multiple accept="image/*" onChange={(e) => handlePhotoUpload(e.target.files)} />
-            <div className="photo-previews">
-              {previewUrls.map((url, i) => (
-                <img key={i} src={url} alt={`Preview ${i}`} />
-              ))}
-            </div>
-          </div>
-
           <ParamInput
             name="location"
             label="Location"
             control={control}
             placeholder="City / Region"
-            rules={{ required: "Location is required" }}
           />
-
           <ParamInput
             name="sellerType"
             label="Seller Type"
             control={control}
             type="select"
-            options={Object.values(SellerTypeEnum).map((s) => ({
-              value: s,
-              label: getReadableSellerType(s),
-            }))}
+            options={toOption(SellerTypeEnum, getReadableSellerType)}
+            numeric
+            placeholder="Select seller type"
           />
-
-          <div className="param-input price-field">
-            <ParamInput
-              name="price"
-              label="Price"
-              type="number"
-              control={control}
-              rules={{
-                required: "Price is required",
-                min: { value: 100, message: "Too cheap to be real" },
-              }}
-            />
-            <ParamInput
-              name="currency"
-              label="Currency"
-              control={control}
-              type="select"
-              options={Object.values(CurrencyTypeEnum).map((c) => ({
-                value: c,
-                label: getReadableCurrencyType(c),
-              }))}
-            />
-          </div>
+          <ParamInput
+            name="price"
+            label="Price"
+            control={control}
+            type="number"
+            numeric
+            placeholder="Enter price"
+          />
+          <ParamInput
+            name="currency"
+            label="Currency"
+            control={control}
+            type="select"
+            options={Object.keys(CurrencyTypeEnum).map((key) => ({
+              value: key,
+              label: getReadableCurrencyType(
+                CurrencyTypeEnum[key as keyof typeof CurrencyTypeEnum]
+              ),
+            }))}
+            placeholder="Select currency"
+          />
         </div>
       </section>
 

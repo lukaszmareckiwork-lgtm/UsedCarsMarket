@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using api.Dtos.Account;
 using api.Dtos.Offer;
 using api.Models;
 
@@ -15,6 +13,15 @@ namespace api.Mappers
             {
                 Id = offer.Id,
                 Guid = offer.Guid,
+                
+                SellerDto = new SellerDto
+                {
+                    UserId = offer.AppUser?.Id ?? "",
+                    Username = offer.AppUser?.UserName ?? "",
+                    PhoneNumber = offer.AppUser?.PhoneNumber ?? "",
+                    Email = offer.AppUser?.Email ?? "",
+                    SellerType = offer.AppUser?.SellerType ?? SellerType.Private,
+                },
 
                 MakeId = offer.MakeId,
                 ModelId = offer.ModelId,
@@ -28,6 +35,7 @@ namespace api.Mappers
                 Transmission = offer.Transmission,
 
                 Color = offer.Color,
+                Vin = offer.Vin,
 
                 Features = offer.Features,
 
@@ -35,40 +43,19 @@ namespace api.Mappers
                 Subtitle = offer.Subtitle,
                 Description = offer.Description,
 
-                Photos = offer.Photos,
+                Photos = offer.Photos.Select(p => new PhotoDto
+                {
+                    Id = p.Id,
+                    UrlSmall = p.UrlSmall,
+                    UrlMedium = p.UrlMedium,
+                    UrlLarge = p.UrlLarge,
+                    SortOrder = p.SortOrder,
+                    CreatedDate = p.CreatedDate
+                }).ToList(),
 
-                Location = offer.Location,
-
-                SellerType = offer.SellerType,
-
-                Price = offer.Price,
-                Currency = offer.Currency,
-
-                CreatedDate = offer.CreatedDate
-            };
-        }
-
-        public static OfferPreviewDto OfferPreviewDto(this Offer offer)
-        {
-            return new OfferPreviewDto()
-            {
-                Id = offer.Id,
-                Guid = offer.Guid,
-
-                Year = offer.Year,
-                Mileage = offer.Mileage,
-                
-                FuelType = offer.FuelType,
-                Transmission = offer.Transmission,
-
-                Title = offer.Title,
-                Subtitle = offer.Subtitle,
-
-                Photos = offer.Photos,
-
-                Location = offer.Location,
-
-                SellerType = offer.SellerType,
+                LocationName = offer.LocationName,
+                LocationLat = offer.LocationLat,
+                LocationLong = offer.LocationLong,
 
                 Price = offer.Price,
                 Currency = offer.Currency,
@@ -77,41 +64,120 @@ namespace api.Mappers
             };
         }
 
-        public static Offer ToOfferFromCreateDto(this CreateOfferRequestDto requestDto)
-        {
-            return new Offer()
-            {
-                Guid = requestDto.Guid,
+        // public static OfferPreviewDto OfferPreviewDto(this Offer offer)
+        // {
+        //     return new OfferPreviewDto()
+        //     {
+        //         Id = offer.Id,
+        //         Guid = offer.Guid,
 
-                MakeId = requestDto.MakeId,
-                ModelId = requestDto.ModelId,
+        //         SellerDto = new SellerDto
+        //         {
+        //             // UserId = offer.AppUser?.Id ?? "",
+        //             // Username = offer.AppUser?.UserName ?? "",
+        //             // PhoneNumber = offer.AppUser?.PhoneNumber ?? "",
+        //             // Email = offer.AppUser?.Email ?? "",
+        //             SellerType = offer.AppUser?.SellerType ?? SellerType.Private,
+        //         },
 
-                Year = requestDto.Year,
-                Mileage = requestDto.Mileage,
+        //         Year = offer.Year,
+        //         Mileage = offer.Mileage,
                 
-                FuelType = requestDto.FuelType,
-                EngineDisplacement = requestDto.EngineDisplacement,
-                EnginePower = requestDto.EnginePower,
-                Transmission = requestDto.Transmission,
+        //         FuelType = offer.FuelType,
+        //         Transmission = offer.Transmission,
+        //         EngineDisplacement = offer.EngineDisplacement,
+        //         EnginePower = offer.EnginePower,
 
-                Color = requestDto.Color,
+        //         Title = offer.Title,
+        //         Subtitle = offer.Subtitle,
 
-                Features = requestDto.Features,
+        //         Photos = offer.Photos,
 
-                Title = requestDto.Title,
-                Subtitle = requestDto.Subtitle,
+        //         Location = offer.Location,
 
-                Photos = requestDto.Photos,
+        //         Price = offer.Price,
+        //         Currency = offer.Currency,
 
-                Location = requestDto.Location,
+        //         CreatedDate = offer.CreatedDate
+        //     };
+        // }
 
-                SellerType = requestDto.SellerType,
+        /// <summary>
+        /// Projection instead of mapper method for use in LINQ queries
+        /// </summary>
+        public static readonly Expression<Func<Offer, OfferPreviewDto>> ProjToOfferPreviewDto =
+        o => new OfferPreviewDto
+        {
+            Id = o.Id,
+            Guid = o.Guid,
+            SellerDto = new SellerDto
+            {
+                SellerType = o.AppUser!.SellerType
+            },
+            Year = o.Year,
+            Mileage = o.Mileage,
+            FuelType = o.FuelType,
+            Transmission = o.Transmission,
+            EngineDisplacement = o.EngineDisplacement,
+            EnginePower = o.EnginePower,
+            Title = o.Title,
+            Subtitle = o.Subtitle,
+            Photos = o.Photos.Select(p => new PhotoDto {
+                Id = p.Id,
+                UrlSmall = p.UrlSmall,
+                UrlMedium = p.UrlMedium,
+                UrlLarge = p.UrlLarge,
+                SortOrder = p.SortOrder,
+                CreatedDate = p.CreatedDate
+            }).ToList(),
+            LocationName = o.LocationName,
+            LocationLat = o.LocationLat,
+            LocationLong = o.LocationLong,
+            Price = o.Price,
+            Currency = o.Currency,
+            CreatedDate = o.CreatedDate
+        };
 
-                Price = requestDto.Price,
-                Currency = requestDto.Currency,
+        // public static Offer ToOfferFromCreateDto(this CreateOfferRequestDto requestDto)
+        // {
+        //     return new Offer()
+        //     {
+        //         Guid = requestDto.Guid,
 
-                CreatedDate = requestDto.CreatedDate
-            };
-        }
+        //         MakeId = requestDto.MakeId,
+        //         ModelId = requestDto.ModelId,
+
+        //         Year = requestDto.Year,
+        //         Mileage = requestDto.Mileage,
+                
+        //         FuelType = requestDto.FuelType,
+        //         EngineDisplacement = requestDto.EngineDisplacement,
+        //         EnginePower = requestDto.EnginePower,
+        //         Transmission = requestDto.Transmission,
+
+        //         Vin = requestDto.Vin,
+        //         Color = requestDto.Color,
+
+        //         Features = requestDto.Features,
+
+        //         Title = requestDto.Title,
+        //         Subtitle = requestDto.Subtitle,
+        //         Description = requestDto.Description,
+
+        //         Photos = requestDto.Photos?.Select(p => new Photo {
+        //             UrlSmall = p.UrlSmall,
+        //             UrlMedium = p.UrlMedium,
+        //             UrlLarge = p.UrlLarge,
+        //             SortOrder = p.SortOrder
+        //         }).ToList() ?? new List<Photo>(),
+
+        //         Location = requestDto.Location,
+
+        //         Price = requestDto.Price,
+        //         Currency = requestDto.Currency,
+
+        //         // CreatedDate = requestDto.CreatedDate
+        //     };
+        // }
     }
 }
