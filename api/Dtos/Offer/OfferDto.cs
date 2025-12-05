@@ -36,6 +36,8 @@ namespace api.Dtos.Offer
 
         public List<PhotoDto> Photos { get; set; } = new();
 
+    public bool IsFavourite { get; set; } = false;
+
         public string LocationName { get; set; } = string.Empty;
         public double LocationLat { get; set; }
         public double LocationLong { get; set; }

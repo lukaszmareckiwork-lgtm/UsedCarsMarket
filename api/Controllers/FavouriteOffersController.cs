@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Extensions;
 using api.Interfaces;
 using api.Models;
@@ -28,29 +24,44 @@ namespace api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetUserFavouriteOffers()
+        public async Task<IActionResult> GetUserFavouriteOffersIds()
         {
-            var email = User.GetEmail();
-            var appUser = await _userManager.FindByEmailAsync(email);
-            var userFavouriteOffers = await _favouriteOffersRepo.GetUserFavouriteOffers(appUser);
-            return Ok(userFavouriteOffers);
+            var appUser = await this.GetCurrentUserAsync(_userManager);
+            if (appUser == null) return Unauthorized();
+
+            var userFavouriteOffersIds = await _favouriteOffersRepo.GetUserFavouriteOffersIds(appUser);
+            return Ok(userFavouriteOffersIds);
+        }
+
+        [HttpGet("count")]
+        [Authorize]
+        public async Task<IActionResult> GetUserFavouriteOffersCount()
+        {
+            var appUser = await this.GetCurrentUserAsync(_userManager);
+            if (appUser == null) return Unauthorized();
+            
+            var userFavouriteOffersCount = await _favouriteOffersRepo.GetUserFavouriteOffersCount(appUser);
+            return Ok(userFavouriteOffersCount);
         }
 
         [HttpPost]
+        [Route("{offerId:int}")]
         [Authorize]
-        public async Task<IActionResult> AddFavouriteOffer(int offerId)
+        public async Task<IActionResult> AddFavouriteOffer([FromRoute] int offerId)
         {
-            var email = User.GetEmail();
-            var appUser = await _userManager.FindByEmailAsync(email);
+            var appUser = await this.GetCurrentUserAsync(_userManager);
+            if (appUser == null) return Unauthorized();
+
             var offer = await _offerRepo.GetByIdAsync(offerId);
+            if(offer == null) return BadRequest("Offer not found!");
 
-            if(offer == null)
-                return BadRequest("Offer not found!");
+            var userFavouriteOffers = await _favouriteOffersRepo.GetUserFavouriteOffersIds(appUser);
 
-            var userFavouriteOffers = await _favouriteOffersRepo.GetUserFavouriteOffers(appUser);
-
-            if(userFavouriteOffers.Any(x => x.Id == offerId))
-                return BadRequest("Offer already added!");
+            if(userFavouriteOffers.Contains(offerId))
+            {
+                var currentCount = userFavouriteOffers.Count;
+                return Conflict(new { offerId, isFavourite = true, favouritesCount = currentCount });
+            }
 
             var favouriteOfferModel = new FavouriteOffer
             {
@@ -58,34 +69,30 @@ namespace api.Controllers
                 OfferId = offer.Id
             };
 
-            favouriteOfferModel = await _favouriteOffersRepo.CreateAsync(favouriteOfferModel);
+            var created = await _favouriteOffersRepo.CreateAsync(favouriteOfferModel);
+            if (created == null) return StatusCode(500, "Could not create new favourite offer");
 
-            if(favouriteOfferModel == null)
-                return StatusCode(500, "Could not create new favourite offer");
-            else
-                return Created();        
+            var updatedCount = await _favouriteOffersRepo.GetUserFavouriteOffersCount(appUser);
+
+            // Return 201 Created pointing to the canonical Offer GET
+            return CreatedAtAction(nameof(OfferController.GetById), "Offer", new { id = created.OfferId }, new { offerId = created.OfferId, isFavourite = true, favouritesCount = updatedCount });
         }
 
         [HttpDelete]
+        [Route("{offerId:int}")]
         [Authorize]
-        public async Task<IActionResult> DeleteFavouriteOffer(int offerId)
+        public async Task<IActionResult> DeleteFavouriteOffer([FromRoute] int offerId)
         {
-            var email = User.GetEmail();
-            var appUser = await _userManager.FindByEmailAsync(email);
+            var appUser = await this.GetCurrentUserAsync(_userManager);
+            if (appUser == null) return Unauthorized();
 
-            var userFavouriteOffers = await _favouriteOffersRepo.GetUserFavouriteOffers(appUser);
-            var filteredUserFavouriteOffers = userFavouriteOffers.Where(fo => fo.Id == offerId);
+            var wasDeleted = await _favouriteOffersRepo.DeleteAsync(appUser, offerId);
+            if (wasDeleted == null)
+                return NotFound("Offer is not in your favourites.");
 
-            if(filteredUserFavouriteOffers.Count() == 1)
-            {
-                await _favouriteOffersRepo.DeleteAsync(appUser, offerId);
-            }
-            else
-            {
-                return BadRequest("Offer is not in your favourite offers.");
-            }
+            var updatedCount = await _favouriteOffersRepo.GetUserFavouriteOffersCount(appUser);
 
-            return Ok();    
+            return Ok(new { offerId, isFavourite = false, favouritesCount = updatedCount });
         }
     }
 }
