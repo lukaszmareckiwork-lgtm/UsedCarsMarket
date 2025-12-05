@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Data;
 using api.Interfaces;
 using api.Models;
@@ -37,11 +33,21 @@ namespace api.Repository
             return favOfferModel;
         }
 
-        public async Task<List<Offer>> GetUserFavouriteOffers(AppUser user)
+        public async Task<List<int>> GetUserFavouriteOffersIds(AppUser user)
         {
             return await _context.FavouriteOffers.Where(fo => fo.AppUserId == user.Id)
-            .Select(offer => offer.Offer)
-            .ToListAsync();
+                .Select(offer => offer.OfferId)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetUserFavouriteOffersCount(AppUser user)
+        {
+            return await _context.FavouriteOffers.CountAsync(fo => fo.AppUserId == user.Id);
+        }
+
+        public async Task<bool> ExistsAsync(string appUserId, int offerId)
+        {
+            return await _context.FavouriteOffers.AnyAsync(fo => fo.AppUserId == appUserId && fo.OfferId == offerId);
         }
     }
 }
