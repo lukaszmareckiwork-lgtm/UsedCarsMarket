@@ -1,3 +1,4 @@
+using System.Globalization;
 using api.Data;
 using api.Interfaces;
 using api.Models;
@@ -37,6 +38,10 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// Bind and validate options
+builder.Services.Configure<api.Options.AzureBlobOptions>(builder.Configuration.GetSection("AzureBlob"));
+builder.Services.Configure<api.Options.JwtOptions>(builder.Configuration.GetSection("JWT"));
+
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 5;
@@ -58,22 +63,44 @@ builder.Services.AddAuthentication(options =>
     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
+    // Read JWT options from configuration (already bound above)
+    var jwtOpts = builder.Configuration.GetSection("JWT").Get<api.Options.JwtOptions>()
+                  ?? throw new Exception("JWT configuration section is missing");
+
+    if (string.IsNullOrEmpty(jwtOpts.SigningKey))
+        throw new Exception("JWT:SigningKey is not configured");
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidIssuer = jwtOpts.Issuer,
         ValidateAudience = true,
-        ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidAudience = jwtOpts.Audience,
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
+            System.Text.Encoding.UTF8.GetBytes(jwtOpts.SigningKey)
         )
     };
+});
+
+var culture = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(culture);
+    options.SupportedCultures = new List<CultureInfo> { culture };
+    options.SupportedUICultures = new List<CultureInfo> { culture };
 });
 
 builder.Services.AddScoped<IOfferRepository, OfferRepostiory>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IFavouriteOffersRepository, FavouriteOffersRepository>();
+
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<OfferService>();
 
 var app = builder.Build();
 
@@ -87,9 +114,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials()
+    // .WithOrigins("http://localhost:5261")
+    .SetIsOriginAllowed(origin => true)
+);
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseRequestLocalization();
 
 app.Run();

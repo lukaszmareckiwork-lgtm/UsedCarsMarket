@@ -7,6 +7,7 @@ namespace api.Helpers
 {
     public class OfferQueryObject
     {
+         public string? CreatedBy { get; set; }
         public List<int>? MakeIds { get; set; } = null;
         public List<int>? ModelIds { get; set; } = null;
         public string? SortBy { get; set; } = null;

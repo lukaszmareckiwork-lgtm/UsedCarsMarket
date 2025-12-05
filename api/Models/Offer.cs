@@ -52,7 +52,10 @@ namespace api.Models
 
         public Guid? Guid { get; set; }
 
-        public List<FavouriteOffer> FavouriteOffers { get; set; }
+        public List<FavouriteOffer> FavouriteOffers { get; set; } = new();
+
+        public string? AppUserId { get; set; }
+        public AppUser? AppUser { get; set; }
 
         public int MakeId { get; set; }
         public int ModelId { get; set; }
@@ -61,7 +64,8 @@ namespace api.Models
         public int Mileage { get; set; }
         public FuelType FuelType { get; set; }
 
-        public int? EngineDisplacement { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? EngineDisplacement { get; set; }
         public int? EnginePower { get; set; }
         public TransmissionType Transmission { get; set; }
 
@@ -74,10 +78,11 @@ namespace api.Models
         public string Subtitle { get; set; } = string.Empty;
         public string? Description { get; set; }
 
-        public List<byte[]>? Photos { get; set; }
+        public List<Photo> Photos { get; set; } = new();
 
-        public string Location { get; set; } = string.Empty;
-        public SellerType SellerType { get; set; }
+        public string LocationName { get; set; } = string.Empty;
+        public double LocationLat { get; set; }
+        public double LocationLong { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }

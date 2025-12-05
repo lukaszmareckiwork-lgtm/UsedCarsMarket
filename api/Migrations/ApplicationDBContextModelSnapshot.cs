@@ -216,6 +216,9 @@ namespace api.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SellerType")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -259,6 +262,9 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
@@ -271,10 +277,12 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
-                    b.Property<int?>("EngineDisplacement")
-                        .HasColumnType("int");
+                    b.Property<decimal?>("EngineDisplacement")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("EnginePower")
                         .HasColumnType("int");
@@ -290,7 +298,13 @@ namespace api.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("Location")
+                    b.Property<double>("LocationLat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LocationLong")
+                        .HasColumnType("float");
+
+                    b.Property<string>("LocationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -303,24 +317,18 @@ namespace api.Migrations
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
-                    b.PrimitiveCollection<string>("Photos")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("SellerType")
-                        .HasColumnType("int");
-
                     b.Property<string>("Subtitle")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int>("Transmission")
                         .HasColumnType("int");
@@ -333,7 +341,45 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppUserId");
+
                     b.ToTable("Offers", (string)null);
+                });
+
+            modelBuilder.Entity("api.Models.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OfferId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UrlLarge")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UrlMedium")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UrlSmall")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfferId");
+
+                    b.ToTable("Photos", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -392,16 +438,37 @@ namespace api.Migrations
                     b.HasOne("api.Models.AppUser", "AppUser")
                         .WithMany("FavouriteOffers")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("api.Models.Offer", "Offer")
                         .WithMany("FavouriteOffers")
                         .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("AppUser");
+
+                    b.Navigation("Offer");
+                });
+
+            modelBuilder.Entity("api.Models.Offer", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("api.Models.Photo", b =>
+                {
+                    b.HasOne("api.Models.Offer", "Offer")
+                        .WithMany("Photos")
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Offer");
                 });
@@ -414,6 +481,8 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.Offer", b =>
                 {
                     b.Navigation("FavouriteOffers");
+
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }
