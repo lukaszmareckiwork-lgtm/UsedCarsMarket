@@ -2,6 +2,9 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./MainHeader.css";
 import { useAuth } from "../../Context/useAuth";
+import FavouritesButton from "../FavouritesButton/FavouritesButton";
+import { PiLineVertical } from "react-icons/pi";
+import { useFavourites } from "../../Context/useFavourites";
 
 const MainHeader = () => {
   const navigate = useNavigate();
@@ -10,6 +13,7 @@ const MainHeader = () => {
   const isAddOfferPage = location.pathname === "/add-offer";
 
   const { isLoggedIn, user, logoutUser } = useAuth();
+  const { favouritesCount } = useFavourites(); 
 
   return (
     <div className="mainHeader">
@@ -19,10 +23,16 @@ const MainHeader = () => {
         </Link>
       </div>
       <div className="mainHeader-right">
+        <FavouritesButton 
+          isLoggedIn={isLoggedIn()} 
+          count={favouritesCount}
+          loggedInLinkTo="/passenger-cars?onlyFavourites=true"
+          notLoggedInLinkTo="/login" />
+        <PiLineVertical size={40} color="#ddddddff" />
         {isLoggedIn() ? (
           <>
             <div className="mainHeader-loggedInUserText">
-                Welcome, {user?.username}.
+              Welcome,<br/>{user?.username}
             </div>
             <button className="mainHeader-loginButton" onClick={logoutUser}>
               Logout
@@ -40,9 +50,12 @@ const MainHeader = () => {
         )}
 
         {!isAddOfferPage && (
-          <Link to="/add-offer" className="mainHeader-addOfferButton">
-            Add offer
-          </Link>
+          <>
+            <PiLineVertical size={40} color="#ddddddff" />
+            <Link to="/add-offer" className="mainHeader-addOfferButton">
+              Add offer
+            </Link>
+          </>
         )}
       </div>
     </div>

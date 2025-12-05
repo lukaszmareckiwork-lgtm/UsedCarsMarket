@@ -1,11 +1,24 @@
 import './Offer.css'
-import AddFavouriteButton from '../AddFavouriteButton/AddFavouriteButton'
 import type { JSX } from 'react/jsx-runtime'
 import { getReadableCurrencyType, getReadableSellerType, type OfferProps } from '../../Data/OfferProps'
 import ParamsWithIcons from '../ParamsWithIcons/ParamsWithIcons'
 import PhotoViewer from '../DetailsPage/PhotoViewer/PhotoViewer'
+import AddFavouritesButton from '../AddFavouritesButton/AddFavouritesButton'
+import { useFavourites } from '../../Context/useFavourites'
 
 const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JSX.Element => {
+
+  const { addFavourite, removeFavourite } = useFavourites();
+
+  const handleAddFavouritesClick = () => {
+    if (offerProps.isFavourite) {
+      removeFavourite(offerProps.id);
+      offerProps.isFavourite = false;
+    } else {
+      addFavourite(offerProps.id);
+      offerProps.isFavourite = true;
+    }
+  }
 
   return (
     <div className='offer'>
@@ -16,7 +29,6 @@ const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JS
             <PhotoViewer offerProps={offerProps} compact={true} />
             {/* <img className='offerImage' alt='' loading='eager' src='https://ireland.apollo.olxcdn.com/v1/files/i6ctks32d9cz2-OTOMOTOPL/image;s=320x240'></img> */}
           </div>
-
           <div className='offerTitles'>
             <div className='offerTitleHolder'>
               <h2 className='offerTitle'>{offerProps.title}</h2>
@@ -44,7 +56,7 @@ const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JS
           </div>
 
           <div className='offerAddFavouritePanel'>
-            <AddFavouriteButton />
+            <AddFavouritesButton isFavourite={offerProps.isFavourite} handleOnClick={handleAddFavouritesClick} />
           </div>
         </section>
       </article>

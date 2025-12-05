@@ -15,14 +15,6 @@ const MainDetails = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  //TODO: Refactor it
-  function normalizeOffer(o: OfferProps): OfferProps {
-    return {
-      ...o,
-      createdDate: new Date(o.createdDate),
-    };
-  }
-
   useEffect(() => {   
     offerGetSingleApi(Number(id))
       ?.then((res) => {
@@ -32,10 +24,8 @@ const MainDetails = () => {
         // handleLoadingOffers(false);
 
         if (res?.data != undefined) {
-          const offer = normalizeOffer(res.data!);         
-          // handleFilteredOffers(data);
           setIsLoading(false);
-          setOfferProps(offer);
+          setOfferProps(res.data);
         }
       });
   }, []);
