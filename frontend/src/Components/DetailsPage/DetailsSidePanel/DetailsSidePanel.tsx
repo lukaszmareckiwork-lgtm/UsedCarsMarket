@@ -7,6 +7,7 @@ import { GoPersonFill } from "react-icons/go"
 import { PiBuildingOfficeBold } from "react-icons/pi"
 import Spacer from "../../Spacer/Spacer"
 import { IoEarth } from "react-icons/io5"
+import AddFavouritesButton from "../../AddFavouritesButton/AddFavouritesButton"
 
 interface Props {
   offerProps: OfferProps
@@ -41,6 +42,9 @@ const DetailsSidePanel = ({ offerProps }: Props) => {
             </div>
           </div>
           <Spacer size={24} />
+          <div className="details-side-panel-favourite-button">
+            <AddFavouritesButton offerProps={offerProps} />
+          </div>
           <span className="details-side-panel-created-id">
             <p>Advert created: {new Date(offerProps.createdDate).toLocaleDateString()} {new Date(offerProps.createdDate).toLocaleTimeString()}</p>
             <p>ID: {offerProps.id}</p>

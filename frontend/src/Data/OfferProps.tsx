@@ -143,6 +143,8 @@ export interface OfferProps {
   description?: string;
   photos?: PhotoDto[];
 
+  isFavourite: boolean;
+
   locationName: string;
   locationLat: number;
   locationLong: number;
