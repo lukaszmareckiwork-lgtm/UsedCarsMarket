@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleError } from "../Helpers/ErrorHandler";
+import { handleError } from "../Helpers/handleError";
 import type { UserProfileToken } from "../Models/User";
 import type { SellerTypeEnum } from "../Data/OfferProps";
 

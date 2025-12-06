@@ -1,22 +1,37 @@
 import { FaHeart } from "react-icons/fa";
 import "./FavouritesButton.css";
-import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../Context/useAuth";
+import { ROUTES } from "../../Routes/Routes";
+import { redirectToLoginWithReturn } from "../../Helpers/redirectToLoginWithReturn";
 
 type Props = {
-  isLoggedIn: boolean;
   count: number;
-  loggedInLinkTo: string;
-  notLoggedInLinkTo: string;
 };
 
-const FavouritesButton = ({ isLoggedIn, count, loggedInLinkTo, notLoggedInLinkTo }: Props) => {
-  const linkTo = isLoggedIn ? loggedInLinkTo : notLoggedInLinkTo;
+const FavouritesButton = ({ count }: Props) => {
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (!isLoggedIn()) {
+      e.preventDefault();
+      redirectToLoginWithReturn(navigate, location); // <- use utility here
+    }
+  };
+
+  const disabled = isLoggedIn() && count === 0;
 
   return (
-    <Link to={linkTo} className="favourites-button">
+    <a
+      href={ROUTES.PASSENGER_CARS_FAVOURITES}
+      className={`favourites-button ${disabled ? "disabled" : ""}`}
+      onClick={handleClick}
+    >
       <FaHeart size={28} />
       <div className="favourites-button-count-text">{count > 0 && `(${count})`}</div>
-    </Link>
+    </a>
   );
 };
 

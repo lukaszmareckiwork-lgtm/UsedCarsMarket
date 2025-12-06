@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import "./MainDetails.css"
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { offerGetSingleApi } from '../../../Services/OfferService'
 import { type OfferProps } from '../../../Data/OfferProps'
 import DetailsContent from '../DetailsContent/DetailsContent'
 import DetailsSidePanel from '../DetailsSidePanel/DetailsSidePanel'
 import { IoArrowBackOutline } from 'react-icons/io5'
 import Spinner from '../../Spinner/Spinner'
+import { ROUTES } from '../../../Routes/Routes'
 
 
 const MainDetails = () => {
@@ -14,6 +15,9 @@ const MainDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const location = useLocation();
+  const from = (location.state as any)?.from ?? ROUTES.HOME; // fallback to home
 
   useEffect(() => {   
     offerGetSingleApi(Number(id))
@@ -39,7 +43,7 @@ const MainDetails = () => {
           to="#"
           onClick={(e) => {
             e.preventDefault();
-            navigate(-1); // go back to previous page
+            navigate(from);
           }}
           className="main-details-back"
         >

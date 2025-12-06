@@ -1,4 +1,3 @@
-import React from "react";
 import "./LoginPage.css";
 import * as Yup from "yup";
 import { useAuth } from "../../Context/useAuth";

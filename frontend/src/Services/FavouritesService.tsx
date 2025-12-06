@@ -1,7 +1,7 @@
 import axios from "axios";
-import { handleError } from "../Helpers/ErrorHandler";
+import { handleError } from "../Helpers/handleError";
 
-const api = "http://localhost:5261/api/";
+const api = "http://localhost:5261/api/favouriteoffers/";
 
 export type AddRemoveFavouriteResponse = {
   offerId: number;
@@ -11,7 +11,7 @@ export type AddRemoveFavouriteResponse = {
 
 export const addFavouriteApi = async (offerId: number) =>{
     try {
-        const data = await axios.post<AddRemoveFavouriteResponse>(api + "favouriteoffers/" + offerId);
+        const data = await axios.post<AddRemoveFavouriteResponse>(api + offerId);
         return data;
     } catch (error) {
         handleError(error);
@@ -20,7 +20,7 @@ export const addFavouriteApi = async (offerId: number) =>{
 
 export const removeFavouriteApi = async (offerId: number) =>{
     try {
-        const data = await axios.delete<AddRemoveFavouriteResponse>(api + "favouriteoffers/" + offerId);
+        const data = await axios.delete<AddRemoveFavouriteResponse>(api + offerId);
         return data;
     } catch (error) {
         handleError(error);
@@ -29,7 +29,7 @@ export const removeFavouriteApi = async (offerId: number) =>{
 
 export const getFavouritesCountApi = async () =>{
     try {
-        const data = await axios.get<number>(api + "favouriteoffers/count");
+        const data = await axios.get<number>(api + "count");
         return data;
     } catch (error) {
         handleError(error);
