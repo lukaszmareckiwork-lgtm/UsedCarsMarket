@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import "./MainSearch.css";
 import OffersList from '../OffersList/OffersList';
 import { type OfferProps } from '../../Data/OfferProps';
 import OffersFilters from '../OffersFilters/OffersFilters';
 import type { PagedResult } from '../../Helpers/PagedResult';
 import ReactPaginate from 'react-paginate';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ROUTES } from '../../Routes/Routes';
 
 // const offersData: OfferProps[] = [
 //   {
@@ -73,12 +75,26 @@ const MainSearch = () => {
   const [pagedOffers, setPagedOffers] = useState<PagedResult<OfferProps> | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   const [pageNumber, setPageNumber] = useState(1);
   const pageSize = 2;
 
   const handlePageChange = (e: { selected: number }) => {
     setPageNumber(e.selected + 1);
+
+    const params = new URLSearchParams(searchParams);
+    params.set("page", (e.selected + 1).toString());
+    
+    navigate(ROUTES.PASSENGER_CARS_WITH_QUERY(params.toString()));
   };
+
+  useEffect(() => {
+    const pageFromUrl = searchParams.get("page") || "";
+    if(pageFromUrl.length) setPageNumber(Number.parseInt(pageFromUrl));
+
+    }, [searchParams]);
 
   return (
     <div className="main-search">

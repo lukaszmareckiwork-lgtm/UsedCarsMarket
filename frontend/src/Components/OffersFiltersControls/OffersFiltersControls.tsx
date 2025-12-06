@@ -101,7 +101,7 @@ const OffersFiltersControls = ({
     const updMakesString = updatedMakes.map((make) => make.make_slug);
     const updModelsString = updatedModels.map((model) => model.model_id);
 
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams);
     if (updMakesString.length) params.set("make", updMakesString.join(","));
     if (updModelsString.length) params.set("model", updModelsString.join(","));
     
