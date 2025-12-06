@@ -1,4 +1,4 @@
-import { Children, createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import type { UserProfile } from "../Models/User";
 import { useNavigate } from "react-router-dom";
 import { loginApi, registerApi } from "../Services/AuthService";
@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import React from "react";
 import axios from "axios";
 import type { SellerTypeEnum } from "../Data/OfferProps";
+import { ROUTES } from "../Routes/Routes";
+import { useRedirectAfterLogin } from "../Helpers/useRedirectAfterLogin";
 
 type UserContextType = {
   user: UserProfile | null;
@@ -27,6 +29,8 @@ export const UserProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isReady, setIsReady] = useState(false);
+
+  const { redirect } = useRedirectAfterLogin();
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -58,12 +62,17 @@ export const UserProvider = ({ children }: Props) => {
 
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token!);
+          axios.defaults.headers.common.Authorization = "Bearer " + res?.data.token!;
           setUser(userObj!);
           toast.success("Login success.");
-          navigate("/");
+          // navigate(ROUTES.HOME);
+          redirect();
         }
       })
-      .catch((e) => toast.warning("Server error occured"));
+      .catch((e) => {
+        console.error("REGISTER ERROR:", e);
+        toast.warning("Server error occured");
+      });
   };
 
   const loginUser = async (email: string, password: string) => {
@@ -81,9 +90,11 @@ export const UserProvider = ({ children }: Props) => {
 
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token!);
+          axios.defaults.headers.common.Authorization = "Bearer " + res?.data.token!;
           setUser(userObj!);
           toast.success("Login success.");
-          navigate("/");
+          // navigate(ROUTES.HOME);
+          redirect();
         }
       })
       .catch((e) => {
@@ -101,7 +112,9 @@ export const UserProvider = ({ children }: Props) => {
     localStorage.removeItem("token");
     setUser(null);
     setToken("");
-    navigate("/");
+    delete axios.defaults.headers.common.Authorization;
+    toast.info("You have been logged out.");
+    navigate(ROUTES.HOME);
   };
 
   return (

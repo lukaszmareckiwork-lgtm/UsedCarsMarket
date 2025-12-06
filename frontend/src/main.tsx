@@ -5,13 +5,16 @@ import "./index.css";
 import App from "./App.tsx";
 import { MakesProvider } from "./Context/MakesContext.tsx";
 import { UserProvider } from "./Context/useAuth.tsx";
+import { FavouritesProvider } from "./Context/useFavourites.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <MakesProvider>
         <UserProvider>
-          <App />
+          <FavouritesProvider>
+            <App />
+          </FavouritesProvider>
         </UserProvider>
       </MakesProvider>
     </BrowserRouter>
