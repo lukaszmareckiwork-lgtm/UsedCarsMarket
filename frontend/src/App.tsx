@@ -9,20 +9,24 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import ProtectedRoute from "./Components/Routes/ProtectedRoute";
 import MainDetails from "./Components/DetailsPage/MainDetails/MainDetails";
+import { ROUTES } from "./Routes/Routes";
 
 function App() {
   return (
     <>
       <MainHeader />
       <Routes>
-        <Route path="/" element={<MainSearch />} />
-        <Route path="/passenger-cars" element={<MainSearch />} />
-        <Route path="/add-offer" element={<ProtectedRoute><AddOffer /></ProtectedRoute>} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/offer/details/:id" element={<MainDetails />} />
+        <Route path={ROUTES.HOME} element={<MainSearch />} />
+        <Route path={ROUTES.PASSENGER_CARS} element={<MainSearch />} />
+        <Route path={ROUTES.ADD_OFFER} element={<ProtectedRoute><AddOffer /></ProtectedRoute>} />
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+        <Route path={ROUTES.OFFER_DETAILS} element={<MainDetails />} />
       </Routes>
-      <ToastContainer />
+      <ToastContainer 
+        newestOnTop={true}
+        style={{ top: "75px" }}
+      />
     </>
   );
 }

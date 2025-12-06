@@ -1,6 +1,6 @@
 import axios, { type AxiosResponse } from "axios";
 import type { OfferProps } from "../Data/OfferProps";
-import { handleError } from "../Helpers/ErrorHandler";
+import { handleError } from "../Helpers/handleError";
 import type { PagedResult } from "../Helpers/PagedResult";
 import type { CreateOfferRequestDto } from "../Data/CreateOfferRequestDto";
 
