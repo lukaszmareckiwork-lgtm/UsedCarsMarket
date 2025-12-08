@@ -7,17 +7,6 @@ import type { OfferQueryObject } from "../Data/OfferQueryObject";
 
 const api = "http://localhost:5261/api/offer/";
 
-const getOfferFiltersQuery = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[], createdById?: string) =>{
-  const paginationQuery = `PageNumber=${pageNumber}&PageSize=${pageSize}`;
-  const makesQuery = makeIds.length ? `&MakeIds=${makeIds.join("&MakeIds=")}` : "";
-  const modelsQuery = modelIds.length ? `&ModelIds=${modelIds.join("&ModelIds=")}` : "";
-
-  const createdByQuery = createdById ? `&CreatedBy=${createdById}` : "";
-
-  const query = `${paginationQuery}${makesQuery}${modelsQuery}${createdByQuery}`;
-  return query;
-}
-
 export function buildOfferQueryString(query: OfferQueryObject): string {
   const params = new URLSearchParams();
 
@@ -103,25 +92,6 @@ export const offerPostApi = async (offer: CreateOfferRequestDto) => {
     return response.data;
 
   } catch (error) {
-    handleError(error);
-  }
-};
-
-export const offerGetApi = (pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[], createdById?: string) => {
-  try {
-    const query = getOfferFiltersQuery(pageNumber, pageSize, makeIds, modelIds);
-
-    console.log(`offerGetApi - query: ${api}${query}`);
-    const data = axios
-      .get<PagedResult<OfferProps>>(`${api}?${query}`)
-      .catch((error) => {
-        console.log(`offerGetApi - error: ${error}`);
-        handleError(error);
-      });
-
-    return data;
-  } catch (error) {
-    console.log(`offerGetApi - error: ${error}`);
     handleError(error);
   }
 };
