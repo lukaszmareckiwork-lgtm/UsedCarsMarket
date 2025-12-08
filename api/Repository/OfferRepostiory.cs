@@ -22,26 +22,122 @@ namespace api.Repository
         // Apply common filters to any IQueryable<Offer> so it can be reused by multiple callers
         private IQueryable<Offer> ApplyFilters(IQueryable<Offer> offers, OfferQueryObject query)
         {
-            // get only created by user
+            // Filter: Created By User
             if (!string.IsNullOrEmpty(query.CreatedBy))
                 offers = offers.Where(o => o.AppUserId == query.CreatedBy);
 
-            // If models selected → filter by models
+            // Filter: Search (title, description, make/model names etc. - adjust as needed)
+            if (!string.IsNullOrWhiteSpace(query.Search))
+            {
+                string s = query.Search.ToLower();
+                offers = offers.Where(o =>
+                    o.Title.ToLower().Contains(s) ||
+                    o.Description.ToLower().Contains(s)
+                );
+            }
+
+            // Filter: Models
             if (query.ModelIds != null && query.ModelIds.Any())
                 offers = offers.Where(o => query.ModelIds.Contains(o.ModelId));
+
+            // Filter: Makes (only if no models provided)
             else if (query.MakeIds != null && query.MakeIds.Any())
                 offers = offers.Where(o => query.MakeIds.Contains(o.MakeId));
 
-            // Sort By
+            // Filter: Price Range
+            if (query.MinPrice.HasValue)
+                offers = offers.Where(o => o.Price >= query.MinPrice.Value);
+
+            if (query.MaxPrice.HasValue)
+                offers = offers.Where(o => o.Price <= query.MaxPrice.Value);
+
+            // Filter: Year Range
+            if (query.MinYear.HasValue)
+                offers = offers.Where(o => o.Year >= query.MinYear.Value);
+
+            if (query.MaxYear.HasValue)
+                offers = offers.Where(o => o.Year <= query.MaxYear.Value);
+
+            // Filter: Mileage Range
+            if (query.MinMileage.HasValue)
+                offers = offers.Where(o => o.Mileage >= query.MinMileage.Value);
+
+            if (query.MaxMileage.HasValue)
+                offers = offers.Where(o => o.Mileage <= query.MaxMileage.Value);
+
+            // Filter: Fuel Type
+            if (query.FuelType.HasValue)
+                offers = offers.Where(o => o.FuelType == query.FuelType.Value);
+
+            // Filter: Transmission Type
+            if (query.TransmissionType.HasValue)
+                offers = offers.Where(o => o.Transmission == query.TransmissionType.Value);
+
+            // Filter: Location Range
+            if (query.LocationLat.HasValue &&
+                query.LocationLong.HasValue &&
+                query.LocationRange.HasValue)
+            {
+                ApplyApproxDistanceFilter(offers, (double)query.LocationLat, (double)query.LocationLong, (double)query.LocationRange);
+            }
+
+            // Sorting
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {
-                if (query.SortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
-                    offers = query.SortDescending
-                        ? offers.OrderByDescending(x => x.Price)
-                        : offers.OrderBy(x => x.Price);
+                switch (query.SortBy.ToLower())
+                {
+                    case "createdDate":
+                        offers = query.SortDescending
+                            ? offers.OrderByDescending(o => o.CreatedDate)
+                            : offers.OrderBy(o => o.CreatedDate);
+                        break;
+
+                    case "price":
+                        offers = query.SortDescending
+                            ? offers.OrderByDescending(o => o.Price)
+                            : offers.OrderBy(o => o.Price);
+                        break;
+
+                    case "year":
+                        offers = query.SortDescending
+                            ? offers.OrderByDescending(o => o.Year)
+                            : offers.OrderBy(o => o.Year);
+                        break;
+
+                    case "mileage":
+                        offers = query.SortDescending
+                            ? offers.OrderByDescending(o => o.Mileage)
+                            : offers.OrderBy(o => o.Mileage);
+                        break;
+
+                    default:
+                        break;
+                }
             }
 
             return offers;
+        }
+
+        private static IQueryable<Offer> ApplyApproxDistanceFilter(
+            IQueryable<Offer> query,
+            double userLat,
+            double userLng,
+            double maxDistanceKm)
+        {
+            // Convert kilometers to degrees latitude (1° ≈ 111.32 km)
+            double latDeg = maxDistanceKm / 111.32;
+
+            // Longitude degrees shrink with latitude (cos(lat))
+            double lonDeg = latDeg / Math.Cos(userLat * Math.PI / 180);
+
+            // Square radii
+            double latRadSq = latDeg * latDeg;
+            double lonRadSq = lonDeg * lonDeg;
+
+            return query.Where(o =>
+                ((o.LocationLat  - userLat) * (o.LocationLat  - userLat) <= latRadSq) &&
+                ((o.LocationLong - userLng) * (o.LocationLong - userLng) <= lonRadSq)
+            );
         }
 
         public async Task<PagedResult<OfferDto>> GetAllAsync(OfferQueryObject query, string? appUserId = null)
@@ -50,12 +146,13 @@ namespace api.Repository
 
             var totalCount = await offers.CountAsync(); // count BEFORE pagination
 
-            var skip = (query.PageNumber - 1) * query.PageSize;
+            int pageSize = Math.Clamp(query.PageSize, 1, 50);
+            var skip = (query.PageNumber - 1) * pageSize;
 
             // Project to OfferDto and include IsFavourite as a correlated subquery when appUserId provided
             var items = await offers
                 .Skip(skip)
-                .Take(query.PageSize)
+                .Take(pageSize)
                 .Select(o => new OfferDto
                 {
                     Id = o.Id,
@@ -110,7 +207,7 @@ namespace api.Repository
                 Items = items,
                 TotalCount = totalCount,
                 PageNumber = query.PageNumber,
-                PageSize = query.PageSize
+                PageSize = pageSize
             };
         }
 
@@ -121,12 +218,13 @@ namespace api.Repository
             // Count BEFORE pagination
             var totalCount = await offers.CountAsync();
 
-            var skip = (query.PageNumber - 1) * query.PageSize;
+            int pageSize = Math.Clamp(query.PageSize, 1, 50);
+            var skip = (query.PageNumber - 1) * pageSize;
 
             // DTO projection happens inside the query
             var baseQuery = offers
                 .Skip(skip)
-                .Take(query.PageSize)
+                .Take(pageSize)
                 .Include(o => o.Photos);
 
             List<OfferPreviewDto> items;
@@ -177,7 +275,7 @@ namespace api.Repository
                 Items = items,
                 TotalCount = totalCount,
                 PageNumber = query.PageNumber,
-                PageSize = query.PageSize
+                PageSize = pageSize
             };
         }
 
@@ -200,11 +298,12 @@ namespace api.Repository
 
             var totalCount = await offers.CountAsync();
 
-            var skip = (query.PageNumber - 1) * query.PageSize;
+            int pageSize = Math.Clamp(query.PageSize, 1, 50);
+            var skip = (query.PageNumber - 1) * pageSize;
 
             var items = await offers
                 .Skip(skip)
-                .Take(query.PageSize)
+                .Take(pageSize)
                 .Include(o => o.Photos)
                 .Select(OfferMappers.ProjToOfferPreviewDto)
                 .ToListAsync();
@@ -218,7 +317,7 @@ namespace api.Repository
                 Items = items,
                 TotalCount = totalCount,
                 PageNumber = query.PageNumber,
-                PageSize = query.PageSize
+                PageSize = pageSize
             };
         }
 
