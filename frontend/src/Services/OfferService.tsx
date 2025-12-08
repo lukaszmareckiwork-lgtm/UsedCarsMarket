@@ -3,6 +3,7 @@ import type { OfferProps } from "../Data/OfferProps";
 import { handleError } from "../Helpers/handleError";
 import type { PagedResult } from "../Helpers/PagedResult";
 import type { CreateOfferRequestDto } from "../Data/CreateOfferRequestDto";
+import type { OfferQueryObject } from "../Data/OfferQueryObject";
 
 const api = "http://localhost:5261/api/offer/";
 
@@ -15,6 +16,23 @@ const getOfferFiltersQuery = (pageNumber: number, pageSize: number, makeIds: num
 
   const query = `${paginationQuery}${makesQuery}${modelsQuery}${createdByQuery}`;
   return query;
+}
+
+export function buildOfferQueryString(query: OfferQueryObject): string {
+  const params = new URLSearchParams();
+
+  Object.entries(query).forEach(([key, value]) => {
+    if (value == null) return;
+    if (key == "OnlyFavourites") return;
+
+    if (Array.isArray(value)) {
+      value.forEach((v) => params.append(key, String(v)));
+    } else {
+      params.set(key, String(value));
+    }
+  });
+
+  return params.toString();
 }
 
 function normalizeOfferDate(o: OfferProps): OfferProps {
@@ -108,10 +126,10 @@ export const offerGetApi = (pageNumber: number, pageSize: number, makeIds: numbe
   }
 };
 
-export const offerPreviewGetApi = (onlyFavourites: boolean, pageNumber: number, pageSize: number, makeIds: number[], modelIds: number[], createdById?: string) => {
+export const offerPreviewGetApi = (queryObj: OfferQueryObject) => {
   try {
-    const query = getOfferFiltersQuery(pageNumber, pageSize, makeIds, modelIds, createdById);
-    const favourites = onlyFavourites ? "/favourites" : "";
+    const favourites = queryObj.OnlyFavourites ? "/favourites" : "";
+    const query = buildOfferQueryString(queryObj);
 
     const finalRoute = `${api}preview${favourites}?${query}`;
 
@@ -122,9 +140,8 @@ export const offerPreviewGetApi = (onlyFavourites: boolean, pageNumber: number, 
         console.log(`offerGetApi - error: ${error}`);
         handleError(error);
       });
- 
-    normalizeOffersDates(data);
 
+    normalizeOffersDates(data);
     return data;
   } catch (error) {
     console.log(`offerGetApi - error: ${error}`);
