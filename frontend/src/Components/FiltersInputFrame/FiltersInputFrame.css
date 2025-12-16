@@ -1,0 +1,31 @@
+.filters-input-frame {
+    display: flex;
+
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: var(--spacing-xxl);
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    font-family: var(--fontFamilyPrimary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.filters-input-frame > * {
+  flex: 1;      
+  min-width: 0;   
+  padding: 8px 12px;
+}
+
+.filters-input-frame:hover {
+    border-color: #1b1b1b;
+}
+
+.filters-input-frame:focus-within {
+    border-color: #5A8BFF;
+    box-shadow: 0 0 0 2px rgba(90, 139, 255, 0.3);
+}

@@ -29,16 +29,16 @@ const MainHeader = () => {
             <div className="mainHeader-loggedInUserText">
               Welcome,<br/>{user?.username}
             </div>
-            <button className="mainHeader-loginButton" onClick={logoutUser}>
+            <button className="mainHeader-loginButton main-button" onClick={logoutUser}>
               Logout
             </button>
           </>
         ) : (
           <>
-            <Link to={ROUTES.LOGIN} className="mainHeader-loginButton">
+            <Link to={ROUTES.LOGIN} className="mainHeader-loginButton main-button">
               Login
             </Link>
-            <Link to={ROUTES.REGISTER} className="mainHeader-loginButton">
+            <Link to={ROUTES.REGISTER} className="mainHeader-loginButton main-button">
               Register
             </Link>
           </>
@@ -47,7 +47,7 @@ const MainHeader = () => {
         {!isAddOfferPage && (
           <>
             <PiLineVertical size={40} color="#ddddddff" />
-            <Link to={ROUTES.ADD_OFFER} className="mainHeader-addOfferButton">
+            <Link to={ROUTES.ADD_OFFER} className="mainHeader-addOfferButton main-button">
               Add offer
             </Link>
           </>

@@ -16,7 +16,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { CreateOfferRequestDto } from "../../Data/CreateOfferRequestDto";
 import { PhotoUploader } from "../PhotoUploader/PhotoUploader";
-import { LocationPicker } from "../LocationPicker/LocationPicker";
+import { LocationPicker, LocationPickerModeEnum } from "../LocationPicker/LocationPicker";
 
 interface Props {
   handleOfferFormSubmit: (newOffer: CreateOfferRequestDto) => void;
@@ -309,7 +309,7 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
             placeholder="Select features"
           />
           <LocationPicker 
-            mapboxToken={import.meta.env.VITE_MAPBOX_TOKEN || ""}
+            mode={LocationPickerModeEnum.PickDirect}
             onChange={(lat, lng, name) => {
               setValue("locationLat", lat, { shouldValidate: true });
               setValue("locationLong", lng, { shouldValidate: true });

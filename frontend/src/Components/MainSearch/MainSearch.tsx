@@ -22,14 +22,15 @@ const MainSearch = () => {
   return (
     <div className="main-search">
       <div className="main-search-grid">
+        <span className="main-search-offers-category-title">Passenger Cars</span>
+        <span className="main-search-offers-amount">Offers found: {totalCount}</span>
+
         <OffersFiltersControls
           query={query}
           updateFilters={updateFilters}
           toggleFavouriteFilter={toggleFavouriteFilter}
+          offersFound={totalCount}
         />
-
-        <span className="main-search-offers-category-title">Passenger Cars</span>
-        <span className="main-search-offers-amount">Offers found: {totalCount}</span>
 
         <OffersList offers={offers} isLoadingOffers={loading} />
 

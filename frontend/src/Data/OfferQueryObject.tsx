@@ -16,8 +16,8 @@ export interface OfferQueryObject {
   MinMileage?: number | null;
   MaxMileage?: number | null;
 
-  FuelType?: number | null;
-  TransmissionType?: number | null;
+  FuelTypes?: number[] | null;
+  TransmissionTypes?: number[] | null;
 
   LocationLat?: number | null;
   LocationLong?: number | null;
