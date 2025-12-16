@@ -1,31 +1,47 @@
 .filters-input-frame {
-    display: flex;
+  display: flex;
 
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    height: var(--spacing-xxl);
-    align-items: center;
-    flex: 1;
-    min-width: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: var(--spacing-xxl);
+  align-items: center;
+  flex: 1;
+  min-width: 0;
 
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
-    font-family: var(--fontFamilyPrimary);
-    font-size: 14px;
-    font-weight: 500;
+  font-family: var(--fontFamilyPrimary);
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
 }
 
-.filters-input-frame > * {
-  flex: 1;      
-  min-width: 0;   
+.filters-input-frame>* {
+  flex: 1;
+  min-width: 0;
   padding: 8px 12px;
 }
 
 .filters-input-frame:hover {
-    border-color: #1b1b1b;
+  border-color: #1b1b1b;
 }
 
 .filters-input-frame:focus-within {
-    border-color: #5A8BFF;
-    box-shadow: 0 0 0 2px rgba(90, 139, 255, 0.3);
+  border-color: transparent;
+  box-shadow:
+    0 0 0 1px #0071CE,
+    0 0 0 3px rgba(0, 113, 206, 0.25);
+}
+
+.filters-input-frame.disabled {
+  background-color: #ffffff;
+  color: #999;
+  cursor: not-allowed;
+  user-select: none;
+  border-color: #ccc;
+}
+
+.filters-input-frame.disabled:focus-within {
+  box-shadow: none;
 }
