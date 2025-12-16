@@ -14,8 +14,8 @@ namespace api.Helpers
         public int? MaxYear { get; set; } = null;
         public int? MinMileage { get; set; } = null;
         public int? MaxMileage { get; set; } = null;
-        public FuelType? FuelType { get; set; } = null;
-        public TransmissionType? TransmissionType { get; set; } = null;
+        public List<FuelType>? FuelTypes { get; set; } = null;
+        public List<TransmissionType>? TransmissionTypes { get; set; } = null;
         public double? LocationLat { get; set; } = null;
         public double? LocationLong { get; set; } = null;
         public double? LocationRange { get; set; } = null;
