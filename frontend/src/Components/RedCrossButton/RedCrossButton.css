@@ -1,0 +1,27 @@
+.rcb {
+    display: flex;
+    align-items: center;
+}
+
+.rcb-button {
+  padding: 0;
+  border: none;
+  background: none;
+  color:  #fc6666;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.rcb-button:hover {
+  color: #ff3939;
+}
+
+.rcb-button-icon:hover {
+  scale: 1.1;
+}
+
+.rcb-button:active {
+  color: #ffbcbc;
+}

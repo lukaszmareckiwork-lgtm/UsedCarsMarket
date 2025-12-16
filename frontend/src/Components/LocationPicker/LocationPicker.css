@@ -27,6 +27,24 @@
   border-radius: 6px;
   font-size: 0.9rem;
   border: 1px solid #ddd;
+
+  display: flex;
+}
+
+/* .location-picker-address-left {
+
+} */
+
+.location-picker-address-right {
+  display: flex;
+  align-items: center;
+}
+
+.location-picker-address-right-range {
+  font-size: 24px;
+  font-weight: 400;
+
+  color: #333;
 }
 
 .location-picker-selected-location-label {
@@ -37,4 +55,60 @@
 .location-picker-selected-location-value {
   margin-left: 8px;
   margin-top: 4px;
+}
+
+
+/* .mapbox-range-select {
+  height: 34px;
+  font-size: 14px;
+
+  border: none;
+  border-radius: 4px;
+  padding: 0 8px;
+  cursor: pointer;
+} */
+
+.mapboxgl-ctrl.mapboxgl-ctrl-group {
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, .1);
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.mapbox-range-select {
+  height: 34px;
+  font-size: 14px;
+
+  background-color: #fff;
+  border-radius: 4px;
+  /* box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1); */
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+
+}
+
+/* smaller font on larger screens to match Mapbox suggestions style */
+@media screen and (min-width: 640px) {
+  .mapbox-range-select {
+    font-size: 13px;
+  }
+}
+
+.mapboxgl-ctrl-geocoder--input {
+  outline: none !important;
+  border-radius: 4px;
+}
+
+.mapboxgl-ctrl-geocoder--input:hover {
+  border-radius: 4px;
+  box-shadow: 0 0 2px 2px #999;
+  /* border-color: "#999"; */
+  /* border-width: 2px; */
+  
+}
+
+.mapboxgl-ctrl-geocoder--input:focus {
+  border-radius: 4px;
+  box-shadow: 0 0 2px 2px #0071CE;
 }

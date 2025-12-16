@@ -7,7 +7,7 @@ import DetailsItem from "../DetailsItem/DetailsItem"
 import { FaBars, FaCar, FaList, FaMapMarkedAlt } from "react-icons/fa"
 import { IoMdSettings } from "react-icons/io"
 import SpecsList from "../SpecsList/SpecsList"
-import { LocationPicker } from "../../LocationPicker/LocationPicker"
+import { LocationPicker, LocationPickerModeEnum } from "../../LocationPicker/LocationPicker"
 
 interface Props {
   offerProps: OfferProps
@@ -50,7 +50,7 @@ const DetailsContent = ({ offerProps }: Props) => {
         </DetailsItem>
         <DetailsItem label="Location" iconNode={<FaMapMarkedAlt size={22}/>}>
           <LocationPicker
-            mapboxToken={import.meta.env.VITE_MAPBOX_TOKEN || ""}
+            mode={LocationPickerModeEnum.OnlyShow}
             targetCoordinates={{lat: offerProps.locationLat, lng: offerProps.locationLong}}
           />
         </DetailsItem>

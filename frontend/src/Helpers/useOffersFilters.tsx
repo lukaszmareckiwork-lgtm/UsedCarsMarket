@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { OfferProps } from "../Data/OfferProps";
 import type { OfferQueryObject } from "../Data/OfferQueryObject";
 import { offerPreviewGetApi } from "../Services/OfferService";
+import { clamp } from "./math";
 
 const DEFAULT_QUERY: OfferQueryObject = {
   OnlyFavourites: undefined,
@@ -16,8 +17,8 @@ const DEFAULT_QUERY: OfferQueryObject = {
   MaxYear: null,
   MinMileage: null,
   MaxMileage: null,
-  FuelType: null,
-  TransmissionType: null,
+  FuelTypes: null,
+  TransmissionTypes: null,
   LocationLat: null,
   LocationLong: null,
   LocationRange: null,
@@ -27,37 +28,54 @@ const DEFAULT_QUERY: OfferQueryObject = {
   PageSize: 3,
 };
 
+// ------------------------------
+// Parse Query helper function
+// ------------------------------
+function parseQueryFromSearchParams(
+  searchParams: URLSearchParams
+): OfferQueryObject {
+  const q: OfferQueryObject = { ...DEFAULT_QUERY };
+
+  searchParams.forEach((value, key) => {
+    if (key === "MakeIds" || key === "ModelIds" || key === "FuelTypes" || key === "TransmissionTypes") {
+      q[key] = searchParams.getAll(key).map(Number);
+    } else if (key === "SortDescending") {
+      q.SortDescending = value === "true" ? true : undefined;
+    } else if (key === "OnlyFavourites") {
+      q.OnlyFavourites = value === "true" ? true : undefined;
+    } else if (!isNaN(Number(value))) {
+      (q as any)[key] = Number(value);
+    } else {
+      (q as any)[key] = value;
+    }
+  });
+
+  if (q.LocationRange != null) {
+    q.LocationRange = clamp(q.LocationRange, 0, 500);
+  }
+
+  return q;
+}
+
 export function useOfferFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState<OfferQueryObject>({ ...DEFAULT_QUERY });
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [query, setQuery] = useState<OfferQueryObject>({...DEFAULT_QUERY});
 
   const [offers, setOffers] = useState<OfferProps[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
+
   // ------------------------------
   // Convert URL → OfferQueryObject
   // ------------------------------
   useEffect(() => {
-    const newQuery: typeof query = { ...DEFAULT_QUERY };
+    const parsed = parseQueryFromSearchParams(searchParams);
 
-    searchParams.forEach((value, key) => {
-      if (key === "MakeIds" || key === "ModelIds") {
-        newQuery[key] = searchParams.getAll(key).map(Number);
-      } else if (key === "SortDescending") {
-        newQuery.SortDescending = value === "true" ? true : undefined;
-      } else if (key === "OnlyFavourites") {
-        newQuery.OnlyFavourites = value === "true" ? true : undefined;
-      } else if (!isNaN(Number(value))) {
-        (newQuery as any)[key] = Number(value);
-      } else {
-        (newQuery as any)[key] = value;
-      }
-    });
-
-    setQuery(newQuery);
-    setIsInitialized(true);
+    //Additional double-execution prevention- just in case
+    if (JSON.stringify(parsed) !== JSON.stringify(query)) {
+      setQuery(parsed);
+    }
   }, [searchParams]);
 
   // ------------------------------
@@ -84,8 +102,6 @@ export function useOfferFilters() {
   // Call API whenever query changes (after initialization)
   // ------------------------------
   useEffect(() => {
-    if (!isInitialized) return;
-
     setLoading(true);
 
     // Debounce: wait 500ms after last change
@@ -99,9 +115,11 @@ export function useOfferFilters() {
         .finally(() => setLoading(false));
     }, 500); // adjust delay as needed
 
+    console.log("Query changed:", query);
+
     // Cleanup if query changes before timeout
     return () => clearTimeout(timer);
-    }, [query, isInitialized]);
+    }, [query]);
 
   // ------------------------------
   // Public API for components
