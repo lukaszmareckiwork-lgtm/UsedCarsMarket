@@ -66,19 +66,19 @@ namespace api.Repository
                 offers = offers.Where(o => o.Mileage <= query.MaxMileage.Value);
 
             // Filter: Fuel Type
-            if (query.FuelType.HasValue)
-                offers = offers.Where(o => o.FuelType == query.FuelType.Value);
+            if (query.FuelTypes != null && query.FuelTypes.Any())
+                offers = offers.Where(o => query.FuelTypes.Contains(o.FuelType));
 
             // Filter: Transmission Type
-            if (query.TransmissionType.HasValue)
-                offers = offers.Where(o => o.Transmission == query.TransmissionType.Value);
+            if (query.TransmissionTypes != null && query.TransmissionTypes.Any())
+                offers = offers.Where(o => query.TransmissionTypes.Contains(o.Transmission));
 
             // Filter: Location Range
             if (query.LocationLat.HasValue &&
                 query.LocationLong.HasValue &&
                 query.LocationRange.HasValue)
             {
-                ApplyApproxDistanceFilter(offers, (double)query.LocationLat, (double)query.LocationLong, (double)query.LocationRange);
+                offers = ApplyApproxDistanceFilter(offers, (double)query.LocationLat, (double)query.LocationLong, (double)query.LocationRange);
             }
 
             // Sorting
