@@ -76,6 +76,14 @@ const OffersFiltersControls = ({
     });
   };
 
+  // -------------------------------
+  // Initialize selected fuel and transmission types from query
+  // -------------------------------
+  useEffect(() => {
+    if(query.FuelTypes) setSelectedFuelTypes(query.FuelTypes);
+    if(query.TransmissionTypes) setSelectedTransmissionTypes(query.TransmissionTypes);
+  }, [query.FuelTypes, query.TransmissionTypes]);
+
   const transmissionOptions: TransmissionTypeEnum[] =
     Object.values(TransmissionTypeEnum).filter(v => typeof v === "number") as TransmissionTypeEnum[];
 
