@@ -3,6 +3,7 @@ import OffersList from '../OffersList/OffersList';
 import OffersFiltersControls from '../OffersFiltersControls/OffersFiltersControls';
 import ReactPaginate from 'react-paginate';
 import { useOfferFilters } from '../../Helpers/useOffersFilters';
+import OffersSortControl from "../OffersSortControl/OffersSortControl";
 
 const MainSearch = () => {
   const {
@@ -23,7 +24,14 @@ const MainSearch = () => {
     <div className="main-search">
       <div className="main-search-grid">
         <span className="main-search-offers-category-title">Passenger Cars</span>
-        <span className="main-search-offers-amount">Offers found: {totalCount}</span>
+
+        <header className="main-search-offers-results-heading">
+          <span className="main-search-offers-amount">Offers found: {totalCount}</span>
+          <OffersSortControl
+            query={query}
+            updateFilters={updateFilters}
+          />
+        </header>
 
         <OffersFiltersControls
           query={query}

@@ -47,25 +47,27 @@
   }
 }
 
-.main-search-offers-amount {
+.main-search-offers-results-heading {
   grid-area: resultsHeading;
 
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
+}
 
+@media screen and (min-width: 1024px) {
+    .main-search-offers-results-heading {
+    grid-area: facetsNav;
+  }
+}
+
+.main-search-offers-amount {
   font-size: 16px;
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
   font-weight: var(--font-weight-medium);
 }
 
-@media screen and (min-width: 1024px) {
-    .main-search-offers-amount {
-    grid-area: facetsNav;
-  }
-}
-
 .main-search-pagination {
-  /* grid-column: results; */
   grid-area: pagination;
   display: flex;
   justify-content: center;
