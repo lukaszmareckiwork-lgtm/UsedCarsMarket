@@ -163,11 +163,16 @@
 
 .car-filters-dropdown-arrow {
   display: inline-flex;
-  margin-right: 6px;
   font-size: 18px;
   align-items: center;
 
   pointer-events: none;
+
+  color: #868686;
+}
+
+.car-filters-dropdown-arrow.opened{
+  color: #000000;
 }
 
 .car-filters-dropdown-clear-button {

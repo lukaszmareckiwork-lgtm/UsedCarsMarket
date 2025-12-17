@@ -3,6 +3,7 @@ import "./FiltersDropdown.css";
 import Spinner from "../Spinner/Spinner";
 import FiltersInputFrame from "../FiltersInputFrame/FiltersInputFrame";
 import RedCrossButton from "../RedCrossButton/RedCrossButton";
+import { IoIosArrowDown } from "react-icons/io";
 
 interface FiltersDropdownProps<T> {
   items: T[];
@@ -120,8 +121,8 @@ function FiltersDropdown<T>(props: FiltersDropdownProps<T>) {
               ) : (
                 <div className="car-filters-dropdown-clear-and-arrow">
                   <RedCrossButton classname="car-filters-dropdown-clear-button" renderButton={props.selectedItems.length > 0} onClicked={() => props.handleItemSelected([])} />
-                  <span className="car-filters-dropdown-arrow">
-                    {dropdownOpen ? "▲" : "▼"}
+                  <span className={`car-filters-dropdown-arrow ${dropdownOpen ? "opened" : ""}`}>
+                    <IoIosArrowDown size={28}/>
                   </span>
                 </div>
               )}  
