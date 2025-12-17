@@ -1,47 +1,65 @@
 .car-filter-dropdown {
-    -webkit-flex-basis: calc(100% - 0px);
-    -ms-flex-preferred-size: calc(100% - 0px);
-    flex-basis: calc(100% - 0px);
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: end;
-    -ms-flex-pack: end;
-    -webkit-justify-content: flex-end;
-    justify-content: flex-end;
-    height: 100%;
-    /* overflow-x: hidden; */
-    overflow-y: visible;
+  -webkit-flex-basis: calc(100% - 0px);
+  -ms-flex-preferred-size: calc(100% - 0px);
+  flex-basis: calc(100% - 0px);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  height: 100%;
+  overflow-y: visible;
 
-    position: relative;
-    height: var(--spacing-xxl);
+  position: relative;
+  height: var(--spacing-xxl);
+}
+
+.car-filter-dropdown-frame {
+  position: relative;
 }
 
 .car-filter-header {
-    background-color: #ffffff;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    user-select: none;
-    height: 100%;
+  /* background-color: #ffffff; */
+  /* padding: 8px 12px; */
+  /* border: 1px solid #ccc; */
+  /* border-radius: 4px; */
+  /* cursor: pointer; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  height: 100%;
 
-    font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
-    font-size: 14px;
-    font-weight: 500;
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.car-filter-header.disabled {
-  background-color: #ffffff;
-  color: #999;
-  cursor: not-allowed;
+.car-filter-search-input {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
+
+  font-family: var(--fontFamilyPrimary);
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1;
+
+  width: 100%;
+  height: 100%;
+
+  min-width: 0px;
+
+  box-sizing: border-box;
 }
 
 .car-filter-options {
@@ -56,12 +74,11 @@
   border-radius: 0 0 4px 4px;
   background-color: #fff;
   z-index: 1000;
-  padding: 8px 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
-    font-size: 12px;
-    font-weight: 400;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .car-filter-options input[type="text"] {
@@ -75,19 +92,27 @@
 .car-filter-options label {
   display: flex;
   align-items: center;
-  padding: 4px 12px;
+  padding: 6px 12px;
   cursor: pointer;
   user-select: none;
   transition: background-color 0.15s;
 }
 
 .car-filter-options label:hover {
-  background-color: #f0f0f0;
+  background-color: #eee;
 }
 
 .car-filter-options label input[type="checkbox"] {
   margin-right: 8px;
   cursor: pointer;
+}
+
+.car-filter-options label:has(input[type="checkbox"]:checked) {
+  background-color: rgb(212, 235, 253);
+}
+
+.car-filter-options label:has(input[type="checkbox"]:checked):hover {
+  background-color: #9bd2ffff;
 }
 
 .car-filter-options label.select-all {
@@ -96,7 +121,7 @@
 }
 
 .car-filter-options label.select-all:hover {
-  background-color: #e8e8e8;
+  background-color: #eee;
 }
 
 .car-filter-options::-webkit-scrollbar {
@@ -117,9 +142,49 @@
   pointer-events: none;
 }
 
-.car-filters-dropdown-arrow {
+.car-filters-dropdown-right {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+
   display: inline-flex;
-  margin-right: 6px;
   font-size: 18px;
   align-items: center;
+
+  background-color: white;
+}
+
+.car-filters-dropdown-clear-and-arrow {
+  display: inline-flex;
+  align-items: center;
+}
+
+.car-filters-dropdown-arrow {
+  display: inline-flex;
+  font-size: 18px;
+  align-items: center;
+
+  pointer-events: none;
+
+  color: #868686;
+}
+
+.car-filters-dropdown-arrow.opened{
+  color: #000000;
+}
+
+.car-filters-dropdown-clear-button {
+  margin-right: 4px;
+  pointer-events: visible;
+}
+
+.car-filters-dropdown-clear-button-input {
+  padding: 0;
+  position: absolute;
+  right: 14px;
+
+  width: 34px;
+  height: 34px;
 }

@@ -6,6 +6,19 @@ export const handleError = (error: any) => {
   let message = "Unknown error occurred";
 
   if (isAxiosError(error)) {
+    console.group("Axios Error");
+    console.error("Message:", error.message);
+    console.error("Status:", error.response?.status);
+    console.error("Response data:", error.response?.data);
+    console.error("Request:", error.request);
+    console.groupEnd();
+  } else {
+    console.group("Non-Axios Error");
+    console.error(error);
+    console.groupEnd();
+  }
+
+  if (isAxiosError(error)) {
     const err = error.response;
     message = error?.message;
 
@@ -26,5 +39,5 @@ export const handleError = (error: any) => {
   toast.warning(message);
 
   // Optional: throw so the caller can catch
-  throw error;
+  // throw error;
 };

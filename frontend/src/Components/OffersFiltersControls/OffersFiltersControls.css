@@ -15,12 +15,16 @@
     align-items: center;
     align-self: start;
 
-    grid-area: resultsHeading;
+    /* grid-area: resultsHeading; */
+    grid-area: filters;
 }
 
-@media screen and (min-width: 1024px) {
-    .car-filters {
-        /* display: block; */
-        grid-area: filters;
-    }
-} 
+.car-filters-min-max-field {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-basis: calc(100% - 0px);
+
+    gap: 8px;
+    width: 100%;
+}
