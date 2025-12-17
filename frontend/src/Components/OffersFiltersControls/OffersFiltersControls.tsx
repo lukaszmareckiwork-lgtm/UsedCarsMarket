@@ -112,6 +112,7 @@ const OffersFiltersControls = ({
 
       <FiltersInputString
         placeholder="Search"
+        initialValue={query.Search}
         onValueChanged={x => updateFilters({ Search: x, PageNumber: 1 })}
         onClearClicked={() => updateFilters({ Search: null, PageNumber: 1})}
       />
@@ -119,11 +120,13 @@ const OffersFiltersControls = ({
       <div className="car-filters-min-max-field">
         <FiltersInputNumber
           placeholder="Price from"
+          initialValue={query.MinPrice}
           onValueChanged={x => updateFilters({ MinPrice: x, PageNumber: 1 })}
           onClearClicked={() => updateFilters({ MinPrice: null, PageNumber: 1})}
         />
         <FiltersInputNumber
           placeholder="Price to"
+          initialValue={query.MaxPrice}
           onValueChanged={x => updateFilters({ MaxPrice: x, PageNumber: 1 })}
           onClearClicked={() => updateFilters({ MaxPrice: null, PageNumber: 1})}
         />
@@ -132,11 +135,13 @@ const OffersFiltersControls = ({
       <div className="car-filters-min-max-field">
         <FiltersInputNumber
           placeholder="Year from"
+          initialValue={query.MinYear}
           onValueChanged={x => updateFilters({ MinYear: x, PageNumber: 1 })}
           onClearClicked={() => updateFilters({ MinYear: null, PageNumber: 1})}
         />
         <FiltersInputNumber
           placeholder="Year to"
+          initialValue={query.MaxYear}
           onValueChanged={x => updateFilters({ MaxYear: x, PageNumber: 1 })}
           onClearClicked={() => updateFilters({ MaxYear: null, PageNumber: 1})}
         />
@@ -145,11 +150,13 @@ const OffersFiltersControls = ({
       <div className="car-filters-min-max-field">
         <FiltersInputNumber
           placeholder="Mileage from"
+          initialValue={query.MinMileage}
           onValueChanged={x => updateFilters({ MinMileage: x, PageNumber: 1 })}
           onClearClicked={() => updateFilters({ MinMileage: null, PageNumber: 1})}
         />
         <FiltersInputNumber
           placeholder="Mileage to"
+          initialValue={query.MaxMileage}
           onValueChanged={x => updateFilters({ MaxMileage: x, PageNumber: 1 })}
           onClearClicked={() => updateFilters({ MaxMileage: null, PageNumber: 1})}
         />
