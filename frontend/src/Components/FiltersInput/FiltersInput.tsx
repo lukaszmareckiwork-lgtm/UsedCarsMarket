@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FiltersInputFrame from "../FiltersInputFrame/FiltersInputFrame";
 import "./FiltersInput.css";
 import { IoClose } from "react-icons/io5";
@@ -7,6 +7,7 @@ import RedCrossButton from "../RedCrossButton/RedCrossButton";
 export interface FiltersInputProps<T extends string | number> {
   type: "text" | "number";
   placeholder: string;
+  initialValue: T | null | undefined;
   onValueChanged: (value: T | null) => void;
   onClearClicked: () => void;
 }
@@ -14,13 +15,18 @@ export interface FiltersInputProps<T extends string | number> {
 export function FiltersInput<T extends string | number>({
   type,
   placeholder,
+  initialValue,
   onValueChanged,
   onClearClicked,
 }: FiltersInputProps<T>) {
-  const [val, setVal] = useState<T | null>(null);
+  const [val, setVal] = useState<T | null>(initialValue ?? null);
 
   const isNumberField = type === "number" && true;
   const renderedValue = isNumberField ? val ?? "" : val ?? "";
+
+  useEffect(() => {
+    setVal(initialValue ?? null);
+  }, [initialValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let next: T | null;
