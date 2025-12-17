@@ -1,135 +1,94 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import "./OffersFiltersControls.css";
-import {
-  useMakes,
-  type MakeData,
-  type ModelData,
-} from "../../Context/MakesContext";
+import { useMakes, type MakeData, type ModelData } from "../../Context/MakesContext";
 import FiltersDropdown from "../FiltersDropdown/FiltersDropdown";
-import { ROUTES } from "../../Routes/Routes";
-
-export interface OffersFiltersControlsResult {
-  onlyFavourites: boolean;
-  createdById?: string;
-  selMakes: MakeData[];
-  selModels: ModelData[];
-}
+import type { OfferQueryObject } from "../../Data/OfferQueryObject";
+import { FiltersInputNumber } from "../FiltersInput/FiltersInputNumber";
+import { FiltersInputString } from "../FiltersInput/FiltersInputString";
+import { FuelTypeEnum, getReadableFuelType, getReadableTransmissionType, TransmissionTypeEnum } from "../../Data/OfferProps";
+import FiltersInputFrame from "../FiltersInputFrame/FiltersInputFrame";
+import FiltersLocationPicker from "../FiltersLocationPicker/FiltersLocationPicker";
 
 interface Props {
-  handleFiltersResult: (filtersResult: OffersFiltersControlsResult) => void;
-  handleLoadingTimeout: (loadingTimeout: boolean) => void;
+  query: OfferQueryObject;
+  updateFilters: (updates: Partial<OfferQueryObject>) => void;
+  toggleFavouriteFilter: () => void;
+  offersFound: number;
 }
 
 const OffersFiltersControls = ({
-  handleFiltersResult,
-  handleLoadingTimeout,
+  query,
+  updateFilters,
+  offersFound,
 }: Props) => {
   const { makes, loading } = useMakes();
-  const [onlyFavourites, setOnlyFavourites] = useState<boolean>(false);
-  const [createdById, setCreatedById] = useState<string>();
   const [selectedMakes, setSelectedMakes] = useState<MakeData[]>([]);
   const [selectedModels, setSelectedModels] = useState<ModelData[]>([]);
-  const [searchParams] = useSearchParams();
-  const [isInitialized, setIsInitialized] = useState(false);
+  
+  const [selectedTransmissionTypes, setSelectedTransmissionTypes] = useState<TransmissionTypeEnum[]>([]);
+  const [selectedFuelTypes, setSelectedFuelTypes] = useState<FuelTypeEnum[]>([]);
 
-  const navigate = useNavigate();
+  const [locationName, setLocationName] = useState<string>("");
+  const locationNameRef = useRef<string>(locationName);
 
+  // -------------------------------
+  // Initialize selected makes/models from query
+  // -------------------------------
   useEffect(() => {
-    handleLoadingTimeout(true);
-    if (!isInitialized) return;
+    if (makes.length === 0) return;
 
-    const filtersResult: OffersFiltersControlsResult = {
-      onlyFavourites: onlyFavourites,
-      createdById: createdById,
-      selMakes: selectedMakes,
-      selModels: selectedModels,
-    };
-
-    handleLoadingTimeout(true);
-
-    const timer = setTimeout(() => {
-      handleLoadingTimeout(false);
-
-      handleFiltersResult(filtersResult);
-    }, 500); // wait 500ms for more changes
-
-    return () => clearTimeout(timer);
-  }, [createdById, selectedModels, selectedMakes, isInitialized]);
-
-  // Use URL search params
-  useEffect(() => {
-    if (makes.length === 0) return;// wait until makes and models will be available
-
-    setOnlyFavouritesFromUrl();
-    setCreatedByFromUrl();
-    setMakesModelsFromUrl();
-
-    setIsInitialized(true);
-  }, [searchParams, makes]);
-
-  const setOnlyFavouritesFromUrl = () => {
-    const onlyFavouritesFromUrl = searchParams.get("onlyFavourites") === "true";
-    setOnlyFavourites(onlyFavouritesFromUrl);
-  }
-
-  const setCreatedByFromUrl = () => {
-    const createdByFromUrl = searchParams.get("createdById") || "";
-    setCreatedById(createdByFromUrl);
-  }
-
-  const setMakesModelsFromUrl = () => {
-    const makesFromUrl = searchParams.get("make")?.split(",") || [];
-    const modelsFromUrl = searchParams.get("model")?.split(",") || [];
-
-    const makesToSelect = makesFromUrl
-      .map((makeSlug) => makes.find((make) => make.make_slug === makeSlug))
+    const makesToSelect = (query.MakeIds || [])
+      .map((id) => makes.find((m) => m.make_id === id))
       .filter((m): m is MakeData => m !== undefined);
 
-    const availableModels = getAvailableModels(makesToSelect);
-
-    const modelsToSelect = modelsFromUrl.flatMap((id) =>
-      availableModels.filter((m) => m.model_id === Number.parseInt(id))
+    const modelsToSelect = (query.ModelIds || []).flatMap((id) =>
+      getAvailableModels(makesToSelect).filter((m) => m.model_id === id)
     );
 
     setSelectedMakes(makesToSelect);
     setSelectedModels(modelsToSelect);
-  };
-
-  // Update URL dynamically
-  const updateUrl = (updatedMakes: MakeData[], updatedModels: ModelData[]) => {
-    const updMakesString = updatedMakes.map((make) => make.make_slug);
-    const updModelsString = updatedModels.map((model) => model.model_id);
-
-    const params = new URLSearchParams();
-    if (updMakesString.length) params.set("make", updMakesString.join(","));
-    if (updModelsString.length) params.set("model", updModelsString.join(","));
-    
-    navigate(ROUTES.PASSENGER_CARS_WITH_QUERY(params.toString()));
-  };
+  }, [makes, query.MakeIds, query.ModelIds]);
 
   const getAvailableModels = (selMakes: MakeData[] = selectedMakes) => {
-    return selMakes
-      .flatMap((makeData) => Object.values(makeData?.models))
-      .filter(Boolean);
+    return selMakes.flatMap((make) => Object.values(make.models)).filter(Boolean);
   };
 
   const onMakesSelected = (selMakes: MakeData[]) => {
     setSelectedMakes(selMakes);
-
-    // Keep only selected models that are still available
     const validModels = getAvailableModels(selMakes).filter((model) =>
       selectedModels.includes(model)
     );
     setSelectedModels(validModels);
 
-    updateUrl(selMakes, validModels);
+    updateFilters({
+      MakeIds: selMakes.map((m) => m.make_id),
+      ModelIds: validModels.map((m) => m.model_id),
+      PageNumber: 1,
+    });
   };
 
   const onModelsSelected = (selModels: ModelData[]) => {
     setSelectedModels(selModels);
-    updateUrl(selectedMakes, selModels);
+
+    updateFilters({
+      ModelIds: selModels.map((m) => m.model_id),
+      PageNumber: 1,
+    });
   };
+
+  // -------------------------------
+  // Initialize selected fuel and transmission types from query
+  // -------------------------------
+  useEffect(() => {
+    if(query.FuelTypes) setSelectedFuelTypes(query.FuelTypes);
+    if(query.TransmissionTypes) setSelectedTransmissionTypes(query.TransmissionTypes);
+  }, [query.FuelTypes, query.TransmissionTypes]);
+
+  const transmissionOptions: TransmissionTypeEnum[] =
+    Object.values(TransmissionTypeEnum).filter(v => typeof v === "number") as TransmissionTypeEnum[];
+
+  const fuelTypeOptions: FuelTypeEnum[] =
+    Object.values(FuelTypeEnum).filter(v => typeof v === "number") as FuelTypeEnum[];
 
   return (
     <section className="car-filters">
@@ -152,12 +111,138 @@ const OffersFiltersControls = ({
         handleItemSelected={onModelsSelected}
         getId={(model) => model.model_id}
         getDisplayName={(model) => model.model_name}
-        getSimplifiedName={(model) => model.model_name.toLocaleLowerCase()}
+        getSimplifiedName={(model) => model.model_name.toLowerCase()}
         loading={loading}
         forceDisable={selectedMakes.length === 0}
         headerText="Model"
         searchInputPlaceholder="Search model"
       />
+
+      <FiltersInputString
+        placeholder="Search"
+        initialValue={query.Search}
+        onValueChanged={x => updateFilters({ Search: x, PageNumber: 1 })}
+        onClearClicked={() => updateFilters({ Search: null, PageNumber: 1})}
+      />
+
+      <div className="car-filters-min-max-field">
+        <FiltersInputNumber
+          placeholder="Price from"
+          initialValue={query.MinPrice}
+          onValueChanged={x => updateFilters({ MinPrice: x, PageNumber: 1 })}
+          onClearClicked={() => updateFilters({ MinPrice: null, PageNumber: 1})}
+        />
+        <FiltersInputNumber
+          placeholder="Price to"
+          initialValue={query.MaxPrice}
+          onValueChanged={x => updateFilters({ MaxPrice: x, PageNumber: 1 })}
+          onClearClicked={() => updateFilters({ MaxPrice: null, PageNumber: 1})}
+        />
+      </div>
+
+      <div className="car-filters-min-max-field">
+        <FiltersInputNumber
+          placeholder="Year from"
+          initialValue={query.MinYear}
+          onValueChanged={x => updateFilters({ MinYear: x, PageNumber: 1 })}
+          onClearClicked={() => updateFilters({ MinYear: null, PageNumber: 1})}
+        />
+        <FiltersInputNumber
+          placeholder="Year to"
+          initialValue={query.MaxYear}
+          onValueChanged={x => updateFilters({ MaxYear: x, PageNumber: 1 })}
+          onClearClicked={() => updateFilters({ MaxYear: null, PageNumber: 1})}
+        />
+      </div>
+
+      <div className="car-filters-min-max-field">
+        <FiltersInputNumber
+          placeholder="Mileage from"
+          initialValue={query.MinMileage}
+          onValueChanged={x => updateFilters({ MinMileage: x, PageNumber: 1 })}
+          onClearClicked={() => updateFilters({ MinMileage: null, PageNumber: 1})}
+        />
+        <FiltersInputNumber
+          placeholder="Mileage to"
+          initialValue={query.MaxMileage}
+          onValueChanged={x => updateFilters({ MaxMileage: x, PageNumber: 1 })}
+          onClearClicked={() => updateFilters({ MaxMileage: null, PageNumber: 1})}
+        />
+      </div>
+
+      <FiltersDropdown<FuelTypeEnum>
+        items={fuelTypeOptions}
+        selectedItems={selectedFuelTypes}
+        handleItemSelected={(selected) =>{ 
+            setSelectedFuelTypes(selected);
+            updateFilters({ FuelTypes: selected });
+          }
+        }
+        
+        getId={(x) => x} // numbers are fine as keys
+        getDisplayName={(x) => getReadableFuelType(x)}
+        getSimplifiedName={(x) => getReadableFuelType(x).toLowerCase()}
+        
+        loading={false}
+        forceDisable={false}
+        headerText="Fuel type"
+        searchInputPlaceholder="Search fuel type..."
+      />
+
+      <FiltersDropdown<TransmissionTypeEnum>
+        items={transmissionOptions}
+        selectedItems={selectedTransmissionTypes}
+        handleItemSelected={(selected) =>{ 
+            setSelectedTransmissionTypes(selected);
+            updateFilters({ TransmissionTypes: selected });
+          }
+        }
+        
+        getId={(x) => x} // numbers are fine as keys
+        getDisplayName={(x) => getReadableTransmissionType(x)}
+        getSimplifiedName={(x) => getReadableTransmissionType(x).toLowerCase()}
+        
+        loading={false}
+        forceDisable={false}
+        headerText="Transmission"
+        searchInputPlaceholder="Search transmission..."
+      />
+      <FiltersInputFrame>
+        <FiltersLocationPicker
+          // initialCoordinates={filters.InitialLocation ?? undefined}
+          onLocationSelected={(lat, lng, name, range) => {
+            console.log({ lat, lng, name, range });
+            updateFilters({
+              LocationLat: lat,
+              LocationLong: lng,
+              LocationRange: range,
+            });
+            setLocationName(name);
+            // locationNameRef.current = name;
+          }}
+          targetCoordinates={
+            typeof query?.LocationLat === "number"
+              ? { lat: query.LocationLat!, lng: query.LocationLong! }
+              : undefined
+          }
+          targetRange={
+            typeof query?.LocationRange === "number"
+              ? query.LocationRange
+              : undefined
+          }
+          // targetName={locationNameRef.current}
+          targetName={locationName}
+          onLocationCleared={() =>{
+            updateFilters({
+              LocationLat: undefined,
+              LocationLong: undefined,
+              LocationRange: undefined
+            });
+            setLocationName("");
+          }}
+          offersFound={offersFound}
+        />
+      </FiltersInputFrame>
     </section>
   );
 };

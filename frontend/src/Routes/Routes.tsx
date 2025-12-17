@@ -1,7 +1,7 @@
 export const ROUTES = {
   LOGIN: "/login",
   REGISTER: "/register",
-  PASSENGER_CARS_FAVOURITES: "/passenger-cars?onlyFavourites=true",
+  PASSENGER_CARS_FAVOURITES: "/passenger-cars?OnlyFavourites=true",
   HOME: "/",
   ADD_OFFER: "/add-offer",
 
@@ -9,5 +9,5 @@ export const ROUTES = {
   OFFER_DETAILS_BUILD: (id: number) => `/offer/details/${id}` as const,
 
   PASSENGER_CARS: "/passenger-cars",
-  PASSENGER_CARS_WITH_QUERY: (query: string) => `/passenger-cars${query ? `?${query}` : ""}`,
+  // PASSENGER_CARS_WITH_QUERY: (query: string) => `/passenger-cars${query ? `?${query}` : ""}`,
 } as const;
