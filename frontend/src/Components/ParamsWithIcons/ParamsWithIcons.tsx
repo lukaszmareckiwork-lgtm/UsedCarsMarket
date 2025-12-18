@@ -21,7 +21,7 @@ const ParamsWithIcons = ({ offerProps, iconSize: iconSize, hideLabel = false, sp
       <ParamWithIcon icon={<GiGearStickPattern size={iconSize} />} label="Transmission" value={getReadableTransmissionType(offerProps.transmission)} hideLabel={hideLabel} />
       <ParamWithIcon icon={<PiEngineBold  size={iconSize} />} label="Engine Displacement" value={Intl.NumberFormat("pl-PL").format(offerProps.engineDisplacement)} unit="cc" hideLabel={hideLabel} />
       <ParamWithIcon icon={<MdOutlineSpeed  size={iconSize + 2} />} label="Engine Power" value={Intl.NumberFormat("pl-PL").format(offerProps.enginePower)} unit="hp" hideLabel={hideLabel} />
-      <ParamWithIcon icon={<FaCalendarAlt size={iconSize - 4} />} label="Year" value={2020} hideLabel={hideLabel} />
+      <ParamWithIcon icon={<FaCalendarAlt size={iconSize - 4} />} label="Year" value={offerProps.year} hideLabel={hideLabel} />
     </dl>
   )
 }
