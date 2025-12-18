@@ -109,6 +109,10 @@ export function useOfferFilters() {
         offerPreviewGetApi(query)
         ?.then((res) => {
             if (!res?.data) return;
+            // console.log(
+            //   "offerPreviewGetApi items:",
+            //   JSON.stringify(res.data.items, null, 2)
+            // );
             setOffers(res.data.items);
             setTotalCount(res.data.totalCount);
         })

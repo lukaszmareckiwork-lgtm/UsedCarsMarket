@@ -56,6 +56,7 @@ export const dropdownStyles =<T,>(): StylesConfig<T, false, GroupBase<T>> => ({
     boxShadow: "none",
     minHeight: "100%",
     height: "100%",
+    cursor: "pointer",
   }),
 
   valueContainer: (base) => ({
