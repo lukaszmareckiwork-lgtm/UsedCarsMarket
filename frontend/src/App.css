@@ -39,3 +39,42 @@
 .main-button:active {
   background: #0071CE;
 }
+
+.main-button:focus-visible {
+  outline: 2px solid #003764;
+  outline-offset: 2px;
+}
+
+.delete-button {
+  padding: 8px 12px;
+
+  background: #C62828;
+  color: #FFFFFF;
+
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  text-decoration: none;
+}
+
+.delete-button:hover {
+  background: #D32F2F;
+}
+
+.delete-button:active {
+  background: #C62828;
+}
+
+.delete-button:focus-visible {
+  outline: 2px solid rgba(198, 40, 40, 0.4);
+  outline-offset: 2px;
+}

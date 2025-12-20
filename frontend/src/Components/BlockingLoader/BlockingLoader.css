@@ -1,0 +1,36 @@
+.blocking-loader {
+  position: relative;
+  display: inline-block;
+
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+/* Overlay layer */
+.blocking-loader-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(119, 119, 119, 0.5);
+  /* backdrop-filter: blur(1px); */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 5;
+}
+
+.blocking-loader .loading-spinner.overlay {
+    background: none;
+} 
+
+/* Disable interaction with wrapped content */
+.blocking-loader.is-loading {
+  pointer-events: none;
+}
+
+/* Allow overlay to capture events */
+.blocking-loader.is-loading .blocking-loader-overlay {
+  pointer-events: all;
+}

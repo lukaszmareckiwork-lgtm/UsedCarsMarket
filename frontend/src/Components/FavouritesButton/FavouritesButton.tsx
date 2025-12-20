@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../Context/useAuth";
 import { ROUTES } from "../../Routes/Routes";
 import { redirectToLoginWithReturn } from "../../Helpers/redirectToLoginWithReturn";
+import IconCounterButton from "../IconCounterButton/IconCounterButton";
 
 type Props = {
   count: number;
@@ -24,14 +25,13 @@ const FavouritesButton = ({ count }: Props) => {
   const disabled = isLoggedIn() && count === 0;
 
   return (
-    <a
-      href={ROUTES.PASSENGER_CARS_FAVOURITES}
-      className={`favourites-button ${disabled ? "disabled" : ""}`}
+    <IconCounterButton
+      count={count}
+      route={ROUTES.PASSENGER_CARS_FAVOURITES}
+      icon={<FaHeart size={28} />}
       onClick={handleClick}
-    >
-      <FaHeart size={28} />
-      <div className="favourites-button-count-text">{count > 0 && `(${count})`}</div>
-    </a>
+      disabled={disabled}
+      />
   );
 };
 
