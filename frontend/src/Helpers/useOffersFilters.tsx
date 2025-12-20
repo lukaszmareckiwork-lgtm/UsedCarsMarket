@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { OfferProps } from "../Data/OfferProps";
 import type { OfferQueryObject } from "../Data/OfferQueryObject";
@@ -40,7 +40,7 @@ function parseQueryFromSearchParams(
     if (key === "MakeIds" || key === "ModelIds" || key === "FuelTypes" || key === "TransmissionTypes") {
       q[key] = searchParams.getAll(key).map(Number);
     } else if (key === "SortDescending") {
-      q.SortDescending = value === "true" ? true : undefined;
+      q.SortDescending = value === "true" ? true : false;
     } else if (key === "OnlyFavourites") {
       q.OnlyFavourites = value === "true" ? true : undefined;
     } else if (!isNaN(Number(value))) {
@@ -88,8 +88,6 @@ export function useOfferFilters() {
       if (value == null) return;
       if (Array.isArray(value)) {
         value.forEach((v) => params.append(key, String(v)));
-      } else if (typeof value === "boolean") {
-        if (value) params.set(key, "true");
       } else {
         params.set(key, String(value));
       }

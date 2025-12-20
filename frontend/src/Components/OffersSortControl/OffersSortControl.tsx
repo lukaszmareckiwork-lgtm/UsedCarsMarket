@@ -1,4 +1,3 @@
-import React from "react";
 import "./OffersSortControl.css";
 import type { OfferQueryObject } from "../../Data/OfferQueryObject";
 import Select from "react-select";
@@ -17,8 +16,8 @@ interface Props {
 }
 
 const options: SortOption[] = [
-  { label: "Newest first", sortBy: "createdDate", sortDescending: false },
-  { label: "Oldest first", sortBy: "createdDate", sortDescending: true },
+  { label: "Newest first", sortBy: "createdDate", sortDescending: true },
+  { label: "Oldest first", sortBy: "createdDate", sortDescending: false },
 
   { label: "Price: high → low", sortBy: "price", sortDescending: true },
   { label: "Price: low → high", sortBy: "price", sortDescending: false },
@@ -32,7 +31,7 @@ const options: SortOption[] = [
 
 const OffersSortControl = ({ query, updateFilters }: Props) => {
   const effectiveSortBy = query.SortBy ?? "createdDate";
-  const effectiveSortDescending = query.SortDescending ?? false;
+  const effectiveSortDescending = query.SortDescending ?? true;
 
   const selectedOption =
     options.find(
