@@ -4,6 +4,8 @@ import { handleError } from "../Helpers/handleError";
 import type { PagedResult } from "../Helpers/PagedResult";
 import type { CreateOfferRequestDto } from "../Data/CreateOfferRequestDto";
 import type { OfferQueryObject } from "../Data/OfferQueryObject";
+import type { CreateOfferResponseDto } from "../Data/CreateOfferResponseDto";
+import type { DeleteOfferResponseDto } from "../Data/DeleteOfferResponseDto";
 
 const api = "http://localhost:5261/api/offer/";
 
@@ -82,7 +84,7 @@ export const offerPostApi = async (offer: CreateOfferRequestDto) => {
 
     // console.log(`formData: ${Array.from(formData.entries()).map(([k, v]) => `${k}: ${v instanceof File ? v.name : v}`).join(", ") }`);
 
-    const response = await axios.post(api, formData, {
+    const response = await axios.post<CreateOfferResponseDto>(api, formData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "multipart/form-data",
@@ -94,6 +96,15 @@ export const offerPostApi = async (offer: CreateOfferRequestDto) => {
   } catch (error) {
     handleError(error);
   }
+};
+
+export const offerDeleteApi = async (offerId: number) =>{
+    try {
+        const response = await axios.delete<DeleteOfferResponseDto>(api + offerId);
+        return response.data;
+    } catch (error) {
+        handleError(error);
+    }
 };
 
 export const offerPreviewGetApi = (queryObj: OfferQueryObject) => {
@@ -135,4 +146,13 @@ export const offerGetSingleApi = (offerId: number) => {
     console.log(`offerGetApi - error: ${error}`);
     handleError(error);
   }
+};
+
+export const getUserOffersCountApi = async () =>{
+    try {
+        const data = await axios.get<number>(api + "userofferscount");
+        return data;
+    } catch (error) {
+        handleError(error);
+    }
 };

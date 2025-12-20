@@ -1,14 +1,14 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../Routes/Routes";
 
-export const useRedirectAfterLogin = () => {
+export const useRedirectBack = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const returnTo = location.state?.returnTo || ROUTES.HOME;
 
-  const redirect = () => {
-    navigate(returnTo, { replace: true });
+  const redirect = (replace: boolean = false) => {
+    navigate(returnTo, { replace });
   };
 
   return { returnTo, redirect };

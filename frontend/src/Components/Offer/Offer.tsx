@@ -15,7 +15,7 @@ const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JS
       <article data-id={offerProps.id} className='offerArticle' data-media-size='small' data-orientation='horizontal'>
         <Link 
           to={ROUTES.OFFER_DETAILS_BUILD(offerProps.id)}
-          state={{ from: location.pathname + location.search }}
+          state={{ returnTo: location.pathname + location.search }}
         ></Link>
         <section className='offerSection'>
           <div className='offerImageHolder'>

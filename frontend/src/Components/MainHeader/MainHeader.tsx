@@ -5,6 +5,8 @@ import FavouritesButton from "../FavouritesButton/FavouritesButton";
 import { PiLineVertical } from "react-icons/pi";
 import { useFavourites } from "../../Context/useFavourites";
 import { ROUTES } from "../../Routes/Routes";
+import OwnedOffersButton from "../OwnedOffersButton/OwnedOffersButton";
+import { useUserOffers } from "../../Context/useUserOffers";
 
 const MainHeader = () => {
   const location = useLocation();
@@ -13,6 +15,7 @@ const MainHeader = () => {
 
   const { isLoggedIn, user, logoutUser } = useAuth();
   const { favouritesCount } = useFavourites(); 
+  const { userOffersCount } = useUserOffers();
 
   return (
     <div className="mainHeader">
@@ -44,14 +47,11 @@ const MainHeader = () => {
           </>
         )}
 
-        {!isAddOfferPage && (
-          <>
-            <PiLineVertical size={40} color="#ddddddff" />
-            <Link to={ROUTES.ADD_OFFER} className="mainHeader-addOfferButton main-button">
-              Add offer
-            </Link>
-          </>
-        )}
+        <PiLineVertical size={40} color="#ddddddff" />
+        <OwnedOffersButton count={userOffersCount} />
+        {!isAddOfferPage && <Link to={ROUTES.ADD_OFFER} className="mainHeader-addOfferButton main-button">
+          Add offer
+        </Link>}
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import React from "react";
 import axios from "axios";
 import type { SellerTypeEnum } from "../Data/OfferProps";
 import { ROUTES } from "../Routes/Routes";
-import { useRedirectAfterLogin } from "../Helpers/useRedirectAfterLogin";
+import { useRedirectBack } from "../Helpers/useRedirectBack";
 
 type UserContextType = {
   user: UserProfile | null;
@@ -30,7 +30,7 @@ export const UserProvider = ({ children }: Props) => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isReady, setIsReady] = useState(false);
 
-  const { redirect } = useRedirectAfterLogin();
+  const { redirect } = useRedirectBack();
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -58,6 +58,7 @@ export const UserProvider = ({ children }: Props) => {
           const userObj = {
             username: res?.data.userName,
             email: res?.data.email,
+            id: res?.data.id,
           };
 
           localStorage.setItem("user", JSON.stringify(userObj));
@@ -66,7 +67,7 @@ export const UserProvider = ({ children }: Props) => {
           setUser(userObj!);
           toast.success("Login success.");
           // navigate(ROUTES.HOME);
-          redirect();
+          redirect(true);
         }
       })
       .catch((e) => {
@@ -86,6 +87,7 @@ export const UserProvider = ({ children }: Props) => {
           const userObj = {
             username: res?.data.userName,
             email: res?.data.email,
+            id: res?.data.id,
           };
 
           localStorage.setItem("user", JSON.stringify(userObj));
@@ -94,7 +96,7 @@ export const UserProvider = ({ children }: Props) => {
           setUser(userObj!);
           toast.success("Login success.");
           // navigate(ROUTES.HOME);
-          redirect();
+          redirect(true);
         }
       })
       .catch((e) => {
