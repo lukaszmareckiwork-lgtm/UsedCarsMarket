@@ -1,6 +1,7 @@
 using api.Dtos.Offer;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Service
 {
@@ -9,12 +10,14 @@ namespace api.Service
         private readonly IOfferRepository _repo;
         private readonly IBlobStorageService _blob;
         private readonly IImageService _image;
+        private readonly UserManager<AppUser> _userManager;
 
-        public OfferService(IOfferRepository repo, IBlobStorageService blob, IImageService image)
+        public OfferService(IOfferRepository repo, IBlobStorageService blob, IImageService image, UserManager<AppUser> userManager)
         {
             _repo = repo;
             _blob = blob;
             _image = image;
+            _userManager = userManager;
         }
 
         public async Task<Offer> CreateOfferAsync(CreateOfferRequestDto dto, IEnumerable<IFormFile>? files = null, string? appUserId = null)
@@ -178,10 +181,15 @@ namespace api.Service
             return await _repo.UpdateModelAsync(offer);
         }
 
-        public async Task<Offer?> DeleteOfferAsync(int id)
+        public async Task<Offer?> DeleteOfferAsync(int id, AppUser appUser)
         {
+            var isAdmin = await _userManager.IsInRoleAsync(appUser, "Admin");
+            
             var offer = await _repo.GetByIdAsync(id);
             if (offer == null) return null;
+
+            if(!isAdmin && offer.AppUserId != appUser.Id)
+                throw new UnauthorizedAccessException("User is not allowed to delete this offer.");
 
             foreach (var photo in offer.Photos)
             {
