@@ -15,5 +15,6 @@ namespace api.Interfaces
         Task<Offer?> UpdateModelAsync(Offer offer);
         Task<Offer?> DeleteAsync(int id);
         Task<bool> OfferExistsAsync(int id);
+        Task<int> GetUserOffersCount(AppUser appUser);
     }
 }
