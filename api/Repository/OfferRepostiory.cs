@@ -84,7 +84,7 @@ namespace api.Repository
             // Sorting
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {
-                switch (query.SortBy.ToLower())
+                switch (query.SortBy)
                 {
                     case "createdDate":
                         offers = query.SortDescending
@@ -113,6 +113,10 @@ namespace api.Repository
                     default:
                         break;
                 }
+            } 
+            else 
+            {
+                offers = offers.OrderByDescending(o => o.CreatedDate);
             }
 
             return offers;
@@ -358,6 +362,11 @@ namespace api.Repository
         public async Task<bool> OfferExistsAsync(int id)
         {
             return await _context.Offers.AnyAsync(o => o.Id == id);
+        }
+
+        public async Task<int> GetUserOffersCount(AppUser user)
+        {
+            return await _context.Offers.CountAsync(fo => fo.AppUserId == user.Id);
         }
     }
 }

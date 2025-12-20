@@ -144,10 +144,13 @@ namespace api.Controllers
 
             var email = User.GetEmail();
             var appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser == null) return Unauthorized();
 
             var created = await _offerService.CreateOfferAsync(createOfferRequestDto, files, appUser?.Id);
 
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created.OfferDto());
+            var updatedCount = await _offerRepo.GetUserOffersCount(appUser!);
+
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, new CreateOfferResponseDto { OfferDto = created.OfferDto(), UserOffersCount = updatedCount });
         }
 
         [HttpPut]
@@ -174,12 +177,28 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var offerModel = await _offerService.DeleteOfferAsync(id);
+            var email = User.GetEmail();
+            var appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser == null) return Unauthorized();
 
+            var offerModel = await _offerService.DeleteOfferAsync(id, appUser);
             if (offerModel == null)
                 return NotFound();
 
-            return NoContent();
+            var updatedCount = await _offerRepo.GetUserOffersCount(appUser);
+
+            return Ok(new DeleteOfferResponseDto { OfferId = id, UserOffersCount = updatedCount });
+        }
+
+        [HttpGet("userofferscount")]
+        [Authorize]
+        public async Task<IActionResult> GetUserOffersCount()
+        {
+            var appUser = await this.GetCurrentUserAsync(_userManager);
+            if (appUser == null) return Unauthorized();
+            
+            var userOffersCount = await _offerRepo.GetUserOffersCount(appUser);
+            return Ok(userOffersCount);
         }
     }
 }

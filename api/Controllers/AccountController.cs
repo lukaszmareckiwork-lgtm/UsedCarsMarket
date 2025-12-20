@@ -46,6 +46,7 @@ namespace api.Controllers
                     Phone = user.PhoneNumber,
                     SellerType = user.SellerType,
                     Token = _tokenService.CreateToken(user),
+                    Id = user.Id,
                }
             );
         }
@@ -81,6 +82,7 @@ namespace api.Controllers
                                 Phone = appUser.PhoneNumber,
                                 SellerType = appUser.SellerType,
                                 Token = _tokenService.CreateToken(appUser),
+                                Id = appUser.Id,
                             }
                         );
                     }

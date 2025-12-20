@@ -13,5 +13,6 @@ namespace api.Dtos.Account
         public string Phone { get; set; }
         public SellerType SellerType { get; set; }
         public string Token { get; set; }
+        public string Id { get; set; }
     }
 }
