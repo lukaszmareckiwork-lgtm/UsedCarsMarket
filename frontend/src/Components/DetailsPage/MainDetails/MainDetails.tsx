@@ -7,25 +7,21 @@ import DetailsContent from '../DetailsContent/DetailsContent'
 import DetailsSidePanel from '../DetailsSidePanel/DetailsSidePanel'
 import { IoArrowBackOutline } from 'react-icons/io5'
 import Spinner from '../../Spinner/Spinner'
-import { ROUTES } from '../../../Routes/Routes'
+import { useRedirectBack } from '../../../Helpers/useRedirectBack'
 
 
 const MainDetails = () => {
   const [offerProps, setOfferProps] = useState<OfferProps>();
   const { id } = useParams();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const location = useLocation();
-  const from = (location.state as any)?.from ?? ROUTES.HOME; // fallback to home
+  const { redirect } = useRedirectBack();
 
   useEffect(() => {   
     offerGetSingleApi(Number(id))
       ?.then((res) => {
         const numericId = Number(id);
         if (!numericId) return;
-
-        // handleLoadingOffers(false);
 
         if (res?.data != undefined) {
           setIsLoading(false);
@@ -43,7 +39,7 @@ const MainDetails = () => {
           to="#"
           onClick={(e) => {
             e.preventDefault();
-            navigate(from);
+            redirect();
           }}
           className="main-details-back"
         >

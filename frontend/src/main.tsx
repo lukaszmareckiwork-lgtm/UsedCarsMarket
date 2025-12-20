@@ -6,6 +6,7 @@ import App from "./App.tsx";
 import { MakesProvider } from "./Context/MakesContext.tsx";
 import { UserProvider } from "./Context/useAuth.tsx";
 import { FavouritesProvider } from "./Context/useFavourites.tsx";
+import { UserOffersProvider } from "./Context/useUserOffers.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -13,7 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <MakesProvider>
         <UserProvider>
           <FavouritesProvider>
-            <App />
+            <UserOffersProvider>
+              <App />
+            </UserOffersProvider>
           </FavouritesProvider>
         </UserProvider>
       </MakesProvider>

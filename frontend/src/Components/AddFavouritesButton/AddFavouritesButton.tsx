@@ -20,7 +20,7 @@ const AddFavouritesButton = ({ offerProps }: Props) => {
 
   const handleAddRemoveFavouritesClick = () => {
     if (!isLoggedIn()) {
-      redirectToLoginWithReturn(navigate, location); // <- use utility here
+      redirectToLoginWithReturn(navigate, location);
       return;
     }
 

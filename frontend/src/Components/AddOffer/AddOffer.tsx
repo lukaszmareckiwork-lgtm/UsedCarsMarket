@@ -1,30 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AddOfferForm from '../AddOfferForm/AddOfferForm'
 import "./AddOffer.css"
-import { offerPostApi } from '../../Services/OfferService'
 import { toast } from 'react-toastify'
 import type { CreateOfferRequestDto } from '../../Data/CreateOfferRequestDto'
+import { useUserOffers } from '../../Context/useUserOffers'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '../../Routes/Routes'
 
 const AddOffer = () => {
-    const handleOfferSubmit = (newOffer: CreateOfferRequestDto) => {
-        console.log("handleOfferSubmit:", newOffer);
+    const { addOffer } = useUserOffers();
+    const [loading, setLoading] = useState(false);
 
-        //add offer to database logic
-        offerPostApi(newOffer)
-            ?.then(res => {
-                console.log("offerPostApi - then:", res);
+    const navigate = useNavigate();
 
-                if(res){
-                    toast.success("Offer created successfully!");
-                }
-            }).catch(e =>{
-                console.log("offerPostApi - catch:", e);
-                toast.warning(e.message);
-            })
+    const handleOfferSubmit = async (newOffer: CreateOfferRequestDto) => {
+      console.log("handleOfferSubmit:", newOffer);
+
+      setLoading(true);
+
+      try {
+        const res = await addOffer(newOffer);
+        toast.success("Offer created successfully!");
+        navigate(ROUTES.OFFER_DETAILS_BUILD(res.id));
+      } catch (e) {
+        console.error("ADD OFFER ERROR:", e);
+        toast.warning("Server error occurred");
+      } finally {
+        setLoading(false);
+      }
     };
 
     return (
-        <AddOfferForm handleOfferFormSubmit={handleOfferSubmit} />
+        <AddOfferForm handleOfferFormSubmit={handleOfferSubmit} waitingForResponse={loading} />
     )
 }
 
