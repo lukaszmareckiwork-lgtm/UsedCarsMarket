@@ -17,9 +17,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import type { CreateOfferRequestDto } from "../../Data/CreateOfferRequestDto";
 import { PhotoUploader } from "../PhotoUploader/PhotoUploader";
 import { LocationPicker, LocationPickerModeEnum } from "../LocationPicker/LocationPicker";
+import BlockingLoader from "../BlockingLoader/BlockingLoader";
 
 interface Props {
   handleOfferFormSubmit: (newOffer: CreateOfferRequestDto) => void;
+  waitingForResponse: boolean
 }
 
 export const validation = Yup.object().shape({
@@ -97,7 +99,7 @@ export const validation = Yup.object().shape({
       (value) => !value || /^[A-HJ-NPR-Z0-9]{17}$/.test(value)
     ),
   title: Yup.string().required("Title is required").min(5, "Title too short").max(60, "Title too long"),
-  subtitle: Yup.string().required("Subtitle is required").min(5, "Subtitle too short").max(80, "Subtitle too long").nullable(),
+  subtitle: Yup.string().max(80, "Subtitle too long").nullable(),
   description: Yup.string().nullable().min(20, "Description too short").max(2000, "Description too long"),
   locationName: Yup.string(),
   locationLat: Yup.number().required("Latitude is required"),
@@ -123,7 +125,7 @@ export const validation = Yup.object().shape({
   photos: Yup.array().of(Yup.mixed<File>()).nullable(),
 });
 
-const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
+const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
   const { makes } = useMakes();
 
   const { control, handleSubmit, reset, watch, setValue } = useForm<CreateOfferRequestDto>(
@@ -341,7 +343,9 @@ const AddOfferForm = ({ handleOfferFormSubmit }: Props) => {
       </section>
 
       <div className="form-buttons">
-        <button type="submit">Submit Offer</button>
+        <BlockingLoader  isLoading={waitingForResponse}>
+          <button type="submit">Submit Offer</button>
+        </BlockingLoader>
         <button type="button" onClick={() => reset()}>
           Reset
         </button>
