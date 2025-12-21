@@ -184,8 +184,6 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
 
       {/* Vehicle Information */}
       <DetailsItem label="Vehicle Information" iconNode={<FaCar size={22}/>}>
-      {/* <section className="form-section"> */}
-        {/* <h3>Vehicle Information</h3> */}
         <div className="form-grid">
           <ParamInput
             name="makeId"
@@ -277,15 +275,12 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
             placeholder="17-character Vehicle Identification Number (optional)"
           />
         </div>
-      {/* </section> */}
       </DetailsItem>
 
       <Spacer size={34} />
 
       {/* Offer Details */}
       <DetailsItem label="Offer Details" iconNode={<FaIdCard size={22}/>}>
-      {/* <section className="form-section"> */}
-        {/* <h3>Offer Details</h3> */}
         <div className="form-grid">
           <ParamInput
             name="title"
@@ -348,7 +343,6 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
             placeholder="Select currency"
           />
         </div>
-      {/* </section> */}
       </DetailsItem>
 
       <div className="form-buttons">
