@@ -7,6 +7,7 @@ import {
   type Path,
 } from "react-hook-form";
 import "./ParamInput.css";
+import { dropdownStyles } from "../../Helpers/dropdownStyles";
 
 interface ParamInputProps<T extends FieldValues, G> {
   name: Path<T>;
@@ -101,8 +102,8 @@ export function ParamInput<T extends FieldValues, G>({
                 <>
                   <Select
                     {...field}
-                    className="param-field"
-                    classNamePrefix="react-select"
+                    className="react-select"
+                    // classNamePrefix="react-select"
                     options={options}
                     placeholder={placeholder}
                     onChange={(selected) =>
@@ -111,13 +112,15 @@ export function ParamInput<T extends FieldValues, G>({
                     value={
                       options?.find((opt) => opt.value === field.value) || null
                     }
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        borderColor: error ? "#d9534f" : base.borderColor,
-                        boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
-                      }),
-                    }}
+                    // styles={{
+                    //   control: (base) => ({
+                    //     ...base,
+                    //     borderColor: error ? "#d9534f" : base.borderColor,
+                    //     boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
+                    //   }),
+                    // }}
+                    // unstyled
+                    styles={dropdownStyles<any>(false)}
                   />
                   <p className={`param-error ${error ? "visible" : ""}`}>
                     {error?.message || " "}
@@ -134,11 +137,12 @@ export function ParamInput<T extends FieldValues, G>({
               return (
                 <>
                   <Select
+                    className="react-select"
                     {...field}
                     isMulti
                     options={options}
                     placeholder={placeholder}
-                    classNamePrefix="react-select"
+                    // classNamePrefix="react-select"
                     onChange={(selected) =>
                       field.onChange(
                         (selected?.map((opt) => handleChange(opt.value)) ||
@@ -150,13 +154,15 @@ export function ParamInput<T extends FieldValues, G>({
                         currentValues.includes(opt.value as G)
                       ) || []
                     }
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        borderColor: error ? "#d9534f" : base.borderColor,
-                        boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
-                      }),
-                    }}
+                    // styles={{
+                    //   control: (base) => ({
+                    //     ...base,
+                    //     borderColor: error ? "#d9534f" : base.borderColor,
+                    //     boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
+                    //   }),
+                    // }}
+                    // unstyled
+                    styles={dropdownStyles<any, true>(false)}
                   />
                   <p className={`param-error ${error ? "visible" : ""}`}>
                     {error?.message || " "}
