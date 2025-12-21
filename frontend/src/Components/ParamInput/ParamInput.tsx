@@ -1,4 +1,3 @@
-import React from "react";
 import Select from "react-select";
 import {
   Controller,
@@ -13,7 +12,7 @@ interface ParamInputProps<T extends FieldValues, G> {
   name: Path<T>;
   label: string;
   control: Control<T>;
-  type?: "text" | "number" | "select" | "textarea" | "multiselect";
+  type?: "text" | "password" | "number" | "tel" | "select" | "textarea" | "multiselect";
   options?: { value: G; label: string }[];
   placeholder?: string;
   rules?: {
@@ -97,6 +96,32 @@ export function ParamInput<T extends FieldValues, G>({
                 </>
               );
 
+            case "tel":
+              return (
+                <>
+                  <input
+                    type="tel"
+                    {...field }
+                    placeholder={placeholder}
+                    value={field.value ?? ""}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    className={`param-field no-spin ${
+                      error ? "param-field-error" : ""
+                    }`}
+                  />
+                  <div className="param-field-error-max-length">
+                    <p className={`param-error ${error ? "visible" : ""}`}>
+                      {error?.message || " "}
+                    </p>
+                    {maxLength && (
+                      <p className="param-field-char-counter">
+                        {field.value?.length || 0}/{maxLength}
+                      </p>
+                    )}
+                  </div>
+                </>
+              );
+
             case "select":
               return (
                 <>
@@ -174,7 +199,7 @@ export function ParamInput<T extends FieldValues, G>({
               return (
                 <>
                   <input
-                    type="text"
+                    type={type === "password" ? "password" : "text"}
                     {...field}
                     placeholder={placeholder}
                     className={`param-field ${
