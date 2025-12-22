@@ -52,7 +52,7 @@ export const UserProvider = ({ children }: Props) => {
   ) => {
     await registerApi(username, email, phone, sellerType, password)
       .then((res) => {
-        console.log("Calling register API with:", email, password);
+        // console.log("Calling register API with:", email, password);
         if (res) {
           localStorage.setItem("token", res?.data.token);
           const userObj = {
@@ -77,7 +77,7 @@ export const UserProvider = ({ children }: Props) => {
   };
 
   const loginUser = async (email: string, password: string) => {
-    console.log("Calling login API with:", email, password);
+    // console.log("Calling login API with:", email, password);
     await loginApi(email, password)
       .then((res) => {
         console.log("Login response:", res);
