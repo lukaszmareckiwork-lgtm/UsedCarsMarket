@@ -3,7 +3,7 @@ import type {
   GroupBase,
 } from "react-select";
 
-export const dropdownStyles =<T,>(): StylesConfig<T, false, GroupBase<T>> => ({
+export const dropdownStyles =<T, isMulti extends boolean= false>(hideFrame: boolean = true): StylesConfig<T, isMulti, GroupBase<T>> => ({
    menu: (base) => ({
     ...base,
     position: "absolute",
@@ -12,6 +12,7 @@ export const dropdownStyles =<T,>(): StylesConfig<T, false, GroupBase<T>> => ({
     width: "100%",
     marginTop: 0,
     border: "1px solid #ccc",
+    // border: "none",
     borderTop: "none",
     borderRadius: "0px 0px 4px 4px",
     boxShadow: "0 2px 6px rgba(0, 0, 0, 0.15)",
@@ -49,19 +50,42 @@ export const dropdownStyles =<T,>(): StylesConfig<T, false, GroupBase<T>> => ({
     color: "#000",
   }),
 
-  control: (base) => ({
+  control: (base, state) => ({
     ...base,
     background: "transparent",
-    border: "none",
-    boxShadow: "none",
+    borderRadius: "4px",
+
+    border: hideFrame 
+      ? "1px solid transparent"
+      : state.isFocused ? "1px solid transparent" : "1px solid #ccc",
+
+    boxShadow: state.isFocused && !state.isDisabled
+      ? "0 0 0 1px #0071CE, 0 0 0 3px rgba(0, 113, 206, 0.25)"
+      : "none",
+
+    "&:hover": {
+      borderColor: !state.isDisabled && !state.isFocused
+        ? "#1b1b1b"
+        : undefined,
+    },
     minHeight: "100%",
     height: "100%",
     cursor: "pointer",
+    
+    transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+  }),
+
+  input: (base) => ({
+    ...base,
+    border: "none",
+    boxShadow: "none",
+    outline: "none",
+    background: "transparent",
   }),
 
   valueContainer: (base) => ({
     ...base,
-    padding: "0 12px",
+    padding: hideFrame ? "0 12px" : "5.6px 12px",
     height: "100%",
   }),
 
