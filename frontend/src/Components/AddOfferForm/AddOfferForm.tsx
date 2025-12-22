@@ -18,6 +18,9 @@ import type { CreateOfferRequestDto } from "../../Data/CreateOfferRequestDto";
 import { PhotoUploader } from "../PhotoUploader/PhotoUploader";
 import { LocationPicker, LocationPickerModeEnum } from "../LocationPicker/LocationPicker";
 import BlockingLoader from "../BlockingLoader/BlockingLoader";
+import DetailsItem from "../DetailsPage/DetailsItem/DetailsItem";
+import { FaCar, FaIdCard } from "react-icons/fa";
+import Spacer from "../Spacer/Spacer";
 
 interface Props {
   handleOfferFormSubmit: (newOffer: CreateOfferRequestDto) => void;
@@ -180,8 +183,7 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
       <h2>Add a New Offer</h2>
 
       {/* Vehicle Information */}
-      <section className="form-section">
-        <h3>Vehicle Information</h3>
+      <DetailsItem label="Vehicle Information" iconNode={<FaCar size={22}/>}>
         <div className="form-grid">
           <ParamInput
             name="makeId"
@@ -273,11 +275,12 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
             placeholder="17-character Vehicle Identification Number (optional)"
           />
         </div>
-      </section>
+      </DetailsItem>
+
+      <Spacer size={34} />
 
       {/* Offer Details */}
-      <section className="form-section">
-        <h3>Offer Details</h3>
+      <DetailsItem label="Offer Details" iconNode={<FaIdCard size={22}/>}>
         <div className="form-grid">
           <ParamInput
             name="title"
@@ -340,11 +343,11 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
             placeholder="Select currency"
           />
         </div>
-      </section>
+      </DetailsItem>
 
       <div className="form-buttons">
         <BlockingLoader  isLoading={waitingForResponse}>
-          <button type="submit">Submit Offer</button>
+          <button className="main-button" type="submit">Submit Offer</button>
         </BlockingLoader>
         <button type="button" onClick={() => reset()}>
           Reset

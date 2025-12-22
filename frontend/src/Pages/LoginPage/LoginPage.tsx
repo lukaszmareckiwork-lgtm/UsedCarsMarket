@@ -3,6 +3,9 @@ import * as Yup from "yup";
 import { useAuth } from "../../Context/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ParamInput } from "../../Components/ParamInput/ParamInput";
+import BlockingLoader from "../../Components/BlockingLoader/BlockingLoader";
+import { useState } from "react";
 
 type LoginFormInputs = {
   email: string;
@@ -10,56 +13,68 @@ type LoginFormInputs = {
 };
 
 const validation = Yup.object().shape({
-  email: Yup.string().required("Email is required").email(),
-  password: Yup.string().required("Password is required"),
+  email: Yup.string()
+    .required("Email is required")
+    .email("Email must be a valid email"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(5, "Password must be at least 5 characters long"),
 });
 
 const LoginPage = () => {
   const { loginUser } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const {
-    register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormInputs>({ resolver: yupResolver(validation) });
+    control,
+  } = useForm<LoginFormInputs>({
+    resolver: yupResolver(validation),
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
 
-  const handleLogin = (form: LoginFormInputs) =>{
-    console.log("Login submitted:", form);
-    loginUser(form.email, form.password);
+  const handleLogin = async (form: LoginFormInputs) => {
+    try {
+      setLoading(true);
+      await loginUser(form.email, form.password);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-     <div className="login-container">
-    <form className="login-card" onSubmit={handleSubmit(handleLogin)}>
-      <h2 className="login-title">Welcome Back</h2>
-      <p className="login-subtitle">Login to your account</p>
+    <div className="login-container">
+      <section className="login-frame">
+        <h2 className="login-title">Welcome Back</h2>
+        <p className="login-subtitle">Login to your account</p>
+        <form className="login-form" onSubmit={handleSubmit(handleLogin)}>
+          <ParamInput
+            name="email"
+            label="Email"
+            type="text"
+            control={control}
+            placeholder="Enter your email"
+          />
+          <ParamInput
+            name="password"
+            label="Password"
+            type="password"
+            control={control}
+            placeholder="Enter your password"
+          />
 
-      <div className="login-field">
-        <label>Email</label>
-        <input
-          type="email"
-          {...register("email")}
-          placeholder="Enter your email"
-        />
-        {errors.email && <span className="error-text">{errors.email.message}</span>}
-      </div>
-
-      <div className="login-field">
-        <label>Password</label>
-        <input
-          type="password"
-          {...register("password")}
-          placeholder="Enter your password"
-        />
-        {errors.password && <span className="error-text">{errors.password.message}</span>}
-      </div>
-
-      <button className="login-btn" type="submit">
-        Login
-      </button>
-    </form>
-  </div>
-  )
+          <div className="login-btn-wrapper">
+            <BlockingLoader isLoading={loading}>
+              <button className="login-btn main-button" type="submit">
+                Login
+              </button>
+            </BlockingLoader>
+          </div>
+        </form>
+      </section>
+    </div>
+  );
 };
 
 export default LoginPage;
