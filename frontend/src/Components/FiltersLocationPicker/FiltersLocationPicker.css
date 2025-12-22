@@ -1,0 +1,154 @@
+.flp-overlay {
+  background: rgba(0, 0, 0, 0.45);
+  position: fixed;
+  inset: 0;
+  animation: fadeIn 0.15s ease-out;
+
+  z-index: 11;
+}
+
+.flp-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 90vw;
+  max-width: 900px;
+  max-height: 90vh;
+
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+
+  animation: scaleIn 0.15s ease-out;
+
+  z-index: 12;
+
+  font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+}
+
+.flp-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.flp-map-wrapper {
+  flex: 1;
+  overflow: hidden;
+  height: 70vh;
+}
+
+.flp-map-wrapper .location-picker-wrapper .location-picker-map {
+  height: 500px;
+}
+
+.flp-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.flp-actions-buttons {
+  display: inline-flex;
+  justify-content: end;
+  gap: 10px;
+}
+
+.flp-actions-buttons .main-button {
+  font-size: 15px;
+  font-weight: 600;
+
+  min-width: 70px;
+}
+
+.flp-offers-found {
+  display: inline-flex;
+  align-items: flex-end;
+
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.location-filter-trigger {
+  background: var(--primary);
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  height: 100%;
+  text-align: start;
+
+  line-height: 1;
+  font: inherit;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.location-filter-trigger-chosen {
+  display: flex;
+  flex-direction: column;
+
+  color: rgb(97, 97, 97);
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  display: -webkit-box; 
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; 
+
+  font-size: 10px;
+  gap: 2px;
+
+  max-width: 60%;
+}
+
+.location-filter-trigger-chosen-title{
+  font-size: 10px;
+
+}
+
+.location-filter-trigger-map-icon {
+  margin-left: 5px;
+}
+
+.location-filter-trigger-right-side {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.location-filter-trigger-chosen-range {
+  font-size: 13px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  min-width: 0;
+
+  margin-left: -8px;
+  margin-right: 8px;
+
+  color: rgb(97, 97, 97);
+}

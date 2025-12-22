@@ -1,0 +1,36 @@
+.icb {
+    display: flex;
+    align-items: center;
+
+    color: #0071CE;
+    text-decoration: none;
+}
+
+.icb.disabled {
+    pointer-events: none;
+    color: #a8a8a8;
+}
+
+.icb:hover {
+    color: #2f86ce;
+}
+
+.icb:active {
+    color: #0071CE;
+}
+
+.icb-content {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.icb-count-text {
+    margin-left: -4px;
+    margin-bottom: -20px;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    white-space: nowrap;
+}

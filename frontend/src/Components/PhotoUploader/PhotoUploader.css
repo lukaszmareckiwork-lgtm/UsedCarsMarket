@@ -1,0 +1,106 @@
+.pu-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.pu-dropzone {
+  border: 2px dashed #999;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  user-select: none;
+
+  text-align: center;
+  background: #eeeeee;
+  color: #696969;
+
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.pu-dropzone:hover {
+  border-color: #0071CE;
+  background: #daeeff;
+}
+
+.pu-dropzone:active {
+  border-color: #005bb5;
+  background: #c6e0ff;
+}
+
+.pu-dropzone-dragging {
+  border-color: #0071CE;
+  background: #daeeff;
+}
+
+.pu-preview-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pu-preview-item {
+  display: inline-block;
+  position: relative;
+  width: 120px;
+  height: 90px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pu-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pu-buttons {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  z-index: 5;
+}
+
+.pu-buttons button {
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(92, 92, 92, 0.733);
+  color:  #fc6666;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pu-remove-button:hover {
+  background: rgba(92, 92, 92, 0.733);
+  color: #ff3939;
+}
+
+.pu-remove-button-icon:hover {
+  scale: 1.1;
+}
+
+.pu-remove-button:active {
+  background: rgba(119, 119, 119, 0.911);
+  color: #ffbcbc;
+}
+
+.pu-error {
+  color: #d9534f;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.pu-label {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: #333;
+}

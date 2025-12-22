@@ -1,0 +1,29 @@
+.details-item {
+    border-radius: 4px;
+    border-color: #DCDDE0;
+    border-width: 1px;
+    border-style: solid;
+
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.details-item-header {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+    margin-bottom: 14px;
+
+    margin-top: -10px;
+    margin-left: -6px;
+
+    color: rgb(43, 43, 43);
+}
+
+.details-item-label {
+
+    font-size: 22px;
+    /* color: #000000; */
+    font-weight: var(--font-weight-bold);
+}

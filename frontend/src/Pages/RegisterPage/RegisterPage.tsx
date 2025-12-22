@@ -1,82 +1,141 @@
-import React from "react";
 import "./RegisterPage.css";
 import * as Yup from "yup";
 import { useAuth } from "../../Context/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ParamInput } from "../../Components/ParamInput/ParamInput";
+import { getReadableSellerType, SellerTypeEnum } from "../../Data/OfferProps";
+import BlockingLoader from "../../Components/BlockingLoader/BlockingLoader";
+import { useState } from "react";
 
 type RegisterFormInputs = {
   username: string;
   email: string;
+  phone: string;
+  sellerType: number;
   password: string;
 };
 
 const validation = Yup.object().shape({
-  username: Yup.string().required("Username is required"),
-  email: Yup.string().required("Email is required").email(),
-  password: Yup.string().required("Password is required"),
+  username: Yup.string()
+    .required("Username is required")
+    .min(3, "Username must be at least 3 characters")
+    .max(20, "Username must be at most 20 characters")
+    .matches(
+      /^[a-zA-Z][a-zA-Z0-9._]*$/,
+      "Username must start with a letter and contain only letters, numbers, dots, or underscores"
+    )
+    .matches(
+      /^(?!.*[._]{2})/,
+      "Username cannot contain consecutive dots or underscores"
+    )
+    .matches(/[^._]$/, "Username cannot end with a dot or underscore"),
+
+  email: Yup.string()
+    .required("Email is required")
+    .email("Email must be a valid email"),
+
+  phone: Yup.string()
+    .required("Phone number is required")
+    .transform((value) => value.replace(/[^\d+]/g, ""))
+    .matches(/^\+?[1-9]\d{6,14}$/, "Enter a valid phone number"),
+
+  sellerType: Yup.number().required(),
+
+  password: Yup.string()
+    .required("Password is required")
+    .min(5, "Password must be at least 5 characters long"),
 });
 
 const RegisterPage = () => {
   const { registerUser } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const {
-    register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterFormInputs>({ resolver: yupResolver(validation) });
+    control,
+  } = useForm<RegisterFormInputs>({ 
+    resolver: yupResolver(validation),
+    mode: "onChange",
+    reValidateMode: "onChange",
+   });
 
-  const handleRegister = (form: RegisterFormInputs) => {
-    console.log("Register submitted:", form);
-    registerUser(form.username, form.email, form.password);
+  const handleRegister = async (form: RegisterFormInputs) => {
+    try {
+      setLoading(true);
+      await registerUser(
+        form.username,
+        form.email,
+        form.phone,
+        form.sellerType,
+        form.password
+      );
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const toOption = <T extends number>(
+    obj: Record<string, T>,
+    getLabel: (v: T) => string
+  ) =>
+    Object.entries(obj)
+      .filter(([_, v]) => typeof v === "number")
+      .map(([_, v]) => ({ value: v as T, label: getLabel(v as T) }));
 
   return (
     <div className="login-container">
-      <form className="login-card" onSubmit={handleSubmit(handleRegister)}>
+      <section className="login-frame">
         <h2 className="login-title">Welcome!</h2>
         <p className="login-subtitle">Register your account</p>
-
-        <div className="login-field">
-          <label>Username</label>
-          <input
-            type="username"
-            {...register("username")}
+        <form className="login-form" onSubmit={handleSubmit(handleRegister)}>
+          <ParamInput
+            name="username"
+            label="Username"
+            type="text"
+            control={control}
             placeholder="Enter your username"
           />
-          {errors.username && (
-            <span className="error-text">{errors.username.message}</span>
-          )}
-        </div>
-
-        <div className="login-field">
-          <label>Email</label>
-          <input
-            type="email"
-            {...register("email")}
+          <ParamInput
+            name="email"
+            label="Email"
+            type="text"
+            control={control}
             placeholder="Enter your email"
           />
-          {errors.email && (
-            <span className="error-text">{errors.email.message}</span>
-          )}
-        </div>
-
-        <div className="login-field">
-          <label>Password</label>
-          <input
+          <ParamInput
+            name="phone"
+            label="Phone Number"
+            type="tel"
+            control={control}
+            placeholder="Enter your phone number"
+          />
+          <ParamInput
+            name="sellerType"
+            label="Seller Type"
+            type="select"
+            control={control}
+            options={toOption(SellerTypeEnum, getReadableSellerType)}
+            numeric
+            placeholder="Select seller type"
+          />
+          <ParamInput
+            name="password"
+            label="Password"
             type="password"
-            {...register("password")}
+            control={control}
             placeholder="Enter your password"
           />
-          {errors.password && (
-            <span className="error-text">{errors.password.message}</span>
-          )}
-        </div>
 
-        <button className="login-btn" type="submit">
-          Sign In
-        </button>
-      </form>
+          <div className="login-btn-wrapper">
+            <BlockingLoader isLoading={loading}>
+              <button className="login-btn main-button" type="submit">
+                Register
+              </button>
+            </BlockingLoader>
+          </div>
+        </form>
+      </section>
     </div>
   );
 };

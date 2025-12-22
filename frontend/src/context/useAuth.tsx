@@ -1,15 +1,18 @@
-import { Children, createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import type { UserProfile } from "../Models/User";
 import { useNavigate } from "react-router-dom";
 import { loginApi, registerApi } from "../Services/AuthService";
 import { toast } from "react-toastify";
 import React from "react";
 import axios from "axios";
+import type { SellerTypeEnum } from "../Data/OfferProps";
+import { ROUTES } from "../Routes/Routes";
+import { useRedirectBack } from "../Helpers/useRedirectBack";
 
 type UserContextType = {
   user: UserProfile | null;
   token: string | null;
-  registerUser: (email: string, username: string, password: string) => void;
+  registerUser: (email: string, username: string, phone: string, sellerType: SellerTypeEnum, password: string) => void;
   loginUser: (username: string, password: string) => void;
   logoutUser: () => void;
   isLoggedIn: () => boolean;
@@ -27,6 +30,8 @@ export const UserProvider = ({ children }: Props) => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isReady, setIsReady] = useState(false);
 
+  const { redirect } = useRedirectBack();
+
   useEffect(() => {
     const user = localStorage.getItem("user");
     const token = localStorage.getItem("token");
@@ -41,30 +46,38 @@ export const UserProvider = ({ children }: Props) => {
   const registerUser = async (
     email: string,
     username: string,
-    password: string
+    phone: string,
+    sellerType: SellerTypeEnum,
+    password: string,
   ) => {
-    await registerApi(username, email, password)
+    await registerApi(username, email, phone, sellerType, password)
       .then((res) => {
-        console.log("Calling register API with:", email, password);
+        // console.log("Calling register API with:", email, password);
         if (res) {
           localStorage.setItem("token", res?.data.token);
           const userObj = {
             username: res?.data.userName,
             email: res?.data.email,
+            id: res?.data.id,
           };
 
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token!);
+          axios.defaults.headers.common.Authorization = "Bearer " + res?.data.token!;
           setUser(userObj!);
           toast.success("Login success.");
-          navigate("/");
+          // navigate(ROUTES.HOME);
+          redirect(true);
         }
       })
-      .catch((e) => toast.warning("Server error occured"));
+      .catch((e) => {
+        console.error("REGISTER ERROR:", e);
+        toast.warning("Server error occured");
+      });
   };
 
   const loginUser = async (email: string, password: string) => {
-    console.log("Calling login API with:", email, password);
+    // console.log("Calling login API with:", email, password);
     await loginApi(email, password)
       .then((res) => {
         console.log("Login response:", res);
@@ -74,13 +87,16 @@ export const UserProvider = ({ children }: Props) => {
           const userObj = {
             username: res?.data.userName,
             email: res?.data.email,
+            id: res?.data.id,
           };
 
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token!);
+          axios.defaults.headers.common.Authorization = "Bearer " + res?.data.token!;
           setUser(userObj!);
           toast.success("Login success.");
-          navigate("/");
+          // navigate(ROUTES.HOME);
+          redirect(true);
         }
       })
       .catch((e) => {
@@ -98,7 +114,9 @@ export const UserProvider = ({ children }: Props) => {
     localStorage.removeItem("token");
     setUser(null);
     setToken("");
-    navigate("/");
+    delete axios.defaults.headers.common.Authorization;
+    toast.info("You have been logged out.");
+    navigate(ROUTES.HOME);
   };
 
   return (

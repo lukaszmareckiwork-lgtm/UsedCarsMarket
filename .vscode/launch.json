@@ -5,16 +5,36 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        },
+        {
             "command": "npm run dev",
             "name": "Run npm start",
             "request": "launch",
             "type": "node-terminal"
         },
         {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Launch Edge against localhost",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "urlFilter": "http://localhost:5173/*",
             "webRoot": "${workspaceFolder}"
         }
     ]
