@@ -1,0 +1,18 @@
+.paramsWithIcons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+}
+
+.paramsWithIcons.evenly {
+  justify-content: space-evenly;
+}
+
+.paramsWithIcons.evenly .paramWithIconWrapper {
+  grid-template-columns: 45px 160px !important;
+}
+
+.paramsWithIcons.evenly .paramWithIconValue {
+    font-weight: var(--font-weight-bold);
+    font-size: 18px;
+}

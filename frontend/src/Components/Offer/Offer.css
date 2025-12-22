@@ -2,6 +2,14 @@
     z-index: 2;
 }
 
+.offerArticle a {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    text-indent: -9999px;
+    background: transparent;
+}
+
 .offerArticle{
     cursor: pointer;
     border-radius: 4px;
@@ -12,6 +20,19 @@
     text-size-adjust: none;
     border: solid 1px #DCDDE0;
     /* background-color: #ECF5FE; */
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.offerArticle:hover {
+  border-color: #1b1b1b;
+}
+
+.offerArticle:active {
+  border-color: transparent;
+  box-shadow:
+    0 0 0 1px #0071CE,
+    0 0 0 3px rgba(0, 113, 206, 0.25);
 }
 
 [data-orientation="horizontal"][data-media-size="small"] .offerSection{
@@ -33,7 +54,6 @@
     border-radius: 4px 4px 0 0;
     -webkit-column-gap: 16px;
     column-gap: 16px;
-    background-color: #FFFFFF;
 }
 
 /* [data-orientation="horizontal"] .offerImageHolder{

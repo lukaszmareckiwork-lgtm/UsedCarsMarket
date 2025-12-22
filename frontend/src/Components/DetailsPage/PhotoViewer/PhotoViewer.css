@@ -1,0 +1,59 @@
+.photo-viewer {
+    background-color: rgb(236, 236, 236);
+    border-radius: 6px;
+    
+    font-weight: 400;
+    font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+}
+
+.image-gallery {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.image-gallery-thumbnail {
+    border-radius: 7px;
+}
+
+.image-gallery-thumbnail .image-gallery-thumbnail-inner {
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.image-gallery .image-gallery-thumbnail.active, .image-gallery-thumbnail:focus {
+    outline: none;
+    border: 4px solid #0071CE;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .image-gallery .image-gallery-icon:hover {
+        color: #0071CE;
+    }
+
+    .image-gallery .image-gallery-bullets .image-gallery-bullet:hover {
+        border: 0px;
+        background: #0071CE;
+    }
+}
+
+.image-gallery .image-gallery-bullets .image-gallery-bullet.active {
+    border: 0px;
+    background: #0071CE;
+}
+
+.image-gallery .image-gallery-bullets .image-gallery-bullet {
+    border: 0px;
+    background: rgb(236, 236, 236);
+}
+
+.image-gallery .image-gallery-index {
+    background: rgba(0, 0, 0, 0.247);
+    border-radius: 4px;
+    margin: 8px;
+    padding: 7.5px 15px;
+}
+
+.image-gallery .image-gallery-left-nav .image-gallery-svg, .image-gallery .image-gallery-right-nav .image-gallery-svg {
+    height: 60px;
+    width: 30px;
+}

@@ -2,28 +2,42 @@
 .param-input {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
 }
 
 /* Input styles */
 .param-input input,
-.param-input select,
+/* .param-input select, */
 .param-input textarea {
   width: 100%;
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 4px; 
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  font-size: 14px;
+}
+
+.param-input input:hover,
+/* .param-input select:hover, */
+.param-input textarea:hover {
+  outline: none;
+  border-color: #1b1b1b;
 }
 
 .param-input input:focus,
-.param-input select:focus,
+/* .param-input select:focus, */
 .param-input textarea:focus {
   outline: none;
-  border-color: #2684ff;
-  box-shadow: 0 0 0 1px #2684ff;
+  border-color: transparent;
+  box-shadow:
+    0 0 0 1px #0071CE,
+    0 0 0 3px rgba(0, 113, 206, 0.25);
+}
+
+.param-input .react-select input {
+  border: none;
+  box-shadow: none;
 }
 
 .param-input label {
@@ -98,6 +112,22 @@
   color: #333;
 }
 
+.param-field-char-counter {
+  color: #666;
+  align-self: flex-end;
+
+  font-size: 0.85rem;
+  line-height: 1em;
+  margin-top: 0.25rem;
+  min-height: 1.2em;
+}
+
+.param-field-error-max-length {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* --- Textarea specific --- */
 .param-textarea {
   min-height: 80px;
@@ -116,23 +146,5 @@
   font-size: 0.85rem;
   line-height: 1em;
   margin-top: 0.25rem;
-  min-height: 1.2em; /* prevents layout jump */
-}
-
-/* Remove inner focus ring / tiny border in React Select */
-.react-select__control input {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.react-select__control--is-focused {
-  box-shadow: 0 0 0 1px #2684FF !important;
-}
-
-.react-select__input input {
-  margin: 0;
-  padding: 0;
-  line-height: 1.2;
-  box-shadow: none !important;
-  outline: none !important;
+  min-height: 1.2em;
 }
