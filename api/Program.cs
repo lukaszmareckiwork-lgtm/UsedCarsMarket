@@ -1,5 +1,6 @@
 using System.Globalization;
 using api.Data;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using api.Repository;
@@ -102,6 +103,12 @@ builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<OfferService>();
 
+builder.Services.AddScoped<IMakesRepository, MakesRepository>();
+builder.Services.AddScoped<MakesService>();
+
+builder.Services.AddScoped<IOfferCountRepository, OfferCountRepository>();
+builder.Services.AddScoped<OfferCountService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -128,5 +135,16 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseRequestLocalization();
+
+// Seed makes nad models from json to database
+try
+{
+    await DatabaseSeeder.SeedVehicleDataAndOfferCountsAsync(app.Services);
+}
+catch (Exception ex)
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "Failed to seed vehicle data.");
+}
 
 app.Run();
