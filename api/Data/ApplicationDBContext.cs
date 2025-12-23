@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -20,6 +17,12 @@ namespace api.Data
         public DbSet<Offer> Offers { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<FavouriteOffer> FavouriteOffers { get; set; }
+
+        public DbSet<Make> Makes { get; set; }
+        public DbSet<Model> Models { get; set; }
+        public DbSet<ModelYear> ModelYears { get; set; }
+
+        public DbSet<OfferCount> OfferCounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -114,6 +117,54 @@ namespace api.Data
                 .WithOne(p => p.Offer)
                 .HasForeignKey(p => p.OfferId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Makes and Models configuration
+            builder.Entity<Make>(entity =>
+            {
+                entity.ToTable("Makes");
+                entity.HasKey(m => m.MakeId);
+                entity.HasMany(m => m.Models)
+                    .WithOne(mo => mo.Make)
+                    .HasForeignKey(mo => mo.MakeId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<Model>(entity =>
+            {
+                entity.ToTable("Models");
+                entity.HasKey(mo => mo.ModelId);
+                entity.HasMany(mo => mo.Years)
+                    .WithOne(y => y.Model)
+                    .HasForeignKey(y => y.ModelId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<ModelYear>(entity =>
+            {
+                entity.ToTable("ModelYears");
+                entity.HasKey(y => y.ModelYearId);
+            });
+
+            builder.Entity<OfferCount>(entity =>
+            {
+                entity.ToTable("OfferCounts");
+                entity.HasKey(oc => oc.Id);
+                entity.Property(oc => oc.OffersCount).IsRequired();
+                entity.Property(oc => oc.LastUpdated).IsRequired();
+            });
+
+            // Make sure there are only single row for [make,null] and [make,model]
+            builder.Entity<OfferCount>()
+                .HasIndex(oc => new { oc.MakeId, oc.ModelId })
+                .IsUnique();
+
+            //Index for fast lookups
+            builder.Entity<OfferCount>()
+                .HasIndex(oc => oc.MakeId);
+
+            //Index for fast lookups
+            builder.Entity<OfferCount>()
+                .HasIndex(oc => oc.ModelId);
         }
     }
 }
