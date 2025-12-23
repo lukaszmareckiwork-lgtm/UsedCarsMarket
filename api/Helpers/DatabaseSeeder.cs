@@ -22,38 +22,63 @@ namespace api.Helpers
 
         private static async Task SeedMakesAndModelsAsync(ApplicationDBContext dbContext, string jsonPath)
         {
-            if (dbContext.Makes.Any())
-                return; // Already seeded
+            if (dbContext.Makes.Any()) return;
 
             var json = await File.ReadAllTextAsync(jsonPath);
             var makesData = JsonSerializer.Deserialize<List<MakeData>>(json);
 
+            using var transaction = await dbContext.Database.BeginTransactionAsync();
+
+            // 1. Insert Makes
+            await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Makes ON");
             foreach (var makeData in makesData!)
             {
-                var make = new Make
+                dbContext.Makes.Add(new Make
                 {
                     MakeId = makeData.make_id,
                     MakeName = makeData.make_name,
                     MakeSlug = makeData.make_slug
-                };
+                });
+            }
+            await dbContext.SaveChangesAsync();
+            await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Makes OFF");
 
+            // 2. Insert Models
+            await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Models ON");
+            foreach (var makeData in makesData!)
+            {
                 foreach (var modelEntry in makeData.models.Values)
                 {
-                    var model = new Model
+                    dbContext.Models.Add(new Model
                     {
                         ModelId = modelEntry.model_id,
                         ModelName = modelEntry.model_name,
                         VehicleType = modelEntry.vehicle_type,
-                        Years = modelEntry.years.Select(y => new ModelYear { Year = y }).ToList()
-                    };
-
-                    make.Models.Add(model);
+                        MakeId = makeData.make_id
+                    });
                 }
-
-                dbContext.Makes.Add(make);
             }
-
             await dbContext.SaveChangesAsync();
+            await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Models OFF");
+
+            // 3. Insert ModelYears
+            foreach (var makeData in makesData!)
+            {
+                foreach (var modelEntry in makeData.models.Values)
+                {
+                    foreach (var year in modelEntry.years)
+                    {
+                        dbContext.ModelYears.Add(new ModelYear
+                        {
+                            ModelId = modelEntry.model_id,
+                            Year = year
+                        });
+                    }
+                }
+            }
+            await dbContext.SaveChangesAsync();
+
+            await transaction.CommitAsync();
         }
 
         private static async Task SeedOfferCountsAsync(ApplicationDBContext db)

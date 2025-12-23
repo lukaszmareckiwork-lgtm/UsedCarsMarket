@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/makes")]
     public class MakesController : ControllerBase
     {
         private readonly MakesService _makesService;
