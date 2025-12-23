@@ -6,6 +6,7 @@ using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using api.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
@@ -13,10 +14,12 @@ namespace api.Repository
     public class OfferRepostiory : IOfferRepository
     {
         private readonly ApplicationDBContext _context;
+        private readonly OfferCountService _offerCountService;
 
-        public OfferRepostiory(ApplicationDBContext context)
+        public OfferRepostiory(ApplicationDBContext context, OfferCountService offerCountService)
         {
             _context = context;
+            _offerCountService = offerCountService;
         }
 
         // Apply common filters to any IQueryable<Offer> so it can be reused by multiple callers
@@ -161,7 +164,7 @@ namespace api.Repository
                 {
                     Id = o.Id,
                     Guid = o.Guid,
-                    SellerDto = new api.Dtos.Account.SellerDto
+                    SellerDto = new SellerDto
                     {
                         UserId = o.AppUser != null ? o.AppUser.Id : string.Empty,
                         Username = o.AppUser != null ? (o.AppUser.UserName ?? string.Empty) : string.Empty,
@@ -198,10 +201,7 @@ namespace api.Repository
                     Price = o.Price,
                     Currency = o.Currency,
                     CreatedDate = o.CreatedDate,
-                    // correlated subquery for IsFavourite
-                    // EF will translate Any(...) into EXISTS(...) in SQL
-                    // set to false if no user provided
-                    // Note: this expression must be translatable by EF
+
                     IsFavourite = appUserId != null && _context.FavouriteOffers.Any(f => f.AppUserId == appUserId && f.OfferId == o.Id)
                 })
                 .ToListAsync();
@@ -246,7 +246,7 @@ namespace api.Repository
                     {
                         Id = o.Id,
                         Guid = o.Guid,
-                        SellerDto = new api.Dtos.Account.SellerDto { SellerType = o.AppUser!.SellerType },
+                        SellerDto = new SellerDto { SellerType = o.AppUser!.SellerType },
                         Year = o.Year,
                         Mileage = o.Mileage,
                         FuelType = o.FuelType,
@@ -296,6 +296,7 @@ namespace api.Repository
         {
             // Start from the Offers root but restrict to offers present in the user's favourites.
             var baseOffers = _context.Offers
+                .AsNoTracking()
                 .Where(o => _context.FavouriteOffers.Any(fo => fo.AppUserId == appUserId && fo.OfferId == o.Id));
 
             var offers = ApplyFilters(baseOffers, query);
@@ -329,12 +330,19 @@ namespace api.Repository
         {
             await _context.Offers.AddAsync(offerModel);
             await _context.SaveChangesAsync();
+
+            // Update counts
+            await _offerCountService.IncrementOfferCountAsync(offerModel.MakeId, offerModel.ModelId);
+
             return offerModel;
         }
 
         public async Task<Offer?> UpdateModelAsync(Offer offer)
         {
             if (offer == null) return null;
+
+            var oldMakeId = offer.MakeId;
+            var oldModelId = offer.ModelId;
 
             // Attach the offer if not tracked, mark modified so EF will persist changes including Photos
             var tracked = _context.ChangeTracker.Entries<Offer>().FirstOrDefault(e => e.Entity.Id == offer.Id)?.Entity;
@@ -344,6 +352,10 @@ namespace api.Repository
             }
 
             await _context.SaveChangesAsync();
+
+            // Update counts if Make/Model changed
+            await _offerCountService.AdjustOfferCountOnUpdateAsync(oldMakeId, oldModelId, offer.MakeId, offer.ModelId);
+
             return offer;
         }
 
@@ -356,6 +368,10 @@ namespace api.Repository
             
             _context.Offers.Remove(offerModel);
             await _context.SaveChangesAsync();
+
+            // Update counts
+            await _offerCountService.DecrementOfferCountAsync(offerModel.MakeId, offerModel.ModelId);
+
             return offerModel;
         }
 
