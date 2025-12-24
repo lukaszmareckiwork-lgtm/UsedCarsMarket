@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./OffersFiltersControls.css";
 import { useMakes, type MakeData, type ModelData } from "../../Context/MakesContext";
 import FiltersDropdown from "../FiltersDropdown/FiltersDropdown";
@@ -29,7 +29,7 @@ const OffersFiltersControls = ({
   const [selectedFuelTypes, setSelectedFuelTypes] = useState<FuelTypeEnum[]>([]);
 
   const [locationName, setLocationName] = useState<string>("");
-  const locationNameRef = useRef<string>(locationName);
+  // const locationNameRef = useRef<string>(locationName);
 
   // -------------------------------
   // Initialize selected makes/models from query
@@ -38,11 +38,11 @@ const OffersFiltersControls = ({
     if (makes.length === 0) return;
 
     const makesToSelect = (query.MakeIds || [])
-      .map((id) => makes.find((m) => m.make_id === id))
+      .map((id) => makes.find((m) => m.makeId === id))
       .filter((m): m is MakeData => m !== undefined);
 
     const modelsToSelect = (query.ModelIds || []).flatMap((id) =>
-      getAvailableModels(makesToSelect).filter((m) => m.model_id === id)
+      getAvailableModels(makesToSelect).filter((m) => m.modelId === id)
     );
 
     setSelectedMakes(makesToSelect);
@@ -61,8 +61,8 @@ const OffersFiltersControls = ({
     setSelectedModels(validModels);
 
     updateFilters({
-      MakeIds: selMakes.map((m) => m.make_id),
-      ModelIds: validModels.map((m) => m.model_id),
+      MakeIds: selMakes.map((m) => m.makeId),
+      ModelIds: validModels.map((m) => m.modelId),
       PageNumber: 1,
     });
   };
@@ -71,7 +71,7 @@ const OffersFiltersControls = ({
     setSelectedModels(selModels);
 
     updateFilters({
-      ModelIds: selModels.map((m) => m.model_id),
+      ModelIds: selModels.map((m) => m.modelId),
       PageNumber: 1,
     });
   };
@@ -96,9 +96,9 @@ const OffersFiltersControls = ({
         items={makes}
         selectedItems={selectedMakes}
         handleItemSelected={onMakesSelected}
-        getId={(make) => make.make_id}
-        getDisplayName={(make) => `${make.make_name} (${make.offers_count})`}
-        getSimplifiedName={(make) => make.make_slug}
+        getId={(make) => make.makeId}
+        getDisplayName={(make) => `${make.makeName} (${make.offersCount})`}
+        getSimplifiedName={(make) => make.makeSlug}
         loading={loading}
         forceDisable={false}
         headerText="Manufacturer"
@@ -109,9 +109,9 @@ const OffersFiltersControls = ({
         items={getAvailableModels()}
         selectedItems={selectedModels}
         handleItemSelected={onModelsSelected}
-        getId={(model) => model.model_id}
-        getDisplayName={(model) => `${model.model_name} (${model.offers_count})`}
-        getSimplifiedName={(model) => model.model_name.toLowerCase()}
+        getId={(model) => model.modelId}
+        getDisplayName={(model) => `${model.modelName} (${model.offersCount})`}
+        getSimplifiedName={(model) => model.modelName.toLowerCase()}
         loading={loading}
         forceDisable={selectedMakes.length === 0}
         headerText="Model"
