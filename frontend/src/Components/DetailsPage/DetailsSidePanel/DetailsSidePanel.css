@@ -17,7 +17,7 @@
     gap: 4px;
 
     align-items: center;
-    font-weight: 300;
+    font-weight: var(--fontWeightLight);
     font-size: 16px;
 }
 
@@ -30,7 +30,7 @@
 }
 
 .details-side-panel-username {
-    font-weight: 500;
+    font-weight: var(--fontWeightMedium);
     margin-left: 8px;
 }
 
@@ -40,11 +40,11 @@
     gap: 4px;
 
     font-size: 16px;
-    font-weight: 300;
+    font-weight: var(--fontWeightLight);
 }
 
 .details-side-panel-location-data {
-    font-weight: 500;
+    font-weight: var(--fontWeightMedium);
     margin-left: 8px;
 }
 

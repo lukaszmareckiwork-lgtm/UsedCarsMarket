@@ -33,7 +33,7 @@
 
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: var(--fontWeightMedium);
 }
 
 .car-filter-search-input {
@@ -46,7 +46,7 @@
 
   font-family: var(--fontFamilyPrimary);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: var(--fontWeightMedium);
   flex: 1;
 
   width: 100%;
@@ -64,7 +64,7 @@
   width: 100%;
   max-height: 280px;
   overflow-y: auto;
-  border: 1px solid #ccc;
+  border: 1px solid var(--colorsBorderSubtle);
   border-top: none;
   border-radius: 0 0 4px 4px;
   background-color: var(--colorsBackgroundPrimary);
@@ -72,8 +72,8 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
-  font-size: 14px;
-  font-weight: 400;
+  font-size: var(--fontSizeBodySmall);
+  font-weight: var(--font-weight-regular);
 }
 
 .car-filter-options input[type="text"] {
@@ -81,7 +81,7 @@
   padding: 6px 8px;
   margin: 0 8px 8px 8px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .car-filter-options label {
@@ -125,7 +125,7 @@
 
 .car-filter-options::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
 }
 
 .car-filter-options::-webkit-scrollbar-track {

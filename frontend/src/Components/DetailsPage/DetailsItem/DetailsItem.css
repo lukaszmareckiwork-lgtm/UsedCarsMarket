@@ -23,6 +23,6 @@
 
 .details-item-label {
 
-    font-size: 20px;
+    font-size: var(--fontSizeHeadlineMedium);
     font-weight: var(--font-weight-medium);
 }

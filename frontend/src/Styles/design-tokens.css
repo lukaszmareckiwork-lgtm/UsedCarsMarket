@@ -30,12 +30,18 @@
     --lineHeightHeadlineLarge: 26px;
 
     /* font weights (keep both styles used around the codebase) */
+    --fontWeightLight: 300;
     --fontWeightRegular: 400;
     --fontWeightMedium: 500;
+    --fontWeightSemibold: 600;
     --fontWeightBold: 600; /* tuned to 600 for better balance across headings and labels */
+    --fontWeightHeavy: 700;
+    --font-weight-light: var(--fontWeightLight);
     --font-weight-regular: var(--fontWeightRegular);
     --font-weight-medium: var(--fontWeightMedium);
+    --font-weight-semibold: var(--fontWeightSemibold);
     --font-weight-bold: var(--fontWeightBold);
+    --font-weight-heavy: var(--fontWeightHeavy);
 
     /* Colors (kept common set only) */
     --colorsBackgroundPrimary: #FFFFFF;
