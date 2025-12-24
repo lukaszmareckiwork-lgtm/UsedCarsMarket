@@ -25,11 +25,11 @@ const DetailsContent = ({ offerProps }: Props) => {
               <p className="details-content-subtitle">{offerProps.subtitle}</p>
             </span>
             <span>
-                <div className="offerPriceHolder">
-                  <h3 className="offerPriceValue">
+                <div className="offer-price-holder">
+                  <h3 className="offer-price-value">
                     {Intl.NumberFormat("pl-PL").format(offerProps.price)}
                   </h3>
-                  <p className="offerPriceCurrency">
+                  <p className="offer-price-currency">
                     {getReadableCurrencyType(offerProps.currency)}
                   </p>
                 </div>

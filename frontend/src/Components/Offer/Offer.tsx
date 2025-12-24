@@ -12,42 +12,42 @@ const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JS
 
   return (
     <div className='offer'>
-      <article data-id={offerProps.id} className='offerArticle' data-media-size='small' data-orientation='horizontal'>
+      <article data-id={offerProps.id} className='offer-article' data-media-size='small' data-orientation='horizontal'>
         <Link 
           to={ROUTES.OFFER_DETAILS_BUILD(offerProps.id)}
           state={{ returnTo: location.pathname + location.search }}
         ></Link>
-        <section className='offerSection'>
-          <div className='offerImageHolder'>
+        <section className='offer-section'>
+          <div className='offer-image-holder'>
             <PhotoViewer offerProps={offerProps} compact={true} />
           </div>
-          <div className='offerTitles'>
-            <div className='offerTitleHolder'>
-              <h2 className='offerTitle'>{offerProps.title}</h2>
+          <div className='offer-titles'>
+            <div className='offer-title-holder'>
+              <h2 className='offer-title'>{offerProps.title}</h2>
             </div>
-            <p className='offerSubtitle'>{offerProps.subtitle}</p>
+            <p className='offer-subtitle'>{offerProps.subtitle}</p>
           </div>
 
-          <div className='offerInfoPanel'>
+          <div className='offer-info-panel'>
             <ParamsWithIcons offerProps={offerProps} iconSize={18} hideLabel={true} spaceEvenly={false}/>
-            <ul className='offerInfoPanelLocationDate'>
-              <li className='offerInfoPanelListElem'>
-                <p className='offerInfoPanelListElemText'>{offerProps.locationName}</p>
+            <ul className='offer-info-panel-location-date'>
+              <li className='offer-info-panel-list-elem'>
+                <p className='offer-info-panel-list-elem-text'>{offerProps.locationName}</p>
               </li>
-              <li className='offerInfoPanelListElem'>
-                <p className='offerInfoPanelListElemText'>{getReadableSellerType(offerProps.sellerDto.sellerType)} • Published: {offerProps.createdDate.toLocaleString("pl-PL")}</p>
+              <li className='offer-info-panel-list-elem'>
+                <p className='offer-info-panel-list-elem-text'>{getReadableSellerType(offerProps.sellerDto.sellerType)} • Published: {offerProps.createdDate.toLocaleString("pl-PL")}</p>
               </li>
             </ul>
           </div>
 
-          <div className='offerPricePanel'>
-            <div className='offerPriceHolder'>
-              <h3 className='offerPriceValue'>{Intl.NumberFormat("pl-PL").format(offerProps.price)}</h3>
-              <p className='offerPriceCurrency'>{getReadableCurrencyType(offerProps.currency)}</p>
+          <div className='offer-price-panel'>
+            <div className='offer-price-holder'>
+              <h3 className='offer-price-value'>{Intl.NumberFormat("pl-PL").format(offerProps.price)}</h3>
+              <p className='offer-price-currency'>{getReadableCurrencyType(offerProps.currency)}</p>
             </div>
           </div>
 
-          <div className='offerAddFavouritePanel'>
+          <div className='offer-add-favourite-panel'>
             <AddFavouritesButton offerProps={offerProps} />
           </div>
         </section>
