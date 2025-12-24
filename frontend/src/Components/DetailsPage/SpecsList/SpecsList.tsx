@@ -9,13 +9,13 @@ interface Props {
 }
 
 const SpecsList = ({ offerProps }: Props) => {
-    const make = useMakes().makes.find((make) => make.make_id === offerProps.makeId);
-    const model = make ? Object.values(make!.models).find(model => model.model_id === offerProps.modelId) : undefined;
+    const make = useMakes().makes.find((make) => make.makeId === offerProps.makeId);
+    const model = make ? Object.values(make!.models).find(model => model.modelId === offerProps.modelId) : undefined;
 
     return (
         <div className='specs-list'>
-            <SpecsListItem label='Make' value={make?.make_name} />
-            <SpecsListItem label='Model' value={model?.model_name} />
+            <SpecsListItem label='Make' value={make?.makeName} />
+            <SpecsListItem label='Model' value={model?.modelName} />
             {offerProps.color && <SpecsListItem label='Color' value={offerProps.color} />}
             {offerProps.vin && <SpecsListItem label='VIN' value={offerProps.vin} />}
             <SpecsListItem label='Year' value={offerProps.year.toLocaleString()} />
