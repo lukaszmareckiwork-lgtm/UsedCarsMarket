@@ -2,8 +2,8 @@
 .main-button {
   padding: 8px 12px;
 
-  background: #0071CE;
-  color: #FFFFFF;
+  background: var(--colorsPrimary);
+  color: var(--colorsBackgroundPrimary);
 
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
   font-size: 16px;
@@ -21,23 +21,23 @@
 }
 
 .main-button:hover {
-  background: #2f86ce;
+  background: var(--colorsPrimaryDark);
 }
 
 .main-button:active {
-  background: #0071CE;
+  background: var(--colorsPrimary);
 }
 
 .main-button:focus-visible {
-  outline: 2px solid #003764;
+  outline: 2px solid var(--colorsPrimaryDark);
   outline-offset: 2px;
 }
 
 .delete-button {
   padding: 8px 12px;
 
-  background: #C62828;
-  color: #FFFFFF;
+  background: var(--colorsError);
+  color: var(--colorsBackgroundPrimary);
 
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
   font-size: 16px;
@@ -55,11 +55,11 @@
 }
 
 .delete-button:hover {
-  background: #D32F2F;
+  background: var(--colorsErrorMedium);
 }
 
 .delete-button:active {
-  background: #C62828;
+  background: var(--colorsError);
 }
 
 .delete-button:focus-visible {

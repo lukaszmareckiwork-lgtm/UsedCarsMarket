@@ -113,14 +113,14 @@
 
 /* Active page */
 .main-search-pagination li.selected a {
-  background-color: #0071CE;
+  background-color: var(--colorsPrimary);
   color: white;
   font-weight: 600;
 }
 
 /* Hover state */
 .main-search-pagination li:not(.selected):hover a {
-  background-color: #e5f3ff;
+  background-color: var(--colorsActionLight);
 }
 
 /* Disabled arrows */

@@ -14,7 +14,7 @@
   justify-content: flex-end;
   align-items: center;
 
-  color: #007bff;
+  color: var(--colorsPrimary);
 }
 
 .paramTexts {
@@ -33,7 +33,7 @@
 }
 
 .paramWithIconValue {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: var(--font-weight-regular);
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
 }

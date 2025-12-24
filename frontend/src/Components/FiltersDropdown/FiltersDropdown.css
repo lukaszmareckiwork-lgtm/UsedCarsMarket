@@ -25,11 +25,6 @@
 }
 
 .car-filter-header {
-  /* background-color: #ffffff; */
-  /* padding: 8px 12px; */
-  /* border: 1px solid #ccc; */
-  /* border-radius: 4px; */
-  /* cursor: pointer; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,7 +67,7 @@
   border: 1px solid #ccc;
   border-top: none;
   border-radius: 0 0 4px 4px;
-  background-color: #fff;
+  background-color: var(--colorsBackgroundPrimary);
   z-index: 1000;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 
@@ -99,7 +94,7 @@
 }
 
 .car-filter-options label:hover {
-  background-color: #eee;
+  background-color: var(--colorsSurface);
 }
 
 .car-filter-options label input[type="checkbox"] {
@@ -108,20 +103,20 @@
 }
 
 .car-filter-options label:has(input[type="checkbox"]:checked) {
-  background-color: rgb(212, 235, 253);
+  background-color: var(--colorsActionLight);
 }
 
 .car-filter-options label:has(input[type="checkbox"]:checked):hover {
-  background-color: #9bd2ffff;
+  background-color: var(--colorsActionLight);
 }
 
 .car-filter-options label.select-all {
   font-weight: bold;
-  color: #000;
+  color: var(--colorsForegroundPrimary);
 }
 
 .car-filter-options label.select-all:hover {
-  background-color: #eee;
+  background-color: var(--colorsSurface);
 }
 
 .car-filter-options::-webkit-scrollbar {
@@ -153,7 +148,7 @@
   font-size: 18px;
   align-items: center;
 
-  background-color: white;
+  background-color: var(--colorsBackgroundPrimary);
 }
 
 .car-filters-dropdown-clear-and-arrow {
@@ -168,11 +163,11 @@
 
   pointer-events: none;
 
-  color: #868686;
+  color: var(--colorsMuted);
 }
 
 .car-filters-dropdown-arrow.opened{
-  color: #000000;
+  color: var(--colorsForegroundPrimary);
 }
 
 .car-filters-dropdown-clear-button {
