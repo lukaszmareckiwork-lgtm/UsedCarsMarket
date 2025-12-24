@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import MainSearch from './Components/MainSearch/MainSearch';
-import './App.css';
 import AddOffer from "./Components/AddOffer/AddOffer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
