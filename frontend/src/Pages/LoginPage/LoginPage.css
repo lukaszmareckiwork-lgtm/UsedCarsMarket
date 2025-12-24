@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0071CE, #4FC3F7);
+  background: linear-gradient(135deg, var(--colorsPrimary), var(--colorsPrimaryAccent));
   
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
 }
@@ -36,7 +36,7 @@
 
 .login-subtitle {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--colorsMuted);
   text-align: center;
   margin-bottom: 25px;
 }

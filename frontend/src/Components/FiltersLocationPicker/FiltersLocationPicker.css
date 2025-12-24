@@ -74,7 +74,7 @@
 }
 
 .location-filter-trigger {
-  background: var(--primary);
+  background: var(--colorsSurface);
   border-radius: 6px;
   cursor: pointer;
   border: none;

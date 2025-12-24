@@ -279,7 +279,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
           </div>
         </div>
         <div className="location-picker-address-right">
-          {address && targetRange && <PiLineVertical size={32} color="#ddddddff" />}
+          {address && targetRange && <PiLineVertical size={32} color={"var(--colorsPlaceholder)"} />}
           {address && targetRange&& <span className="location-picker-address-right-range">{`+${targetRange}km`}</span>}
         </div>
       </div>

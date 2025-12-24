@@ -24,18 +24,18 @@
 }
 
 .filters-input-frame:hover {
-  border-color: #1b1b1b;
+  border-color: var(--colorsMuted);
 }
 
 .filters-input-frame:focus-within {
   border-color: transparent;
   box-shadow:
-    0 0 0 1px #0071CE,
+    0 0 0 1px var(--colorsPrimary),
     0 0 0 3px rgba(0, 113, 206, 0.25);
 }
 
 .filters-input-frame.disabled {
-  background-color: #ffffff;
+  background-color: var(--colorsBackgroundPrimary);
   color: #999;
   cursor: not-allowed;
   user-select: none;

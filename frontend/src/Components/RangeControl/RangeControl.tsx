@@ -55,18 +55,18 @@ export class RangeControl implements mapboxgl.IControl {
             pointerEvents: "auto",
             border: "none",
             boxShadow: state.isFocused
-              ? "0 0 2px 2px #0071CE"
+              ? "0 0 2px 2px var(--colorsPrimary)"
               : "none",
             ":hover": {
               boxShadow: state.isFocused
-                ? "0 0 2px 2px #0071CE"
+                ? "0 0 2px 2px var(--colorsPrimary)"
                 : "0 0 2px 2px #999",
             },
           }),
           option: (base, { isSelected, isFocused }) => ({
             ...base,
             backgroundColor: isSelected
-              ? "#9bd2ffff"
+              ? "var(--colorsActionLight)"
               : isFocused
               ? "#eee"
               : "white",

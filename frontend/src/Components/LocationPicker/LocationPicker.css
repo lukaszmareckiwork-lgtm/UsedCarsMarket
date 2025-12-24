@@ -23,7 +23,7 @@
 .location-picker-address {
   margin-top: 0.4rem;
   padding: 0.6rem;
-  background-color: #f7f7f7;
+  background-color: var(--colorsSurface);
   border-radius: 6px;
   font-size: 0.9rem;
   border: 1px solid #ddd;
@@ -110,5 +110,5 @@
 
 .mapboxgl-ctrl-geocoder--input:focus {
   border-radius: 4px;
-  box-shadow: 0 0 2px 2px #0071CE;
+  box-shadow: 0 0 2px 2px var(--colorsPrimary);
 }

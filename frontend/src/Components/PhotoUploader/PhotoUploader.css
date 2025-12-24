@@ -11,8 +11,8 @@
   user-select: none;
 
   text-align: center;
-  background: #eeeeee;
-  color: #696969;
+  background: var(--colorsSurface);
+  color: var(--colorsMuted);
 
   height: 90px;
   display: flex;
@@ -22,18 +22,18 @@
 }
 
 .pu-dropzone:hover {
-  border-color: #0071CE;
-  background: #daeeff;
+  border-color: var(--colorsPrimary);
+  background: var(--colorsActionLight);
 }
 
 .pu-dropzone:active {
-  border-color: #005bb5;
-  background: #c6e0ff;
+  border-color: var(--colorsPrimaryDark);
+  background: var(--colorsActionLight);
 }
 
 .pu-dropzone-dragging {
-  border-color: #0071CE;
-  background: #daeeff;
+  border-color: var(--colorsPrimary);
+  background: var(--colorsActionLight);
 }
 
 .pu-preview-list {
@@ -72,7 +72,7 @@
   border: none;
   border-radius: 6px;
   background: rgba(92, 92, 92, 0.733);
-  color:  #fc6666;
+  color: var(--colorsErrorLight);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -81,7 +81,7 @@
 
 .pu-remove-button:hover {
   background: rgba(92, 92, 92, 0.733);
-  color: #ff3939;
+  color: var(--colorsErrorMedium);
 }
 
 .pu-remove-button-icon:hover {
@@ -90,11 +90,11 @@
 
 .pu-remove-button:active {
   background: rgba(119, 119, 119, 0.911);
-  color: #ffbcbc;
+  color: var(--colorsErrorLight);
 }
 
 .pu-error {
-  color: #d9534f;
+  color: var(--colorsErrorMedium);
   font-size: 0.9rem;
   margin-top: 0.25rem;
 }

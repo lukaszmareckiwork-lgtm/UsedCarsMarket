@@ -1,242 +1,19 @@
-*, *::after, *::before {
-    box-sizing: border-box;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-smooth: antialiased;
-}
+/*
+    Consolidated design tokens.
+    - Kept tokens that are used across components (fonts, colors, spacing, radii, common sizes).
+    - Provides backward-compatible aliases for both camelCase and kebab-case tokens used in the project.
+    - Keep this file intentionally minimal and predictable. If you need additional tokens, add them here and reference them across components.
+*/
 
-:host:not(#\#), :root:not(#\#) {
-    --container-7xl: 80rem;
-    --ease-in: cubic-bezier(.4,0,1,1);
-    --ease-out: cubic-bezier(0,0,.2,1);
-    --ease-in-out: cubic-bezier(.4,0,.2,1);
-    --default-transition-duration: .15s;
-    --default-transition-timing-function: cubic-bezier(.4,0,.2,1);
-    --color-background-accent-subtle: #ecf5fe;
-    --color-background-accent: #0071ce;
-    --color-background-action-primary: #0071ce;
-    --color-background-disabled: #dcdde0;
-    --color-background-elevated: #fff;
-    --color-background-inverse: #020309;
-    --color-background-primary: #fff;
-    --color-background-secondary: #f7f8fa;
-    --color-background-status-error-subtle: #ffdcd8;
-    --color-background-status-error: #ab1b07;
-    --color-background-status-success: #245747;
-    --color-border-action-primary: #0071ce;
-    --color-border-disabled: #dcdde0;
-    --color-border-focus: #0071ce;
-    --color-border-medium: #a1a2a5;
-    --color-border-status-error: #ab1b07;
-    --color-border-subtle: #dcdde0;
-    --color-foreground-accent: #398b72;
-    --color-foreground-action-primary: #0071ce;
-    --color-foreground-disabled: #a1a2a5;
-    --color-foreground-on-accent: #fff;
-    --color-foreground-on-dark: #fff;
-    --color-foreground-on-error: #7e1304;
-    --color-foreground-on-inverse: #fff;
-    --color-foreground-on-success: #245747;
-    --color-foreground-on-warning: #6b5400;
-    --color-foreground-primary: #020309;
-    --color-foreground-secondary: #66676c;
-    --color-foreground-status-error: #ab1b07;
-    --font-weight-regular: var(--fontWeightRegular, 400);
-    --font-weight-medium: var(--fontWeightMedium, 500);
-    --font-weight-bold: var(--fontWeightBold, 600);
-    --radius-none: var(--radiusNone, 0px);
-    --radius-small: var(--radiusSmall, 4px);
-    --radius-medium: var(--radiusMedium, 8px);
-    --radius-large: var(--radiusLarge, 16px);
-    --radius-full: var(--radiusFull, 999px);
-    --spacing-0: var(--spacing0, 0px);
-    --spacing-100: var(--spacing100, 8px);
-    --spacing-150: var(--spacing150, 12px);
-    --spacing-200: var(--spacing200, 16px);
-    --spacing-300: var(--spacing300, 24px);
-    --spacing-500: var(--spacing500, 40px);
-    --spacing-800: var(--spacing800, 64px);
-    --text-display-large: var(--fontSizeDisplayLarge, 40px);
-    --text-headline-small: var(--fontSizeHeadlineSmall, 18px);
-    --text-body-base: var(--fontSizeBodyBase, 16px);
-    --text-body-extra-small: var(--fontSizeBodyExtraSmall, 12px);
-    --border-width-none: var(--widthNone, 0px);
-    --border-width-small: var(--widthSmall, 1px);
-    --border-width-medium: var(--widthMedium, 2px);
-    --color-pir: #ccd6ff;
-    --color-green-light: var(--colorsGreen01GreenBGLight, #eef9f6);
-    --font-weight-thin: 100;
-    --leading-h4: 22px;
-    --leading-p2: 20px;
-    --leading-p3: 18px;
-    --radius-sm: 8px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
-    --radius-xl: 32px;
-    --spacing-xxs: 4px;
-    --spacing-xs: 8px;
-    --spacing-sm: 16px;
-    --spacing-md: 24px;
-    --spacing-lg: 32px;
-    --spacing-xl: 40px;
-    --spacing-xxl: 48px;
-    --spacing-3xl: 58px;
-    --spacing-input: 50px;
-    --spacing-modal: 580px;
-    --spacing-page: 1180px;
-    --spacing-6: 6px;
-    --spacing-12: 12px;
-    --spacing-10: 10px;
-    --spacing-14: 14px;
-    --spacing-thisIsNotAToken: 30px;
-    --text-h3: 24px;
-    --text-h4: 20px;
-    --text-p2: 16px;
-    --text-p3: 14px;
-    --text-p4: 12px;
-    --text-p5: 11px;
-    --z-index-inside-modal: 1051;
-}
-
-/* Button */
-:root {
-    --nexus-button-height-medium: 48px;
-    --nexus-button-height-small: 40px;
-    --nexus-button-padding: var(--spacing300);
-    --nexus-button-gap: var(--spacing100);
-    --nexus-button-icon-size-medium: 24px;
-    --nexus-button-icon-size-small: 20px;
-    --nexus-button-outline-width: var(--widthLarge);
-    --nexus-button-outline-offset: 2px;
-}
+/* Global box-sizing ensures components sized with width:100% behave as expected (padding included). */
+*, *::before, *::after { box-sizing: border-box; }
 
 :root {
-  --widthNone: 0px;
-    --widthSmall: 1px;
-    --widthMedium: 2px;
-    --widthLarge: 3px;
-    --colorsBackgroundPrimary: #FFFFFFFF;
-    --colorsBackgroundSecondary: #F7F8FAFF;
-    --colorsBackgroundInverse: #020309FF;
-    --colorsBackgroundElevated: #FFFFFFFF;
-    --colorsBackgroundDisabled: #DCDDE0FF;
-    --colorsBackgroundActionPrimary: #0071CEFF;
-    --colorsBackgroundAccent: #0071CEFF;
-    --colorsBackgroundAccentSubtle: #ECF5FEFF;
-    --colorsBackgroundTransparent: #FFFFFF00;
-    --colorsForegroundPrimary: #020309FF;
-    --colorsBorderStrong: #0071CEFF;
-    --colorsBorderMedium: #A1A2A5FF;
-    --colorsBorderSubtle: #DCDDE0FF;
-    --colorsBorderInverse: #FFFFFFFF;
-    --colorsBorderActionPrimary: #0071CEFF;
-    --colorsBorderAccent: #0071CEFF;
-    --colorsBorderFocus: #0071CEFF;
-    --colorsBorderDisabled: #DCDDE0FF;
-    --colorsBorderStatusSuccess: #00000000;
-    --colorsBorderStatusWarning: #00000000;
-    --colorsBorderStatusError: #AB1B07FF;
-    --colorsForegroundSecondary: #66676CFF;
-    --colorsForegroundDisabled: #A1A2A5FF;
-    --colorsForegroundActionPrimary: #0071CEFF;
-    --colorsForegroundAccent: #398B72FF;
-    --colorsForegroundOnActionPrimary: #FFFFFFFF;
-    --colorsForegroundOnAccent: #FFFFFFFF;
-    --colorsForegroundOnAccentSubtle: #FFFFFFFF;
-    --colorsForegroundOnSuccess: #245747FF;
-    --colorsForegroundOnWarning: #6B5400FF;
-    --colorsForegroundOnError: #7E1304FF;
-    --colorsForegroundOnInverse: #FFFFFFFF;
-    --colorsForegroundOnDark: #FFFFFFFF;
-    --colorsForegroundStatusSuccess: #245747FF;
-    --colorsForegroundStatusWarning: #6B5400FF;
-    --colorsForegroundStatusError: #AB1B07FF;
-    --colorsOpacityPrimaryStrong: #02030952;
-    --colorsOpacityPrimaryMedium: #02030952;
-    --colorsOpacityPrimarySubtle: #02030952;
-    --colorsOpacitySecondaryStrong: #FFFFFF00;
-    --colorsOpacitySecondaryMedium: #FFFFFF00;
-    --colorsOpacitySecondarySubtle: #FFFFFF00;
-    --colorsOpacityOverlayShadow: #02030952;
-    --colorsOpacityOverlayBackdrop: #020309CC;
-    --colorsOpacityOverlayBackdropInverse: #FFFFFFCC;
-    --colorsBackgroundStatusSuccess: #245747FF;
-    --colorsBackgroundStatusSuccessSubtle: #D3F7EDFF;
-    --colorsBackgroundStatusWarning: #FFC800FF;
-    --colorsBackgroundStatusWarningSubtle: #FFF4CDFF;
-    --colorsBackgroundStatusError: #AB1B07FF;
-    --colorsBackgroundStatusErrorSubtle: #FFDCD8FF;
-    --elevation0: 0;
-    --elevation100: 8;
-    --elevation200: 16;
-    --elevation300: 24;
-    --elevation400: 40;
-    --timeFast: 100ms;
-    --timeRegular: 300ms;
-    --timeSlow: 600ms;
-    --timeExtraSlow: 1000ms;
-    --transitionEaseIn: 0.4, 0, 1, 1;
-    --transitionEaseOut: 0, 0, 0.2, 1;
-    --transitionEaseInOut: 0.4, 0, 0.2, 1;
-    --primitivesColorsGray01White: #FFFFFFFF;
-    --primitivesColorsGray02Gray: #F7F8FAFF;
-    --primitivesColorsGray03Gray: #EBECEFFF;
-    --primitivesColorsGray04Gray: #DCDDE0FF;
-    --primitivesColorsGray05Gray: #A1A2A5FF;
-    --primitivesColorsGray06Gray: #66676CFF;
-    --primitivesColorsGray07Black: #020309FF;
-    --primitivesColorsGreen01GreenBGLight: #EEF9F6FF;
-    --primitivesColorsGreen02GreenLight: #D3F7EDFF;
-    --primitivesColorsGreen03GreenTintLight: #BEE7DBFF;
-    --primitivesColorsGreen04GreenTintDark: #73E2C0FF;
-    --primitivesColorsGreen05GreenPrimary: #4EBE9CFF;
-    --primitivesColorsGreen06GreenDark: #398B72FF;
-    --primitivesColorsGreen07GreenBGDark: #245747FF;
-    --primitivesColorsBlue01BlueBGLight: #ECF5FEFF;
-    --primitivesColorsBlue02BlueLight: #BDE0FFFF;
-    --primitivesColorsBlue03BlueTintLight: #8DC5F6FF;
-    --primitivesColorsBlue04BlueTintDark: #1992F6FF;
-    --primitivesColorsBlue05BluePrimary: #0071CEFF;
-    --primitivesColorsBlue06BlueDark: #0A4A91FF;
-    --primitivesColorsBlue07BlueBGDark: #17284EFF;
-    --primitivesColorsYellow01YellowBGLight: #FFFAE8FF;
-    --primitivesColorsYellow02YellowLight: #FFF4CDFF;
-    --primitivesColorsYellow03YellowTintLight: #FFF1BFFF;
-    --primitivesColorsYellow04YellowTintDark: #FFE896FF;
-    --primitivesColorsYellow05YellowPrimary: #FFC800FF;
-    --primitivesColorsYellow06YellowDark: #E7B604FF;
-    --primitivesColorsYellow07YellowBGDark: #AA8707FF;
-    --primitivesColorsRed01RedBGLight: #FDF0EEFF;
-    --primitivesColorsRed02RedLight: #FFDCD8FF;
-    --primitivesColorsRed03RedTintLight: #F7B8B1FF;
-    --primitivesColorsRed04RedTintDark: #EE6554FF;
-    --primitivesColorsRed05RedPrimary: #C82814FF;
-    --primitivesColorsRed06RedDark: #AB1B07FF;
-    --primitivesColorsRed07RedBGDark: #7E1304FF;
-    --primitivesColorsAlphaTransparentWhite0: #FFFFFF00;
-    --primitivesColorsAlphaTransparentBlack32: #02030952;
-    --primitivesColorsAlphaTransparentBlack80: #020309CC;
-    --primitivesColorsYellow08YellowBlack: #6B5400FF;
-    --radiusNone: 0px;
-    --radiusSmall: 4px;
-    --radiusMedium: 8px;
-    --radiusLarge: 16px;
-    --radiusFull: 999px;
-    --shadowsNull: 0px 0px 0px;
-    --shadowsBase: 0px 0px 8px;
-    --shadowsRaised: 0px 0px 24px;
-    --spacing0: 0px;
-    --spacing50: 4px;
-    --spacing100: 8px;
-    --spacing150: 12px;
-    --spacing200: 16px;
-    --spacing300: 24px;
-    --spacing500: 40px;
-    --spacing800: 64px;
-    --spacing1200: 96px;
-    --themeName: motors;
-    --fontFamilyPrimary: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --fontFamilySecondary: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    /* Fonts */
+    --fontFamilyPrimary: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --fontFamilySecondary: var(--fontFamilyPrimary);
+
+    /* font-size tokens (used in many components) */
     --fontSizeDisplayLarge: 40px;
     --fontSizeDisplay: 32px;
     --fontSizeHeadlineLarge: 24px;
@@ -245,100 +22,105 @@
     --fontSizeBodyBase: 16px;
     --fontSizeBodySmall: 14px;
     --fontSizeBodyExtraSmall: 12px;
+
+    /* line heights */
+    --lineHeightDisplay: 34px;
+    --lineHeightNarrow: 34px;
+    --lineHeightRegular: 1.2;
+    --lineHeightHeadlineLarge: 26px;
+
+    /* font weights (keep both styles used around the codebase) */
     --fontWeightRegular: 400;
     --fontWeightMedium: 500;
-    --fontWeightBold: 600;
-    --letterSpacingNarrow: -0.5px;
-    --letterSpacingRegular: 0px;
-    --letterSpacingWide: 0px;
-    --lineHeightDisplayLarge: 42px;
-    --lineHeightDisplay: 34px;
-    --lineHeightHeadlineLarge: 26px;
-    --lineHeightHeadlineMedium: 22px;
-    --lineHeightHeadlineSmall: 24px;
-    --lineHeightBodyBase: 20px;
-    --lineHeightBodySmall: 18px;
-    --lineHeightBodyExtraSmall: 14px;
-    --lineHeightNarrow: 100%;
-    --lineHeightRegular: 120%;
-    --lineHeightWide: 140%;
-    --displayLargeLineHeight: 42px;
-    --displayLargeLetterSpacing: -0.5px;
-    --displayLargeFontWeight: 600;
-    --displayLargeFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --displayLargeFontSize: 40px;
-    --displayLineHeight: 34px;
-    --displayLetterSpacing: -0.5px;
-    --displayFontWeight: 600;
-    --displayFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --displayFontSize: 32px;
-    --headlineLargeLineHeight: 26px;
-    --headlineLargeLetterSpacing: 0px;
-    --headlineLargeFontWeight: 600;
-    --headlineLargeFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --headlineLargeFontSize: 24px;
-    --headlineMediumLineHeight: 22px;
-    --headlineMediumLetterSpacing: 0px;
-    --headlineMediumFontWeight: 600;
-    --headlineMediumFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --headlineMediumFontSize: 20px;
-    --headlineSmallLineHeight: 24px;
-    --headlineSmallLetterSpacing: 0px;
-    --headlineSmallFontWeight: 600;
-    --headlineSmallFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --headlineSmallFontSize: 18px;
-    --bodyBaseLineHeight: 20px;
-    --bodyBaseLetterSpacing: 0px;
-    --bodyBaseFontWeight: 400;
-    --bodyBaseFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --bodyBaseFontSize: 16px;
-    --bodyBaseBoldLineHeight: 20px;
-    --bodyBaseBoldLetterSpacing: 0px;
-    --bodyBaseBoldFontWeight: 600;
-    --bodyBaseBoldFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --bodyBaseBoldFontSize: 16px;
-    --bodySmallLineHeight: 18px;
-    --bodySmallLetterSpacing: 0px;
-    --bodySmallFontWeight: 400;
-    --bodySmallFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --bodySmallFontSize: 14px;
-    --bodySmallBoldLineHeight: 18px;
-    --bodySmallBoldLetterSpacing: 0px;
-    --bodySmallBoldFontWeight: 600;
-    --bodySmallBoldFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --bodySmallBoldFontSize: 14px;
-    --bodyExtraSmallLineHeight: 14px;
-    --bodyExtraSmallLetterSpacing: 0px;
-    --bodyExtraSmallFontWeight: 400;
-    --bodyExtraSmallFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --bodyExtraSmallFontSize: 12px;
-    --bodyExtraSmallBoldLineHeight: 14px;
-    --bodyExtraSmallBoldLetterSpacing: 0px;
-    --bodyExtraSmallBoldFontWeight: 600;
-    --bodyExtraSmallBoldFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --bodyExtraSmallBoldFontSize: 12px;
-    --bodyBaseMediumLineHeight: 20px;
-    --bodyBaseMediumLetterSpacing: 0px;
-    --bodyBaseMediumFontWeight: 500;
-    --bodyBaseMediumFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --bodyBaseMediumFontSize: 16px;
-    --bodySmallMediumLineHeight: 18px;
-    --bodySmallMediumLetterSpacing: 0px;
-    --bodySmallMediumFontWeight: 500;
-    --bodySmallMediumFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --bodySmallMediumFontSize: 14px;
-    --bodyExtraSmallMediumLineHeight: 14px;
-    --bodyExtraSmallMediumLetterSpacing: 0px;
-    --bodyExtraSmallMediumFontWeight: 500;
-    --bodyExtraSmallMediumFontFamily: system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    --bodyExtraSmallMediumFontSize: 12px;
+    --fontWeightBold: 600; /* tuned to 600 for better balance across headings and labels */
+    --font-weight-regular: var(--fontWeightRegular);
+    --font-weight-medium: var(--fontWeightMedium);
+    --font-weight-bold: var(--fontWeightBold);
+
+    /* Colors (kept common set only) */
+    --colorsBackgroundPrimary: #FFFFFF;
+    --colorsBackgroundSecondary: #F7F8FA;
+    --colorsBackgroundAccentSubtle: #ECF5FE;
+    --colorsBackgroundActionPrimary: #0071CE;
+
+    --colorsForegroundPrimary: #020309;
+    --colorsForegroundSecondary: #66676C;
+    --colorsForegroundAccent: #398B72;
+    --colorsForegroundActionPrimary: #0071CE;
+
+    --colorsStatusError: #AB1B07;
+    --colorsStatusSuccess: #245747;
+
+    /* border / stroke */
+    --border-width-none: 0px;
+    --border-width-small: 1px;
+    --border-width-medium: 2px;
+
+    /* Radii */
+    --radiusNone: 0px;
+    --radiusSmall: 4px;
+    --radiusMedium: 8px;
+    --radiusLarge: 16px;
+    --radiusFull: 999px;
+    --radius-sm: var(--radiusSmall);
+    --radius-md: var(--radiusMedium);
+    --radius-lg: var(--radiusLarge);
+
+    /* Spacing scale (most-used ones) */
+    --spacing0: 0px;
+    --spacing-xxs: 4px;
+    --spacing-xs: 8px;
+    --spacing100: 8px; /* alias kept for older code */
+    --spacing150: 12px;
+    --spacing200: 16px;
+    --spacing300: 24px;
+    --spacing-300: var(--spacing300);
+    --spacing500: 40px;
+    --spacing800: 64px;
+    --spacing-input: 50px;
+    --spacing-xxl: 50px; /* restore missing token used by dropdowns/frames */
+
+    /* Common layout sizes */
+    --media-width: 1200px; /* used by grid minmax(...) fallbacks in some components */
+
+    /* Buttons */
+    --nexus-button-height-medium: 48px;
+    --nexus-button-height-small: 40px;
+    --nexus-button-padding: var(--spacing300);
+    --nexus-button-gap: var(--spacing-xs);
+    --nexus-button-icon-size-medium: 24px;
+
+    /* Z / elevation */
+    --z-index-inside-modal: 1051;
+
+    /* Transition / timing */
+    --default-transition-duration: 150ms;
     --transitionTimingFunction: ease-out;
-    --transitionDuration: 300ms;
-    --breakpointsXs: 360px;
-    --breakpointsSm: 576px;
-    --breakpointsMd: 768px;
-    --breakpointsLg: 992px;
-    --breakpointsXl: 1280px;
+
+    /* Backwards-compatible aliases (some code uses different token names) */
+    --font-size-display: var(--fontSizeDisplay);
+    --fontSizeHeadlineSmall: var(--fontSizeHeadlineSmall);
+    --font-size-body-base: var(--fontSizeBodyBase);
+    --font-family-primary: var(--fontFamilyPrimary);
+
+    /* Keep a few utility tokens referenced by external libs in the distro */
+    --toastify-color-light: #fff;
+    --toastify-color-dark: #121212;
+
+    /* Convenience aliases used across the codebase */
+    --colorsPrimary: #0071CE; /* used previously as #0071CE */
+    --colorsPrimaryDark: #2f86ce;
+    --colorsPrimaryAccent: #4FC3F7;
+    --colorsMuted: #66676C;
+    --colorsBorderSubtle: #DCDDE0;
+    --colorsSurface: #F7F7F7;
+    --colorsPlaceholder: #DDDDDD;
+    --colorsError: #C62828;
+    --colorsErrorMedium: #D32F2F;
+    --colorsErrorLight: #d9534f;
+    --colorsActionLight: #DAEEFF;
+
+    /* Media query helpers (string values kept as notes) */
     --mediaQueriesXsMin: (min-width: 360px);
     --mediaQueriesXsMax: (max-width: 575px);
     --mediaQueriesSmMin: (min-width: 576px);

@@ -1,6 +1,6 @@
 .details-item {
     border-radius: 4px;
-    border-color: #DCDDE0;
+    border-color: var(--colorsBorderSubtle);
     border-width: 1px;
     border-style: solid;
 
@@ -23,7 +23,6 @@
 
 .details-item-label {
 
-    font-size: 22px;
-    /* color: #000000; */
-    font-weight: var(--font-weight-bold);
+    font-size: 20px;
+    font-weight: var(--font-weight-medium);
 }
