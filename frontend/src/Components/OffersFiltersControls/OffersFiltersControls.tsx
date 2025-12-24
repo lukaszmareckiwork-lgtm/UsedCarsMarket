@@ -97,7 +97,7 @@ const OffersFiltersControls = ({
         selectedItems={selectedMakes}
         handleItemSelected={onMakesSelected}
         getId={(make) => make.make_id}
-        getDisplayName={(make) => make.make_name}
+        getDisplayName={(make) => `${make.make_name} (${make.offers_count})`}
         getSimplifiedName={(make) => make.make_slug}
         loading={loading}
         forceDisable={false}
@@ -110,7 +110,7 @@ const OffersFiltersControls = ({
         selectedItems={selectedModels}
         handleItemSelected={onModelsSelected}
         getId={(model) => model.model_id}
-        getDisplayName={(model) => model.model_name}
+        getDisplayName={(model) => `${model.model_name} (${model.offers_count})`}
         getSimplifiedName={(model) => model.model_name.toLowerCase()}
         loading={loading}
         forceDisable={selectedMakes.length === 0}
