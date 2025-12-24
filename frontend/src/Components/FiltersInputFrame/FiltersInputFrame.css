@@ -1,7 +1,7 @@
 .filters-input-frame {
   display: flex;
 
-  border: 1px solid #ccc;
+  border: 1px solid var(--colorsBorderSubtle);
   border-radius: 4px;
   height: var(--spacing-xxl);
   align-items: center;
@@ -11,8 +11,8 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   font-family: var(--fontFamilyPrimary);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--fontSizeBodySmall);
+  font-weight: var(--font-weight-medium);
 
   cursor: pointer;
 }
@@ -39,7 +39,7 @@
   color: #999;
   cursor: not-allowed;
   user-select: none;
-  border-color: #ccc;
+  border-color: var(--colorsBorderSubtle);
 }
 
 .filters-input-frame.disabled:focus-within {

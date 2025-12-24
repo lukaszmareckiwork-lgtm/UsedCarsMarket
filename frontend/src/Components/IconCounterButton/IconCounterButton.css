@@ -29,8 +29,8 @@
     margin-left: -4px;
     margin-bottom: -20px;
 
-    font-size: 12px;
-    font-weight: 500;
+    font-size: var(--fontSizeBodyExtraSmall);
+    font-weight: var(--fontWeightMedium);
 
     white-space: nowrap;
 }

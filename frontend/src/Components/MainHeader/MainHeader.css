@@ -18,8 +18,8 @@
 .mainHeader-title{
     color: var(--colorsPrimary);
     font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
-    font-size: 30px;
-    font-weight: 700;
+    font-size: var(--fontSizeDisplay);
+    font-weight: var(--fontWeightHeavy);
 
     font-variant: small-caps;
     letter-spacing: 1px;
@@ -37,15 +37,15 @@
 
 .mainHeader-loginButton,
 .mainHeader-addOfferButton {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: var(--fontSizeBodyBase);
+    font-weight: var(--fontWeightHeavy);
 
     text-decoration: none;
 }
 
 .mainHeader-loggedInUserText {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: var(--fontSizeBodySmall);
+    font-weight: var(--fontWeightSemibold);
     text-align: center;
 
     color: var(--colorsPrimary);

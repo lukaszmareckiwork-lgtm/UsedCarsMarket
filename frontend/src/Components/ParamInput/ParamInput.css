@@ -11,7 +11,7 @@
   width: 100%;
   padding: 0.6rem;
   border: 1px solid #ccc;
-  border-radius: 4px; 
+  border-radius: var(--radius-sm);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
@@ -42,7 +42,7 @@
 
 .param-input label {
   display: block;
-  font-weight: 600;
+  font-weight: var(--fontWeightSemibold);
   margin-bottom: 0.3rem;
 }
 
@@ -107,7 +107,7 @@
 
 /* --- Label --- */
 .param-label {
-  font-weight: 500;
+  font-weight: var(--fontWeightMedium);
   margin-bottom: 0.4rem;
   color: #333;
 }
