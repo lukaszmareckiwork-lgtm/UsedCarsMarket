@@ -160,7 +160,7 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
     }
   );
 
-  const selectedMake = makes.find((m) => m.make_id === watch("makeId"));
+  const selectedMake = makes.find((m) => m.makeId === watch("makeId"));
   const availableModels = selectedMake
     ? Object.values(selectedMake.models)
     : [];
@@ -191,8 +191,8 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
             control={control}
             type="select"
             options={makes.map((m) => ({
-              value: m.make_id,
-              label: m.make_name,
+              value: m.makeId,
+              label: m.makeName,
             }))}
             numeric
             placeholder="Select make"
@@ -203,8 +203,8 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
             control={control}
             type="select"
             options={availableModels.map((m) => ({
-              value: m.model_id,
-              label: m.model_name,
+              value: m.modelId,
+              label: m.modelName,
             }))}
             numeric
             placeholder="Select model"
