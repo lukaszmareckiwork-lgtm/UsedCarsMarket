@@ -30,7 +30,6 @@
   align-items: center;
   user-select: none;
   height: 100%;
-
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
   font-size: 14px;
   font-weight: var(--fontWeightMedium);
