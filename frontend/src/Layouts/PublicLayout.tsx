@@ -6,7 +6,7 @@ const PublicLayout = () => {
   return (
     <div className="app-root">
       <MainHeader />
-      <main className="app-content">
+      <main id="main-content" className="app-content">
         <Outlet />
       </main>
     </div>

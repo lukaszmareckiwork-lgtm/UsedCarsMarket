@@ -1,0 +1,26 @@
+/* Accessibility helper styles */
+
+/* Skip link: visually hidden but visible when focused */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.skip-link:focus,
+.skip-link:active {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  background: var(--colorsPrimary);
+  color: var(--colorsBackgroundPrimary);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
