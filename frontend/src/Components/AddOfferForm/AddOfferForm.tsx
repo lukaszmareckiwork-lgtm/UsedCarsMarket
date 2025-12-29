@@ -183,7 +183,7 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
       <h2>Add a New Offer</h2>
 
       {/* Vehicle Information */}
-      <DetailsItem label="Vehicle Information" iconNode={<FaCar size={22}/>}>
+      <DetailsItem label="Vehicle Information" iconNode={<FaCar size={22} aria-hidden={true} focusable={false}/>}> 
         <div className="form-grid">
           <ParamInput
             name="makeId"
@@ -280,7 +280,7 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
       <Spacer size={34} />
 
       {/* Offer Details */}
-      <DetailsItem label="Offer Details" iconNode={<FaIdCard size={22}/>}>
+      <DetailsItem label="Offer Details" iconNode={<FaIdCard size={22} aria-hidden={true} focusable={false}/> }>
         <div className="form-grid">
           <ParamInput
             name="title"
