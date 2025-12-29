@@ -26,7 +26,7 @@ const MainHeader = () => {
       </div>
       <div className="mainHeader-right">
         <FavouritesButton count={favouritesCount} />
-        <PiLineVertical size={40} color="#ddddddff" />
+        <PiLineVertical size={40} color={"var(--colorsPlaceholder)"} />
         {isLoggedIn() ? (
           <>
             <div className="mainHeader-loggedInUserText">
@@ -47,7 +47,7 @@ const MainHeader = () => {
           </>
         )}
 
-        <PiLineVertical size={40} color="#ddddddff" />
+        <PiLineVertical size={40} color={"var(--colorsPlaceholder)"} />
         <OwnedOffersButton count={userOffersCount} />
         {!isAddOfferPage && <Link to={ROUTES.ADD_OFFER} className="mainHeader-addOfferButton main-button">
           Add offer

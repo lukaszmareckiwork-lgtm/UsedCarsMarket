@@ -1,0 +1,139 @@
+/*
+    Consolidated design tokens.
+    - Kept tokens that are used across components (fonts, colors, spacing, radii, common sizes).
+    - Provides backward-compatible aliases for both camelCase and kebab-case tokens used in the project.
+    - Keep this file intentionally minimal and predictable. If you need additional tokens, add them here and reference them across components.
+*/
+
+/* Global box-sizing ensures components sized with width:100% behave as expected (padding included). */
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+    /* Fonts */
+    --fontFamilyPrimary: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --fontFamilySecondary: var(--fontFamilyPrimary);
+
+    /* font-size tokens (used in many components) */
+    --fontSizeDisplayLarge: 40px;
+    --fontSizeDisplay: 32px;
+    --fontSizeHeadlineLarge: 24px;
+    --fontSizeHeadlineMedium: 20px;
+    --fontSizeHeadlineSmall: 18px;
+    --fontSizeBodyBase: 16px;
+    --fontSizeBodySmall: 14px;
+    --fontSizeBodyExtraSmall: 12px;
+
+    /* line heights */
+    --lineHeightDisplay: 34px;
+    --lineHeightNarrow: 34px;
+    --lineHeightRegular: 1.2;
+    --lineHeightHeadlineLarge: 26px;
+
+    /* font weights (keep both styles used around the codebase) */
+    --fontWeightLight: 300;
+    --fontWeightRegular: 400;
+    --fontWeightMedium: 500;
+    --fontWeightSemibold: 600;
+    --fontWeightBold: 600; /* tuned to 600 for better balance across headings and labels */
+    --fontWeightHeavy: 700;
+    --font-weight-light: var(--fontWeightLight);
+    --font-weight-regular: var(--fontWeightRegular);
+    --font-weight-medium: var(--fontWeightMedium);
+    --font-weight-semibold: var(--fontWeightSemibold);
+    --font-weight-bold: var(--fontWeightBold);
+    --font-weight-heavy: var(--fontWeightHeavy);
+
+    /* Colors (kept common set only) */
+    --colorsBackgroundPrimary: #FFFFFF;
+    --colorsBackgroundSecondary: #F7F8FA;
+    --colorsBackgroundAccentSubtle: #ECF5FE;
+    --colorsBackgroundActionPrimary: #0071CE;
+
+    --colorsForegroundPrimary: #020309;
+    --colorsForegroundSecondary: #66676C;
+    --colorsForegroundAccent: #398B72;
+    --colorsForegroundActionPrimary: #0071CE;
+
+    --colorsStatusError: #AB1B07;
+    --colorsStatusSuccess: #245747;
+
+    /* border / stroke */
+    --border-width-none: 0px;
+    --border-width-small: 1px;
+    --border-width-medium: 2px;
+
+    /* Radii */
+    --radiusNone: 0px;
+    --radiusSmall: 4px;
+    --radiusMedium: 8px;
+    --radiusLarge: 16px;
+    --radiusFull: 999px;
+    --radius-sm: var(--radiusSmall);
+    --radius-md: var(--radiusMedium);
+    --radius-lg: var(--radiusLarge);
+
+    /* Spacing scale (most-used ones) */
+    --spacing0: 0px;
+    --spacing-xxs: 4px;
+    --spacing-xs: 8px;
+    --spacing100: 8px; /* alias kept for older code */
+    --spacing150: 12px;
+    --spacing200: 16px;
+    --spacing300: 24px;
+    --spacing-300: var(--spacing300);
+    --spacing500: 40px;
+    --spacing800: 64px;
+    --spacing-input: 50px;
+    --spacing-xxl: 50px; /* restore missing token used by dropdowns/frames */
+
+    /* Common layout sizes */
+    --media-width: 1200px; /* used by grid minmax(...) fallbacks in some components */
+
+    /* Buttons */
+    --nexus-button-height-medium: 48px;
+    --nexus-button-height-small: 40px;
+    --nexus-button-padding: var(--spacing300);
+    --nexus-button-gap: var(--spacing-xs);
+    --nexus-button-icon-size-medium: 24px;
+
+    /* Z / elevation */
+    --z-index-inside-modal: 1051;
+
+    /* Transition / timing */
+    --default-transition-duration: 150ms;
+    --transitionTimingFunction: ease-out;
+
+    /* Backwards-compatible aliases (some code uses different token names) */
+    --font-size-display: var(--fontSizeDisplay);
+    --fontSizeHeadlineSmall: var(--fontSizeHeadlineSmall);
+    --font-size-body-base: var(--fontSizeBodyBase);
+    --font-family-primary: var(--fontFamilyPrimary);
+
+    /* Keep a few utility tokens referenced by external libs in the distro */
+    --toastify-color-light: #fff;
+    --toastify-color-dark: #121212;
+
+    /* Convenience aliases used across the codebase */
+    --colorsPrimary: #0071CE; /* used previously as #0071CE */
+    --colorsPrimaryDark: #2f86ce;
+    --colorsPrimaryAccent: #4FC3F7;
+    --colorsMuted: #66676C;
+    --colorsBorderSubtle: #DCDDE0;
+    --colorsSurface: #F7F7F7;
+    --colorsPlaceholder: #DDDDDD;
+    --colorsError: #C62828;
+    --colorsErrorMedium: #D32F2F;
+    --colorsErrorLight: #d9534f;
+    --colorsActionLight: #DAEEFF;
+
+    /* Media query helpers (string values kept as notes) */
+    --mediaQueriesXsMin: (min-width: 360px);
+    --mediaQueriesXsMax: (max-width: 575px);
+    --mediaQueriesSmMin: (min-width: 576px);
+    --mediaQueriesSmMax: (max-width: 767px);
+    --mediaQueriesMdMin: (min-width: 768px);
+    --mediaQueriesMdMax: (max-width: 991px);
+    --mediaQueriesLgMin: (min-width: 992px);
+    --mediaQueriesLgMax: (max-width: 1279px);
+    --mediaQueriesXlMin: (min-width: 1280px);
+}

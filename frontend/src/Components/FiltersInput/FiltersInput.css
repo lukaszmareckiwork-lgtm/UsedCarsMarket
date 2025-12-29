@@ -29,7 +29,7 @@
 
     font-family: var(--fontFamilyPrimary);
     font-size: 14px;
-    font-weight: 500;
+    font-weight: var(--fontWeightMedium);
     flex: 1;
 
     width: 100%;

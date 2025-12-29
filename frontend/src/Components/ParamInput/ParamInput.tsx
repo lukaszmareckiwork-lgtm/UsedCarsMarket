@@ -140,8 +140,8 @@ export function ParamInput<T extends FieldValues, G>({
                     // styles={{
                     //   control: (base) => ({
                     //     ...base,
-                    //     borderColor: error ? "#d9534f" : base.borderColor,
-                    //     boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
+                    //     borderColor: error ? "var(--colorsErrorLight)" : base.borderColor,
+                    //     boxShadow: error ? "0 0 0 1px var(--colorsErrorLight)" : base.boxShadow,
                     //   }),
                     // }}
                     // unstyled
@@ -182,8 +182,8 @@ export function ParamInput<T extends FieldValues, G>({
                     // styles={{
                     //   control: (base) => ({
                     //     ...base,
-                    //     borderColor: error ? "#d9534f" : base.borderColor,
-                    //     boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
+                    //     borderColor: error ? "var(--colorsErrorLight)" : base.borderColor,
+                    //     boxShadow: error ? "0 0 0 1px var(--colorsErrorLight)" : base.boxShadow,
                     //   }),
                     // }}
                     // unstyled
