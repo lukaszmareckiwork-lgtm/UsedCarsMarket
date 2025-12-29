@@ -1,5 +1,4 @@
 import "./LoginPage.css";
-import * as Yup from "yup";
 import { useAuth } from "../../Context/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,20 +6,12 @@ import { ParamInput } from "../../Components/ParamInput/ParamInput";
 import BlockingLoader from "../../Components/BlockingLoader/BlockingLoader";
 import { useState } from "react";
 import SEO from "../../Components/SEO/SEO";
+import { loginValidationSchema } from "../../Validation/loginValidationSchema";
 
 type LoginFormInputs = {
   email: string;
   password: string;
 };
-
-const validation = Yup.object().shape({
-  email: Yup.string()
-    .required("Email is required")
-    .email("Email must be a valid email"),
-  password: Yup.string()
-    .required("Password is required")
-    .min(5, "Password must be at least 5 characters long"),
-});
 
 const LoginPage = () => {
   const { loginUser } = useAuth();
@@ -30,9 +21,13 @@ const LoginPage = () => {
     handleSubmit,
     control,
   } = useForm<LoginFormInputs>({
-    resolver: yupResolver(validation),
+    resolver: yupResolver(loginValidationSchema),
     mode: "onChange",
     reValidateMode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const handleLogin = async (form: LoginFormInputs) => {
