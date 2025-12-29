@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import SEO from '../SEO/SEO'
 import AddOfferForm from '../AddOfferForm/AddOfferForm'
 import "./AddOffer.css"
 import { toast } from 'react-toastify'
@@ -30,9 +31,12 @@ const AddOffer = () => {
       }
     };
 
-    return (
-        <AddOfferForm handleOfferFormSubmit={handleOfferSubmit} waitingForResponse={loading} />
-    )
+  return (
+    <>
+      <SEO title="Add offer — Used Cars Market" description="Publish a new vehicle offer on Used Cars Market with photos, price and details." />
+      <AddOfferForm handleOfferFormSubmit={handleOfferSubmit} waitingForResponse={loading} />
+    </>
+  )
 }
 
 export default AddOffer

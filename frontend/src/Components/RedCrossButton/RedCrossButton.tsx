@@ -1,4 +1,3 @@
-import React from "react";
 import { IoClose } from "react-icons/io5";
 import "./RedCrossButton.css";
 
@@ -12,15 +11,17 @@ const RedCrossButton = ({ classname, renderButton, onClicked }: Props) => {
   return (
     <div className={`rcb ${classname ? classname : ""}`}>
       {renderButton && (
-        <span 
-          className="rcb-button" 
-          role="button" 
+        <button
+          type="button"
+          className="rcb-button"
+          aria-label="Clear"
           onClick={(e) => {
             e.stopPropagation();
             onClicked();
-            }}>
-          <IoClose className="rcb-button-icon" size={28} />
-        </span>
+          }}
+        >
+          <IoClose className="rcb-button-icon" size={28} aria-hidden="true" focusable={false} />
+        </button>
       )}
     </div>
   );

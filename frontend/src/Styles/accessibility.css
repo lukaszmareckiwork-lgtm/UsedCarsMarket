@@ -24,3 +24,6 @@
   text-decoration: none;
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
+
+/* Screen-reader only helper */
+/* .sr-only is provided in utilities.css to keep utility classes centralized. */

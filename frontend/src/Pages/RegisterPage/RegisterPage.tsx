@@ -7,6 +7,7 @@ import { ParamInput } from "../../Components/ParamInput/ParamInput";
 import { getReadableSellerType, SellerTypeEnum } from "../../Data/OfferProps";
 import BlockingLoader from "../../Components/BlockingLoader/BlockingLoader";
 import { useState } from "react";
+import SEO from "../../Components/SEO/SEO";
 
 type RegisterFormInputs = {
   username: string;
@@ -85,6 +86,7 @@ const RegisterPage = () => {
 
   return (
     <div className="login-container">
+      <SEO title="Register — Used Cars Market" description="Create a Used Cars Market account to publish and manage your vehicle offers." />
       <section className="login-frame">
         <h2 className="login-title">Welcome!</h2>
         <p className="login-subtitle">Register your account</p>

@@ -69,10 +69,10 @@ export default function FiltersLocationPicker({
               <span className="location-filter-trigger-chosen-name">{finalTargetName}</span>
             </div>}
             <div className="location-filter-trigger-right-side">
-              {isActive && <PiLineVertical size={22} color={"var(--colorsPlaceholder)"} />}
+              {isActive && <PiLineVertical size={22} color={"var(--colorsPlaceholder)"} aria-hidden={true} focusable={false} />}
               {isActive && <span className="location-filter-trigger-chosen-range">{`+${targetRange}km`}</span>}
               <RedCrossButton renderButton={isActive} onClicked={() => onLocationCleared()} />
-              <FaMapMarkedAlt className="location-filter-trigger-map-icon" size={22}/>
+              <FaMapMarkedAlt className="location-filter-trigger-map-icon" size={22} aria-hidden={true} focusable={false} />
             </div>
           </button>
         </Dialog.Trigger>

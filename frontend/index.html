@@ -24,6 +24,37 @@
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"Organization","name":"Used Cars Market","url":"/"}
     </script>
+    <!-- Critical inline CSS: hide skip-link by default and reveal on keyboard focus to avoid skip link being shown without styling (visible before page is loaded) -->
+    <style>
+      .skip-link{
+        position: absolute;
+        left: -999px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .skip-link:focus,
+      .skip-link:active{
+        position: fixed;
+        left: 1rem;
+        top: 1rem;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip: auto;
+        background: var(--colorsBackground, #ffffff);
+        color: var(--colorsText, #000000);
+        padding: 0.5rem 1rem;
+        z-index: 9999;
+        border-radius: 6px;
+        text-decoration: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      }
+    </style>
   </head>
   <body>
     <!-- Skip link for keyboard users and screen readers -->
