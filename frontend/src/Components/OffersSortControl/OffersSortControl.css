@@ -9,13 +9,13 @@
     z-index: 3;
 }
 
-.osc .filters-input-frame>* {
+.osc >* {
     padding: 0px;
 }
 
-.osc .filters-input-frame {
+.osc {
     height: 36px;
-    width: 180px;
+    min-width: 180px;
 }
 
 .osc-select {

@@ -14,5 +14,5 @@
 
 .paramsWithIcons.evenly .paramWithIconValue {
     font-weight: var(--font-weight-bold);
-    font-size: 18px;
+  font-size: var(--fontSizeHeadlineSmall);
 }

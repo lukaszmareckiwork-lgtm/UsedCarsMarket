@@ -4,7 +4,7 @@
 }
 
 .location-picker-label {
-  font-weight: 500;
+  font-weight: var(--fontWeightMedium);
   margin-bottom: 0.4rem;
   color: #333;
 }
@@ -17,14 +17,14 @@
 .location-picker-map {
   height: 300px;
   /* margin-top: 2rem; */
-  border-radius: 6px;
+  border-radius: var(--radius-md);
 }
 
 .location-picker-address {
   margin-top: 0.4rem;
   padding: 0.6rem;
-  background-color: #f7f7f7;
-  border-radius: 6px;
+  background-color: var(--colorsSurface);
+  border-radius: var(--radius-md);
   font-size: 0.9rem;
   border: 1px solid #ddd;
 
@@ -41,14 +41,14 @@
 }
 
 .location-picker-address-right-range {
-  font-size: 24px;
-  font-weight: 400;
+  font-size: var(--fontSizeHeadlineLarge);
+  font-weight: var(--font-weight-regular);
 
   color: #333;
 }
 
 .location-picker-selected-location-label {
-  font-weight: 600;
+  font-weight: var(--fontWeightSemibold);
   line-height: 12px;
 }
 
@@ -63,7 +63,7 @@
   font-size: 14px;
 
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   padding: 0 8px;
   cursor: pointer;
 } */
@@ -77,10 +77,10 @@
 
 .mapbox-range-select {
   height: 34px;
-  font-size: 14px;
+  font-size: var(--fontSizeBodySmall);
 
   background-color: #fff;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   /* box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1); */
   border: none;
   padding: 6px 10px;
@@ -91,17 +91,17 @@
 /* smaller font on larger screens to match Mapbox suggestions style */
 @media screen and (min-width: 640px) {
   .mapbox-range-select {
-    font-size: 13px;
+    font-size: var(--fontSizeBodySmall);
   }
 }
 
 .mapboxgl-ctrl-geocoder--input {
   outline: none !important;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .mapboxgl-ctrl-geocoder--input:hover {
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   box-shadow: 0 0 2px 2px #999;
   /* border-color: "#999"; */
   /* border-width: 2px; */
@@ -109,6 +109,6 @@
 }
 
 .mapboxgl-ctrl-geocoder--input:focus {
-  border-radius: 4px;
-  box-shadow: 0 0 2px 2px #0071CE;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 2px 2px var(--colorsPrimary);
 }

@@ -1,7 +1,6 @@
 import "./OffersSortControl.css";
 import type { OfferQueryObject } from "../../Data/OfferQueryObject";
 import Select from "react-select";
-import FiltersInputFrame from "../FiltersInputFrame/FiltersInputFrame";
 import { dropdownStyles } from "../../Helpers/dropdownStyles";
 
 interface SortOption {
@@ -42,7 +41,6 @@ const OffersSortControl = ({ query, updateFilters }: Props) => {
 
   return (
     <div className="osc">
-      <FiltersInputFrame>
         <Select<SortOption, false>
           className="osc-select"
           unstyled
@@ -59,10 +57,9 @@ const OffersSortControl = ({ query, updateFilters }: Props) => {
           }}
           blurInputOnSelect={false}
           closeMenuOnScroll={false}
-          styles={dropdownStyles<SortOption>()}
+          styles={dropdownStyles<SortOption>(false)}
           isSearchable={false}
         />
-      </FiltersInputFrame>
     </div>
   );
 };

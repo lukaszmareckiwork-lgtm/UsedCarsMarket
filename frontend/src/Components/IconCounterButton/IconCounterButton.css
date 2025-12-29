@@ -2,21 +2,21 @@
     display: flex;
     align-items: center;
 
-    color: #0071CE;
+    color: var(--colorsPrimary);
     text-decoration: none;
 }
 
 .icb.disabled {
     pointer-events: none;
-    color: #a8a8a8;
+    color: var(--colorsMuted);
 }
 
 .icb:hover {
-    color: #2f86ce;
+    color: var(--colorsPrimaryDark);
 }
 
 .icb:active {
-    color: #0071CE;
+    color: var(--colorsPrimary);
 }
 
 .icb-content {
@@ -29,8 +29,8 @@
     margin-left: -4px;
     margin-bottom: -20px;
 
-    font-size: 12px;
-    font-weight: 500;
+    font-size: var(--fontSizeBodyExtraSmall);
+    font-weight: var(--fontWeightMedium);
 
     white-space: nowrap;
 }
