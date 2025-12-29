@@ -44,14 +44,14 @@ const DetailsSidePanel = ({ offerProps }: Props) => {
   
   return (
     <div className="details-side-panel">
-      <DetailsItem label="Seller Info" iconNode={<FaIdCard size={22}/>}>
+      <DetailsItem label="Seller Info" iconNode={<FaIdCard size={22} aria-hidden={true} focusable={false}/> }>
         <div className="details-side-panel-content">
           <div className="details-side-panel-content-seller-type">
             {offerProps.sellerDto.sellerType == SellerTypeEnum.Private &&
-              <GoPersonFill size={16}/>    
+              <GoPersonFill size={16} aria-hidden={true} focusable={false}/>    
             }
             {offerProps.sellerDto.sellerType == SellerTypeEnum.Institutional &&
-              <PiBuildingOfficeBold size={16}/>    
+              <PiBuildingOfficeBold size={16} aria-hidden={true} focusable={false}/>    
             }
             {getReadableSellerType(offerProps.sellerDto.sellerType)}
           </div>
@@ -62,7 +62,7 @@ const DetailsSidePanel = ({ offerProps }: Props) => {
           <Spacer size={14} />
           <div className="details-side-panel-location-wrapper">
             <div className="details-side-panel-location-title">
-              <IoEarth size={16}/>
+              <IoEarth size={16} aria-hidden={true} focusable={false}/>
               <span>Location</span>
             </div>
             <div className="details-side-panel-location-data">
@@ -80,7 +80,7 @@ const DetailsSidePanel = ({ offerProps }: Props) => {
           </span>
         </div>
       </DetailsItem>
-      {user?.id === offerProps.sellerDto.userId && <DetailsItem label="Manage offer" iconNode={<FaTools size={22}/>}>
+      {user?.id === offerProps.sellerDto.userId && <DetailsItem label="Manage offer" iconNode={<FaTools size={22} aria-hidden={true} focusable={false}/> }>
         <BlockingLoader isLoading={loading} size={28}>
           <button className="delete-button" onClick={() => handleOfferDelete(offerProps.id)}>
               Delete offer

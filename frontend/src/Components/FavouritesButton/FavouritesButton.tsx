@@ -29,6 +29,7 @@ const FavouritesButton = ({ count }: Props) => {
       count={count}
       route={ROUTES.PASSENGER_CARS_FAVOURITES}
       icon={<FaHeart size={28} />}
+      ariaLabel={"Favourites"}
       onClick={handleClick}
       disabled={disabled}
       />

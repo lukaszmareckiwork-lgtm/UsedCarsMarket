@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import FiltersInputFrame from "../FiltersInputFrame/FiltersInputFrame";
 import "./FiltersInput.css";
-import { IoClose } from "react-icons/io5";
 import RedCrossButton from "../RedCrossButton/RedCrossButton";
 
 export interface FiltersInputProps<T extends string | number> {

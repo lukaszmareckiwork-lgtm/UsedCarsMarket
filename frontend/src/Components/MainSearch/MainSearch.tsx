@@ -4,6 +4,7 @@ import OffersFiltersControls from '../OffersFiltersControls/OffersFiltersControl
 import ReactPaginate from 'react-paginate';
 import { useOfferFilters } from '../../Helpers/useOffersFilters';
 import OffersSortControl from "../OffersSortControl/OffersSortControl";
+import SEO from '../SEO/SEO';
 
 const MainSearch = () => {
   const {
@@ -22,6 +23,7 @@ const MainSearch = () => {
 
   return (
     <div className="main-search">
+      <SEO title="Search — Used Cars Market" description="Search used cars by make, model, price and location. Browse offers with photos and seller details." />
       <div className="main-search-grid">
         <span className="main-search-offers-category-title">Passenger Cars</span>
 
