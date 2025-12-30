@@ -1,9 +1,9 @@
-import React from "react";
+import type { ReactNode } from 'react';
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../Context/useAuth";
 import { ROUTES } from "../../Routes/Routes";
 
-type Props = { children: React.ReactNode };
+type Props = { children: ReactNode };
 
 const ProtectedRoute = ({ children }: Props) => {
   const location = useLocation();

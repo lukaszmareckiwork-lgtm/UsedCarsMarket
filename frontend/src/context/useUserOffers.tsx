@@ -1,7 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext, type ReactNode } from "react";
 import { useAuth } from "./useAuth";
 import { toast } from "react-toastify";
-import React from "react";
 import {
   getUserOffersCountApi,
   offerDeleteApi,
@@ -17,7 +16,7 @@ type UserOffersContextType = {
 };
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const UserOffersContext = createContext<UserOffersContextType>(
@@ -139,4 +138,4 @@ export const UserOffersProvider = ({ children }: Props) => {
   );
 };
 
-export const useUserOffers = () => React.useContext(UserOffersContext);
+export const useUserOffers = () => useContext(UserOffersContext);

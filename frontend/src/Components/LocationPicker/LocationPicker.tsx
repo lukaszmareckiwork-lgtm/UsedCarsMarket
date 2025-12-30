@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type Dispatch, type RefObject, type SetStateAction } from "react";
 import mapboxgl, { Map } from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -59,8 +59,8 @@ function useBlurGeocoderConflictSolver() {
 
 async function assignPlaceName(
   coords: Coordinates,
-  setAddress: React.Dispatch<React.SetStateAction<string>>,
-  addressRef: React.RefObject<string>
+  setAddress: Dispatch<SetStateAction<string>>,
+  addressRef: RefObject<string>
 ) {
   const placeName:string = await getPlaceName(coords.lng, coords.lat);
   setAddress(placeName);
