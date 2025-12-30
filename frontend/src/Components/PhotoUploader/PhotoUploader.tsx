@@ -1,4 +1,3 @@
-import React from "react";
 import ImageUploading, { type ImageListType } from "react-images-uploading";
 import {
   Controller,
@@ -64,15 +63,7 @@ export function PhotoUploader<T extends FieldValues>({
               acceptType={["jpg", "jpeg", "png", "webp"]}
               dataURLKey="dataURL"
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageRemove,
-                onImageUpdate,
-                dragProps,
-                isDragging,
-                errors,
-              }) => (
+              {({ imageList, onImageUpload, onImageRemove, dragProps, isDragging, errors }) => (
                 <div>
                   {/* Drag & Drop area */}
                   <div
@@ -82,7 +73,7 @@ export function PhotoUploader<T extends FieldValues>({
                     {...dragProps}
                     onClick={onImageUpload}
                   >
-                    <FaFileImage size={28} />
+                    <FaFileImage size={28} aria-hidden={true} focusable={false} />
                     Click or Drop images here
                   </div>
 
@@ -94,7 +85,7 @@ export function PhotoUploader<T extends FieldValues>({
                       <div key={index} className="pu-preview-item">
                         <img
                           src={image.dataURL}
-                          alt=""
+                          alt={`Uploaded image ${index + 1}`}
                           className="pu-preview-img"
                         />
                         <div className="pu-buttons">
@@ -102,14 +93,15 @@ export function PhotoUploader<T extends FieldValues>({
                             className="pu-remove-button"
                             type="button"
                             onClick={() => onImageRemove(index)}
+                            aria-label={`Remove uploaded image ${index + 1}`}
                           >
-                            <IoClose className="pu-remove-button-icon" size={28} />
+                            <IoClose className="pu-remove-button-icon" size={28} aria-hidden={true} focusable={false} />
                           </button>
                         </div>
                       </div>
                     ))}
                   </div>
-                  
+
                   {/* Validation error */}
                   {errors && <div className="pu-error">
                     {errors.maxNumber && <span>Number of selected images exceed maxNumber</span>}
@@ -117,7 +109,7 @@ export function PhotoUploader<T extends FieldValues>({
                     {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
                     {errors.resolution && <span>Selected file is not match your desired resolution</span>}
                   </div>}
-                  
+
                   {fieldState.error && (
                     <p className="pu-error">{fieldState.error.message}</p>
                   )}

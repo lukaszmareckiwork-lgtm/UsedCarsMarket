@@ -25,30 +25,30 @@ const DetailsContent = ({ offerProps }: Props) => {
               <p className="details-content-subtitle">{offerProps.subtitle}</p>
             </span>
             <span>
-                <div className="offerPriceHolder">
-                  <h3 className="offerPriceValue">
+                <div className="offer-price-holder">
+                  <h3 className="offer-price-value">
                     {Intl.NumberFormat("pl-PL").format(offerProps.price)}
                   </h3>
-                  <p className="offerPriceCurrency">
+                  <p className="offer-price-currency">
                     {getReadableCurrencyType(offerProps.currency)}
                   </p>
                 </div>
             </span>
           </div>
         </DetailsItem>
-        <DetailsItem label="Key Specifications" iconNode={<FaCar size={22}/>}>
+        <DetailsItem label="Key Specifications" iconNode={<FaCar size={22} aria-hidden={true} focusable={false}/>}>
           <ParamsWithIcons offerProps={offerProps} iconSize={36} hideLabel={false} spaceEvenly={true}/>
         </DetailsItem>
-        <DetailsItem className="details-content-description" label="Description" iconNode={<FaBars size={22}/>}>
+        <DetailsItem className="details-content-description" label="Description" iconNode={<FaBars size={22} aria-hidden={true} focusable={false}/>}>
           {offerProps.description}
         </DetailsItem>
-        <DetailsItem label="Specifications" iconNode={<IoMdSettings size={22}/>}>
+        <DetailsItem label="Specifications" iconNode={<IoMdSettings size={22} aria-hidden={true} focusable={false}/>}>
           <SpecsList offerProps={offerProps} />
         </DetailsItem>
-        <DetailsItem label="Features" iconNode={<FaList size={22}/>}>
+        <DetailsItem label="Features" iconNode={<FaList size={22} aria-hidden={true} focusable={false}/>}>
           <FeaturesList offerProps={offerProps} />
         </DetailsItem>
-        <DetailsItem label="Location" iconNode={<FaMapMarkedAlt size={22}/>}>
+        <DetailsItem label="Location" iconNode={<FaMapMarkedAlt size={22} aria-hidden={true} focusable={false}/>}>
           <LocationPicker
             mode={LocationPickerModeEnum.OnlyShow}
             targetCoordinates={{lat: offerProps.locationLat, lng: offerProps.locationLong}}

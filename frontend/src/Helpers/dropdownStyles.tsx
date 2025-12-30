@@ -3,15 +3,17 @@ import type {
   GroupBase,
 } from "react-select";
 
-export const dropdownStyles =<T, isMulti extends boolean= false>(hideFrame: boolean = true): StylesConfig<T, isMulti, GroupBase<T>> => ({
-   menu: (base) => ({
+export const dropdownStyles = <T, isMulti extends boolean = false>(
+  hideFrame: boolean = true
+): StylesConfig<T, isMulti, GroupBase<T>> => ({
+  menu: (base) => ({
     ...base,
     position: "absolute",
     top: "100%",
     left: 0,
     width: "100%",
     marginTop: 0,
-    border: "1px solid #ccc",
+    border: "1px solid var(--colorsBorderSubtle)",
     // border: "none",
     borderTop: "none",
     borderRadius: "0px 0px 4px 4px",
@@ -42,12 +44,12 @@ export const dropdownStyles =<T, isMulti extends boolean= false>(hideFrame: bool
     borderRadius: "0",
     backgroundColor: state.isSelected
       ? state.isFocused
-        ? "#9bd2ffff"
-        : "rgb(212, 235, 253)"
+        ? "var(--colorsActionLight)"
+        : "var(--colorsActionLight)"
       : state.isFocused
-      ? "#eee"
-      : "white",
-    color: "#000",
+      ? "var(--colorsSurface)"
+      : "var(--colorsBackgroundPrimary)",
+    color: "var(--colorsForegroundPrimary)",
   }),
 
   control: (base, state) => ({
@@ -55,23 +57,27 @@ export const dropdownStyles =<T, isMulti extends boolean= false>(hideFrame: bool
     background: "transparent",
     borderRadius: "4px",
 
-    border: hideFrame 
+    border: hideFrame
       ? "1px solid transparent"
-      : state.isFocused ? "1px solid transparent" : "1px solid #ccc",
+      : state.isFocused
+      ? "1px solid transparent"
+      : "1px solid var(--colorsBorderSubtle)",
 
-    boxShadow: state.isFocused && !state.isDisabled
-      ? "0 0 0 1px #0071CE, 0 0 0 3px rgba(0, 113, 206, 0.25)"
-      : "none",
+    boxShadow:
+      state.isFocused && !state.isDisabled
+        ? "0 0 0 1px var(--colorsPrimary), 0 0 0 3px rgba(0, 113, 206, 0.25)"
+        : "none",
 
     "&:hover": {
       borderColor: !state.isDisabled && !state.isFocused
-        ? "#1b1b1b"
+        ? "var(--colorsForegroundPrimary)"
         : undefined,
     },
+
     minHeight: "100%",
     height: "100%",
     cursor: "pointer",
-    
+
     transition: "border-color 0.2s ease, box-shadow 0.2s ease",
   }),
 
@@ -97,8 +103,8 @@ export const dropdownStyles =<T, isMulti extends boolean= false>(hideFrame: bool
     ...base,
     padding: 6,
     color: state.selectProps.menuIsOpen
-      ? "#000000"      // open / active color
-      : "#868686",        // closed color
+      ? "var(--colorsForegroundPrimary)" // open / active color
+      : "var(--colorsMuted)", // closed color
     transition: "color 0.15s ease, transform 0.2s ease",
   }),
 });

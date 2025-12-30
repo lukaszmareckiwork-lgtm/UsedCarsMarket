@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./FiltersDropdown.css";
 import Spinner from "../Spinner/Spinner";
 import FiltersInputFrame from "../FiltersInputFrame/FiltersInputFrame";
@@ -38,6 +38,8 @@ function FiltersDropdown<T>(props: FiltersDropdownProps<T>) {
   const [searchInput, setSearch] = useState("");
 
   const ref = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const optionsRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Close dropdown on outside click
@@ -56,6 +58,63 @@ function FiltersDropdown<T>(props: FiltersDropdownProps<T>) {
       searchInputRef.current?.focus();
     }
   }, [dropdownOpen]);
+
+  const focusFirstInteractive = () => {
+    // Prefer the search input (if present), otherwise the first option checkbox
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+      return;
+    }
+    const first = optionsRef.current?.querySelector<HTMLInputElement>("input[type='checkbox']");
+    first?.focus();
+  };
+
+  const handleHeaderKeyDown = (e: React.KeyboardEvent) => {
+    if (props.loading || props.forceDisable) return;
+
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setDropdownOpen((prev) => {
+        const next = !prev;
+        // if opening, focus the search input (after render)
+        if (next) setTimeout(() => focusFirstInteractive(), 0);
+        return next;
+      });
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (!dropdownOpen) {
+        setDropdownOpen(true);
+        setTimeout(() => focusFirstInteractive(), 0);
+      } else {
+        focusFirstInteractive();
+      }
+    }
+  };
+
+  const handleOptionsKeyDown = (e: React.KeyboardEvent) => {
+    const container = optionsRef.current;
+    if (!container) return;
+
+    const focusable = Array.from(container.querySelectorAll<HTMLInputElement>("input[type='checkbox'], input[type='text']"));
+    const active = document.activeElement as HTMLElement | null;
+    const idx = focusable.findIndex((el) => el === active);
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const next = idx < focusable.length - 1 ? focusable[idx + 1] : focusable[0];
+      next?.focus();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const prev = idx > 0 ? focusable[idx - 1] : focusable[focusable.length - 1];
+      prev?.focus();
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      setDropdownOpen(false);
+      setTimeout(() => headerRef.current?.focus(), 0);
+    }
+  };
 
   const toggleItem = (item: T) => {
     if (props.loading) return;
@@ -90,12 +149,19 @@ function FiltersDropdown<T>(props: FiltersDropdownProps<T>) {
       <FiltersInputFrame className={`car-filter-dropdown-frame ${props.loading || props.forceDisable ? "disabled" : ""}`}>
         {!dropdownOpen && (
           <div
+            ref={headerRef}
+            tabIndex={props.loading || props.forceDisable ? -1 : 0}
+            role="button"
+            aria-haspopup="listbox"
+            aria-expanded={dropdownOpen}
+            aria-controls="car-filter-options"
             className={`car-filter-header ${props.loading || props.forceDisable ? "disabled" : ""}`}
             onClick={() =>{
               !props.loading &&
               !props.forceDisable &&
               setDropdownOpen((prev) => !prev);
             }}
+            onKeyDown={handleHeaderKeyDown}
           >
             <span>
               {props.headerText}{" "}
@@ -117,20 +183,20 @@ function FiltersDropdown<T>(props: FiltersDropdownProps<T>) {
         )}
         <div className="car-filters-dropdown-right">
           {props.loading ? (
-                <Spinner size={28} />
-              ) : (
-                <div className="car-filters-dropdown-clear-and-arrow">
-                  <RedCrossButton classname="car-filters-dropdown-clear-button" renderButton={props.selectedItems.length > 0} onClicked={() => props.handleItemSelected([])} />
-                  <span className={`car-filters-dropdown-arrow ${dropdownOpen ? "opened" : ""}`}>
-                    <IoIosArrowDown size={28}/>
-                  </span>
-                </div>
-              )}  
+                  <Spinner size={28} />
+                ) : (
+                  <div className="car-filters-dropdown-clear-and-arrow">
+                    <RedCrossButton classname="car-filters-dropdown-clear-button" renderButton={props.selectedItems.length > 0} onClicked={() => props.handleItemSelected([])} />
+                    <span className={`car-filters-dropdown-arrow ${dropdownOpen ? "opened" : ""}`}>
+                      <IoIosArrowDown size={28} aria-hidden={true} focusable={false} />
+                    </span>
+                  </div>
+                )}  
           </div>
       </FiltersInputFrame>
 
       {dropdownOpen && (
-          <div className="car-filter-options">
+        <div id="car-filter-options" ref={optionsRef} className="car-filter-options" role="dialog" aria-modal="false" onKeyDown={handleOptionsKeyDown}>
             {!searchInput && (
               <label className="select-all">
                 <input

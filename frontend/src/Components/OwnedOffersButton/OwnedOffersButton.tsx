@@ -17,6 +17,7 @@ const OwnedOffersButton = ({ count }: Props) => {
       count={count}
       route={ROUTES.CREATED_BY_BUILD(user?.id!)}
       icon={<IoDocuments size={28} />}
+      ariaLabel={"My offers"}
       //   onClick={handleClick}
       disabled={count < 1}
     />

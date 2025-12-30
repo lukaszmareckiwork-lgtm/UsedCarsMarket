@@ -7,7 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:unit": "jest --passWithNoTests",
+    "test:watch:unit": "jest --watch",
+    "test:coverage:unit": "jest --coverage"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -33,9 +39,13 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.1",
+    "@testing-library/user-event": "14.6.1",
+    "@types/jest": "30.0.0",
     "@types/mapbox__mapbox-gl-geocoder": "^5.1.0",
     "@types/mapbox-gl": "^3.4.1",
-    "@types/node": "^24.6.0",
+    "@types/node": "^24.10.4",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@types/react-image-gallery": "^1.2.4",
@@ -44,6 +54,9 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
+    "jest": "30.2.0",
+    "jest-environment-jsdom": "30.2.0",
+    "ts-jest": "29.4.6",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7"

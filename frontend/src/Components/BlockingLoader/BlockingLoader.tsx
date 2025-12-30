@@ -1,11 +1,11 @@
-import React from "react";
+import type { ReactNode } from 'react';
 import "./BlockingLoader.css";
 import Spinner from "../Spinner/Spinner";
 
 type Props = {
   isLoading: boolean;
   size?: number;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const BlockingLoader = ({ isLoading, size: spinnerSize = 24, children }: Props) => {

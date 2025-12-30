@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type Dispatch, type RefObject, type SetStateAction } from "react";
 import mapboxgl, { Map } from "mapbox-gl";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -59,8 +59,8 @@ function useBlurGeocoderConflictSolver() {
 
 async function assignPlaceName(
   coords: Coordinates,
-  setAddress: React.Dispatch<React.SetStateAction<string>>,
-  addressRef: React.RefObject<string>
+  setAddress: Dispatch<SetStateAction<string>>,
+  addressRef: RefObject<string>
 ) {
   const placeName:string = await getPlaceName(coords.lng, coords.lat);
   setAddress(placeName);
@@ -279,7 +279,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
           </div>
         </div>
         <div className="location-picker-address-right">
-          {address && targetRange && <PiLineVertical size={32} color="#ddddddff" />}
+          {address && targetRange && <PiLineVertical size={32} color={"var(--colorsPlaceholder)"} aria-hidden={true} focusable={false} />}
           {address && targetRange&& <span className="location-picker-address-right-range">{`+${targetRange}km`}</span>}
         </div>
       </div>

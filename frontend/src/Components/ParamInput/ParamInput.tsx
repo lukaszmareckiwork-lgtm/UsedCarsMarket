@@ -38,11 +38,14 @@ export function ParamInput<T extends FieldValues, G>({
   numeric = false,
   maxLength,
 }: ParamInputProps<T, G>) {
+  const id = `param-${String(name)}`;
+  const errorId = `${id}-error`;
+
   return (
     <div
       className={`param-input ${type === "textarea" ? "param-textarea" : ""}`}
     >
-      <label className="param-label">{label}</label>
+      <label className="param-label" htmlFor={id}>{label}</label>
       <Controller
         name={name}
         control={control}
@@ -58,14 +61,17 @@ export function ParamInput<T extends FieldValues, G>({
               return (
                 <>
                   <textarea
+                    id={id}
                     {...field}
                     placeholder={placeholder}
                     className={`param-field param-textarea ${
                       error ? "param-field-error" : ""
                     }`}
+                    aria-invalid={!!error}
+                    aria-describedby={error ? errorId : undefined}
                   />
                   <div className="param-field-error-max-length">
-                    <p className={`param-error ${error ? "visible" : ""}`}>
+                    <p id={errorId} className={`param-error ${error ? "visible" : ""}`}>
                       {error?.message || " "}
                     </p>
                     {maxLength && (
@@ -81,6 +87,7 @@ export function ParamInput<T extends FieldValues, G>({
               return (
                 <>
                   <input
+                    id={id}
                     type="number"
                     {...field }
                     placeholder={placeholder}
@@ -89,8 +96,10 @@ export function ParamInput<T extends FieldValues, G>({
                     className={`param-field no-spin ${
                       error ? "param-field-error" : ""
                     }`}
+                    aria-invalid={!!error}
+                    aria-describedby={error ? errorId : undefined}
                   />
-                  <p className={`param-error ${error ? "visible" : ""}`}>
+                  <p id={errorId} className={`param-error ${error ? "visible" : ""}`}>
                     {error?.message || " "}
                   </p>
                 </>
@@ -100,6 +109,7 @@ export function ParamInput<T extends FieldValues, G>({
               return (
                 <>
                   <input
+                    id={id}
                     type="tel"
                     {...field }
                     placeholder={placeholder}
@@ -108,9 +118,11 @@ export function ParamInput<T extends FieldValues, G>({
                     className={`param-field no-spin ${
                       error ? "param-field-error" : ""
                     }`}
+                    aria-invalid={!!error}
+                    aria-describedby={error ? errorId : undefined}
                   />
                   <div className="param-field-error-max-length">
-                    <p className={`param-error ${error ? "visible" : ""}`}>
+                    <p id={errorId} className={`param-error ${error ? "visible" : ""}`}>
                       {error?.message || " "}
                     </p>
                     {maxLength && (
@@ -137,17 +149,20 @@ export function ParamInput<T extends FieldValues, G>({
                     value={
                       options?.find((opt) => opt.value === field.value) || null
                     }
+                    inputId={id}
+                    aria-invalid={!!error}
+                    aria-describedby={error ? errorId : undefined}
                     // styles={{
                     //   control: (base) => ({
                     //     ...base,
-                    //     borderColor: error ? "#d9534f" : base.borderColor,
-                    //     boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
+                    //     borderColor: error ? "var(--colorsErrorLight)" : base.borderColor,
+                    //     boxShadow: error ? "0 0 0 1px var(--colorsErrorLight)" : base.boxShadow,
                     //   }),
                     // }}
                     // unstyled
                     styles={dropdownStyles<any>(false)}
                   />
-                  <p className={`param-error ${error ? "visible" : ""}`}>
+                  <p id={errorId} className={`param-error ${error ? "visible" : ""}`}>
                     {error?.message || " "}
                   </p>
                 </>
@@ -179,17 +194,20 @@ export function ParamInput<T extends FieldValues, G>({
                         currentValues.includes(opt.value as G)
                       ) || []
                     }
+                    inputId={id}
+                    aria-invalid={!!error}
+                    aria-describedby={error ? errorId : undefined}
                     // styles={{
                     //   control: (base) => ({
                     //     ...base,
-                    //     borderColor: error ? "#d9534f" : base.borderColor,
-                    //     boxShadow: error ? "0 0 0 1px #d9534f" : base.boxShadow,
+                    //     borderColor: error ? "var(--colorsErrorLight)" : base.borderColor,
+                    //     boxShadow: error ? "0 0 0 1px var(--colorsErrorLight)" : base.boxShadow,
                     //   }),
                     // }}
                     // unstyled
                     styles={dropdownStyles<any, true>(false)}
                   />
-                  <p className={`param-error ${error ? "visible" : ""}`}>
+                  <p id={errorId} className={`param-error ${error ? "visible" : ""}`}>
                     {error?.message || " "}
                   </p>
                 </>
@@ -199,15 +217,18 @@ export function ParamInput<T extends FieldValues, G>({
               return (
                 <>
                   <input
+                    id={id}
                     type={type === "password" ? "password" : "text"}
                     {...field}
                     placeholder={placeholder}
                     className={`param-field ${
                       error ? "param-field-error" : ""
                     }`}
+                    aria-invalid={!!error}
+                    aria-describedby={error ? errorId : undefined}
                   />
                   <div className="param-field-error-max-length">
-                    <p className={`param-error ${error ? "visible" : ""}`}>
+                    <p id={errorId} className={`param-error ${error ? "visible" : ""}`}>
                       {error?.message || " "}
                     </p>
                     {maxLength && (

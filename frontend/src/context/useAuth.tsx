@@ -1,9 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext, type ReactNode } from "react";
 import type { UserProfile } from "../Models/User";
 import { useNavigate } from "react-router-dom";
 import { loginApi, registerApi } from "../Services/AuthService";
 import { toast } from "react-toastify";
-import React from "react";
 import axios from "axios";
 import type { SellerTypeEnum } from "../Data/OfferProps";
 import { ROUTES } from "../Routes/Routes";
@@ -19,7 +18,7 @@ type UserContextType = {
 };
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const UserContext = createContext<UserContextType>({} as UserContextType);
@@ -128,4 +127,4 @@ export const UserProvider = ({ children }: Props) => {
   );
 };
 
-export const useAuth = () => React.useContext(UserContext);
+export const useAuth = () => useContext(UserContext);

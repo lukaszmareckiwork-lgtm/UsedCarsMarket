@@ -1,49 +1,127 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import { makesGetApi, modelsGetApi } from "../Services/MakesService";
+import { toast } from "react-toastify";
 
 export interface ModelData {
-    model_id: number;
-    model_name: string;
-    vehicle_type: string;
-    years: number[];
+  modelId: number;
+  modelName: string;
+  offersCount: number;
 }
 
 export interface MakeData {
-    make_id: number;
-    make_name: string;
-    make_slug: string;
-    models: Record<string, ModelData>;
+  makeId: number;
+  makeName: string;
+  makeSlug: string;
+  models: Record<string, ModelData>;
+  offersCount: number;
 }
 
 interface MakesContextType {
-    makes: MakeData[];
-    loading: boolean;
+  makes: MakeData[];
+  loading: boolean;
 }
 
-const MakesContext = createContext<MakesContextType>({ makes: [], loading: true });
+const MakesContext = createContext<MakesContextType>({
+  makes: [],
+  loading: true,
+});
 
 export const MakesProvider = ({ children }: { children: ReactNode }) => {
-    const [makes, setMakes] = useState<MakeData[]>([]);
-    const [loading, setLoading] = useState(true);
+  const [makes, setMakes] = useState<MakeData[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        setLoading(true);
+  useEffect(() => {
+    refreshMakesAndModels();
+  }, []);
 
-        // Simulate slow network (1 second)
-        setTimeout(() => {
-            fetch("/data/cars_types_data/makes_and_models.json")
-                .then(res => res.json())
-                .then(data => {
-                    setMakes(data);
-                    setLoading(false);
-                });
-        }, 1000);
-    }, []);
+  const refreshMakesAndModels = async () => {
+    setLoading(true);
+    try {
+      const makesRes = await getMakes();
+      const makesIds = makesRes!.map((x) => x.makeId);
 
-    return (
-        <MakesContext.Provider value={{ makes, loading }}>
-            {children}
-        </MakesContext.Provider>
-    );
+      const modelsRes = await getModels(makesIds);
+
+      const makesData: MakeData[] = makesRes!.map((makeDto) => ({
+        makeId: makeDto.makeId,
+        makeName: makeDto.makeName,
+        makeSlug: makeDto.makeSlug,
+        models: {},
+        offersCount: makeDto.offersCount,
+      }));
+
+      modelsRes?.forEach((modelsResDto) => {
+        modelsResDto.models.forEach((modelDto) => {
+          const model: ModelData = {
+            modelId: modelDto.modelId,
+            modelName: modelDto.modelName,
+            offersCount: modelDto.offersCount,
+          };
+          const make = makesData.find((m) => m.makeId === modelsResDto.makeId);
+          if (make) make.models[model.modelId] = model;
+        });
+      });
+
+      setMakes(makesData);
+    } catch (e) {
+      console.error(e);
+      toast.warning("Server error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getMakes = async () => {
+    setLoading(true);
+
+    var res = await makesGetApi()
+      ?.then((res) => {
+        // console.log("getMakes response:", res);
+        return res?.data;
+      })
+      .catch((e) => {
+        console.error("GET MAKES ERROR:", e);
+        toast.warning("Server error occured");
+        return undefined;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    return res;
+  };
+
+  const getModels = async (makesIds: number[]) => {
+    setLoading(true);
+
+    var res = await modelsGetApi(makesIds)
+      ?.then((res) => {
+        // console.log("getMakes response:", res);
+        return res?.data;
+      })
+      .catch((e) => {
+        console.error("GET MODELS ERROR:", e);
+        toast.warning("Server error occured");
+        return undefined;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    return res;
+  };
+
+  return (
+    <MakesContext.Provider value={{ makes, loading }}>
+      {children}
+    </MakesContext.Provider>
+  );
 };
 
 export const useMakes = () => useContext(MakesContext);
