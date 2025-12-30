@@ -1,12 +1,12 @@
-import React from 'react'
+import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react'
 import "./IconCounterButton.css"
 
 type Props = {
   count: number;
   route: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   ariaLabel?: string;
-  onClick?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  onClick?: (e: ReactMouseEvent<HTMLAnchorElement>) => void;
   disabled?: boolean;
   className?: string;
 };

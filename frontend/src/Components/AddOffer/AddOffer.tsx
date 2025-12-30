@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import SEO from '../SEO/SEO'
 import AddOfferForm from '../AddOfferForm/AddOfferForm'
 import "./AddOffer.css"
