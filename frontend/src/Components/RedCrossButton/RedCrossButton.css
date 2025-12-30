@@ -7,7 +7,7 @@
   padding: 0;
   border: none;
   background: none;
-  color:  #fc6666;
+  color: var(--colorsErrorLight);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -17,7 +17,7 @@
 }
 
 .rcb-button:hover {
-  color: #ff3939;
+  color: var(--colorsErrorMedium);
 }
 
 .rcb-button-icon:hover {
@@ -25,5 +25,5 @@
 }
 
 .rcb-button:active {
-  color: #ffbcbc;
+  color: var(--colorsErrorLight);
 }

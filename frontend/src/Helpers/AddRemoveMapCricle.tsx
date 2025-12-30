@@ -23,12 +23,19 @@ export function addCircle(
       data: circlePolygon,
     });
 
+    // Resolve CSS variable to concrete color string so Mapbox can use it.
+    // Mapbox GL JS does not evaluate CSS variables, so we read the computed value.
+    const computedPrimary = (typeof window !== "undefined" && window.getComputedStyle)
+      ? window.getComputedStyle(document.documentElement).getPropertyValue("--colorsPrimary").trim()
+      : "#0071CE";
+    const primaryColor = computedPrimary || "#0071CE";
+
     map.addLayer({
       id: layerId,
       type: "fill",
       source: layerId,
       paint: {
-        "fill-color": "#0071CE",
+        "fill-color": primaryColor,
         "fill-opacity": 0.2,
       },
     });
@@ -38,7 +45,7 @@ export function addCircle(
       type: "line",
       source: layerId,
       paint: {
-        "line-color": "#0071CE",
+        "line-color": primaryColor,
         "line-width": 2,
       },
     });

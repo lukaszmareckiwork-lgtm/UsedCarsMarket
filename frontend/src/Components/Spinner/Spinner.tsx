@@ -9,13 +9,14 @@ type Props = {
 
 const Spinner = ({ isLoading = true, overlay = false, size = 35 }: Props) => {
   return (
-    <div className={`loading-spinner ${overlay ? "overlay" : "inline"}`}>
+    <div className={`loading-spinner ${overlay ? "overlay" : "inline"}`} role="status" aria-live="polite">
       <ClipLoader
-        color="#3697d7ff"
+        color="var(--colorsPrimaryDark)"
         loading={isLoading}
         size={size}
         aria-label="Loading Spinner"
       />
+      <span className="sr-only">Loading...</span>
     </div>
   );
 };

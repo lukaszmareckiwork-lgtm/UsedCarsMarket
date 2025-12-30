@@ -14,7 +14,7 @@
   justify-content: flex-end;
   align-items: center;
 
-  color: #007bff;
+  color: var(--colorsPrimary);
 }
 
 .paramTexts {
@@ -26,14 +26,14 @@
 }
 
 .paramWithIconLabel {
-  font-size: 12px;
+  font-size: var(--fontSizeBodyExtraSmall);
   color: #666;
   font-weight: var(--font-weight-bold);
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
 }
 
 .paramWithIconValue {
-  font-size: 14px;
+  font-size: var(--fontSizeBodySmall);
   font-weight: var(--font-weight-regular);
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
 }

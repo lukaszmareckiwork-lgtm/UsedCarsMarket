@@ -1,9 +1,9 @@
 .add-favourites-button-icon.is-not-favourite {
-    color: #a8a8a8;
+    color: var(--colorsMuted);
 }
 
 .add-favourites-button-icon {
-    color: #0071CE;
+    color: var(--colorsPrimary);
 
     border: none;
     background: none;
@@ -13,9 +13,9 @@
 }
 
 .add-favourites-button-icon:hover {
-    color: #2f86ce;
+    color: var(--colorsPrimaryDark);
 }
 
 .add-favourites-button-icon:active {
-    color: #0071CE;
+    color: var(--colorsPrimary);
 }

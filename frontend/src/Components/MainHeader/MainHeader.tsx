@@ -18,15 +18,15 @@ const MainHeader = () => {
   const { userOffersCount } = useUserOffers();
 
   return (
-    <div className="mainHeader">
+    <header className="mainHeader" role="banner">
       <div className="mainHeader-left">
         <Link to={ROUTES.HOME} className="mainHeader-title">
           Used Cars Market
         </Link>
       </div>
-      <div className="mainHeader-right">
+      <nav className="mainHeader-right" aria-label="Primary">
         <FavouritesButton count={favouritesCount} />
-        <PiLineVertical size={40} color="#ddddddff" />
+        <PiLineVertical size={40} color={"var(--colorsPlaceholder)"} aria-hidden="true" focusable={false} />
         {isLoggedIn() ? (
           <>
             <div className="mainHeader-loggedInUserText">
@@ -47,13 +47,13 @@ const MainHeader = () => {
           </>
         )}
 
-        <PiLineVertical size={40} color="#ddddddff" />
-        <OwnedOffersButton count={userOffersCount} />
+  <PiLineVertical size={40} color={"var(--colorsPlaceholder)"} aria-hidden="true" focusable={false} />
+  <OwnedOffersButton count={userOffersCount} />
         {!isAddOfferPage && <Link to={ROUTES.ADD_OFFER} className="mainHeader-addOfferButton main-button">
           Add offer
         </Link>}
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };
 

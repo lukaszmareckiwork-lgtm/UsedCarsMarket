@@ -1,24 +1,26 @@
-import React from 'react'
+import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react'
 import "./IconCounterButton.css"
 
 type Props = {
   count: number;
   route: string;
-  icon: React.ReactNode;
-  onClick?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  icon: ReactNode;
+  ariaLabel?: string;
+  onClick?: (e: ReactMouseEvent<HTMLAnchorElement>) => void;
   disabled?: boolean;
   className?: string;
 };
 
-const IconCounterButton = ({ count, route, icon, onClick, disabled, className }: Props) => {
+const IconCounterButton = ({ count, route, icon, ariaLabel, onClick, disabled, className }: Props) => {
 
   return (
     <a
       href={route}
+      aria-label={ariaLabel}
       className={`icb ${disabled ? "disabled" : ""} ${className || ""}`}
       onClick={onClick}
     >
-      {icon}
+      <span className="icb-icon" aria-hidden={true}>{icon}</span>
       <div className="icb-count-text">{count > 0 && `(${count})`}</div>
     </a>
   );

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext, type ReactNode } from "react";
 import { useAuth } from "./useAuth";
 import {
   addFavouriteApi,
@@ -6,7 +6,6 @@ import {
   removeFavouriteApi,
 } from "../Services/FavouritesService";
 import { toast } from "react-toastify";
-import React from "react";
 
 const addedSet = new Set<number>();
 const removedSet = new Set<number>();
@@ -19,7 +18,7 @@ type FavouritesContextType = {
 };
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const FavouritesContext = createContext<FavouritesContextType>({} as FavouritesContextType);
@@ -123,4 +122,4 @@ export const FavouritesProvider = ({ children }: Props) => {
   );
 };
 
-export const useFavourites = () => React.useContext(FavouritesContext);
+export const useFavourites = () => useContext(FavouritesContext);
