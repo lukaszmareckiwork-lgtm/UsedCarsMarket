@@ -1,4 +1,4 @@
-import React, { type JSX } from 'react'
+import type { JSX } from 'react'
 import './OffersList.css'
 import Offer from '../Offer/Offer'
 import type { OfferProps } from '../../Data/OfferProps'
