@@ -8,8 +8,7 @@ namespace api.Data
 {
     public class ApplicationDBContext : IdentityDbContext<AppUser>
     {
-        public ApplicationDBContext(DbContextOptions options)
-            : base(options)
+        public ApplicationDBContext(DbContextOptions options) : base(options)
         {
 
         }
@@ -78,7 +77,8 @@ namespace api.Data
 
                 // Optional Guid
                 entity.Property(o => o.Guid)
-                      .HasDefaultValueSql("NEWID()"); // SQL Server auto-generates if null
+                    .HasDefaultValueSql(null)
+                    .ValueGeneratedOnAdd();
 
                 // Features stored as comma-separated integers
                 var featuresConverter = new ValueConverter<List<FeatureType>?, string>(
@@ -91,15 +91,15 @@ namespace api.Data
                 );
 
                 entity.Property(o => o.Features)
-                      .HasConversion(featuresConverter);
+                    .HasConversion(featuresConverter);
 
                 // Price column type
                 entity.Property(o => o.Price)
-                      .HasColumnType("decimal(18,2)");
+                    .HasColumnType("decimal(18,2)");
 
                 // MaxLength for strings
                 entity.Property(o => o.Title).HasMaxLength(60).IsRequired();
-                entity.Property(o => o.Subtitle).HasMaxLength(80);
+                entity.Property(o => o.Subtitle).HasMaxLength(80).IsRequired(false);
                 entity.Property(o => o.Description).HasMaxLength(2000).IsRequired();
                 entity.Property(o => o.Currency).HasMaxLength(3).IsRequired();
                 // entity.Property(o => o.Location).IsRequired();
