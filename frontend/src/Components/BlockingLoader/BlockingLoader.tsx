@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import "./BlockingLoader.css";
-import Spinner from "../Spinner/Spinner";
+import Spinner from "@components/Spinner/Spinner";
 
 type Props = {
   isLoading: boolean;

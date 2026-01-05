@@ -1,8 +1,8 @@
 import "./SpecsList.css"
-import { getReadableFuelType, getReadableTransmissionType, type OfferProps } from '../../../Data/OfferProps'
-import SpecsListItem from '../SpecsListItem/SpecsListItem'
-import { useMakes } from '../../../Context/MakesContext'
-import Spacer from "../../Spacer/Spacer"
+import { getReadableFuelType, getReadableTransmissionType, type OfferProps } from '@data/OfferProps'
+import SpecsListItem from '@components/DetailsPage/SpecsListItem/SpecsListItem'
+import { useMakes } from '@context/MakesContext'
+import Spacer from "@components/Spacer/Spacer"
 
 interface Props {
     offerProps: OfferProps

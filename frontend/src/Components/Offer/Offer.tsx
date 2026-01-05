@@ -1,11 +1,11 @@
 import './Offer.css'
 import type { JSX } from 'react/jsx-runtime'
-import { getReadableCurrencyType, getReadableSellerType, type OfferProps } from '../../Data/OfferProps'
-import ParamsWithIcons from '../ParamsWithIcons/ParamsWithIcons'
-import PhotoViewer from '../DetailsPage/PhotoViewer/PhotoViewer'
-import AddFavouritesButton from '../AddFavouritesButton/AddFavouritesButton'
+import { getReadableCurrencyType, getReadableSellerType, type OfferProps } from '@data/OfferProps'
+import ParamsWithIcons from '@components/ParamsWithIcons/ParamsWithIcons'
+import PhotoViewer from '@components/DetailsPage/PhotoViewer/PhotoViewer'
+import AddFavouritesButton from '@components/AddFavouritesButton/AddFavouritesButton'
 import { Link, useLocation } from 'react-router-dom'
-import { ROUTES } from '../../Routes/Routes'
+import { ROUTES } from '@routes/Routes'
 
 const Offer: React.FC<{offerProps: OfferProps}> = ({offerProps: offerProps}): JSX.Element => {
   const location = useLocation();

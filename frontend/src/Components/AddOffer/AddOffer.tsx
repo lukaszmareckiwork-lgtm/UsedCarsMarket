@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import SEO from '../SEO/SEO'
-import AddOfferForm from '../AddOfferForm/AddOfferForm'
+import SEO from '@components/SEO/SEO'
+import AddOfferForm from '@components/AddOfferForm/AddOfferForm'
 import "./AddOffer.css"
 import { toast } from 'react-toastify'
-import type { CreateOfferRequestDto } from '../../Data/CreateOfferRequestDto'
-import { useUserOffers } from '../../Context/useUserOffers'
+import type { CreateOfferRequestDto } from '@data/CreateOfferRequestDto'
+import { useUserOffers } from '@context/useUserOffers'
 import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '../../Routes/Routes'
+import { ROUTES } from '@routes/Routes'
 
 const AddOffer = () => {
     const { addOffer } = useUserOffers();

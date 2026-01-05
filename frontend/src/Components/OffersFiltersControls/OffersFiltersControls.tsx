@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import "./OffersFiltersControls.css";
-import { useMakes, type MakeData, type ModelData } from "../../Context/MakesContext";
-import FiltersDropdown from "../FiltersDropdown/FiltersDropdown";
-import type { OfferQueryObject } from "../../Data/OfferQueryObject";
-import { FiltersInputNumber } from "../FiltersInput/FiltersInputNumber";
-import { FiltersInputString } from "../FiltersInput/FiltersInputString";
-import { FuelTypeEnum, getReadableFuelType, getReadableTransmissionType, TransmissionTypeEnum } from "../../Data/OfferProps";
-import FiltersInputFrame from "../FiltersInputFrame/FiltersInputFrame";
-import FiltersLocationPicker from "../FiltersLocationPicker/FiltersLocationPicker";
+import { useMakes, type MakeData, type ModelData } from "@context/MakesContext";
+import FiltersDropdown from "@components/FiltersDropdown/FiltersDropdown";
+import type { OfferQueryObject } from "@data/OfferQueryObject";
+import { FiltersInputNumber } from "@components/FiltersInput/FiltersInputNumber";
+import { FiltersInputString } from "@components/FiltersInput/FiltersInputString";
+import { FuelTypeEnum, getReadableFuelType, getReadableTransmissionType, TransmissionTypeEnum } from "@data/OfferProps";
+import FiltersInputFrame from "@components/FiltersInputFrame/FiltersInputFrame";
+import FiltersLocationPicker from "@components/FiltersLocationPicker/FiltersLocationPicker";
 
 interface Props {
   query: OfferQueryObject;

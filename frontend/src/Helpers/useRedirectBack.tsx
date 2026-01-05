@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTES } from "../Routes/Routes";
+import { ROUTES } from "@routes/Routes";
 
 export const useRedirectBack = () => {
   const location = useLocation();

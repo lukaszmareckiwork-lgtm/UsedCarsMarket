@@ -1,7 +1,7 @@
 import "./OffersSortControl.css";
-import type { OfferQueryObject } from "../../Data/OfferQueryObject";
+import type { OfferQueryObject } from "@data/OfferQueryObject";
 import Select from "react-select";
-import { dropdownStyles } from "../../Helpers/dropdownStyles";
+import { dropdownStyles } from "@helpers/dropdownStyles";
 
 interface SortOption {
   label: string;

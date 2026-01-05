@@ -1,10 +1,10 @@
 import "./ParamsWithIcons.css"
 import { FaGasPump, FaCalendarAlt, FaRoad } from 'react-icons/fa';
-import ParamWithIcon from '../ParamWithIcon/ParamWithIcon';
+import ParamWithIcon from '@components/ParamWithIcon/ParamWithIcon';
 import { GiGearStickPattern } from 'react-icons/gi';
 import { MdOutlineSpeed } from 'react-icons/md';
 import { PiEngineBold } from 'react-icons/pi';
-import { getReadableFuelType, getReadableTransmissionType, type OfferProps } from '../../Data/OfferProps';
+import { getReadableFuelType, getReadableTransmissionType, type OfferProps } from '@data/OfferProps';
 
 interface Props {
   offerProps: OfferProps

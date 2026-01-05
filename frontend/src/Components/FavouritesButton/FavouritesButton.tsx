@@ -1,10 +1,10 @@
 import { FaHeart } from "react-icons/fa";
 import "./FavouritesButton.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../Context/useAuth";
-import { ROUTES } from "../../Routes/Routes";
-import { redirectToLoginWithReturn } from "../../Helpers/redirectToLoginWithReturn";
-import IconCounterButton from "../IconCounterButton/IconCounterButton";
+import { useAuth } from "@context/useAuth";
+import { ROUTES } from "@routes/Routes";
+import { redirectToLoginWithReturn } from "@helpers/redirectToLoginWithReturn";
+import IconCounterButton from "@components/IconCounterButton/IconCounterButton";
 
 type Props = {
   count: number;

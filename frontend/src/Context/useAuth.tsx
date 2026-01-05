@@ -1,12 +1,12 @@
 import { createContext, useEffect, useState, useContext, type ReactNode } from "react";
-import type { UserProfile } from "../Models/User";
+import type { UserProfile } from "@models/User";
 import { useNavigate } from "react-router-dom";
-import { loginApi, registerApi } from "../Services/AuthService";
+import { loginApi, registerApi } from "@services/AuthService";
 import { toast } from "react-toastify";
 import axios from "axios";
-import type { SellerTypeEnum } from "../Data/OfferProps";
-import { ROUTES } from "../Routes/Routes";
-import { useRedirectBack } from "../Helpers/useRedirectBack";
+import type { SellerTypeEnum } from "@data/OfferProps";
+import { ROUTES } from "@routes/Routes";
+import { useRedirectBack } from "@helpers/useRedirectBack";
 
 type UserContextType = {
   user: UserProfile | null;

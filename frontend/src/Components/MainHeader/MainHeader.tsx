@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import "./MainHeader.css";
-import { useAuth } from "../../Context/useAuth";
-import FavouritesButton from "../FavouritesButton/FavouritesButton";
+import { useAuth } from "@context/useAuth";
+import FavouritesButton from "@components/FavouritesButton/FavouritesButton";
 import { PiLineVertical } from "react-icons/pi";
-import { useFavourites } from "../../Context/useFavourites";
-import { ROUTES } from "../../Routes/Routes";
-import OwnedOffersButton from "../OwnedOffersButton/OwnedOffersButton";
-import { useUserOffers } from "../../Context/useUserOffers";
+import { useFavourites } from "@context/useFavourites";
+import { ROUTES } from "@routes/Routes";
+import OwnedOffersButton from "@components/OwnedOffersButton/OwnedOffersButton";
+import { useUserOffers } from "@context/useUserOffers";
 
 const MainHeader = () => {
   const location = useLocation();

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleError } from "../Helpers/handleError";
+import { handleError } from "@helpers/handleError";
 
 export const getPlaceName = async (lng: number, lat: number) =>{
     try {
