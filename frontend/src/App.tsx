@@ -8,7 +8,6 @@ import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import ProtectedRoute from "./Components/Routes/ProtectedRoute";
 import MainDetails from "./Components/DetailsPage/MainDetails/MainDetails";
 import { ROUTES } from "./Routes/Routes";
-
 import AppLayout from "./Layouts/AppLayout";
 import PublicLayout from "./Layouts/PublicLayout";
 
