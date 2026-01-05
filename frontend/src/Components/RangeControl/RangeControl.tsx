@@ -77,7 +77,7 @@ export class RangeControl implements mapboxgl.IControl {
     );
   }
 
-  onAdd(map: mapboxgl.Map) {
+  onAdd() {
     this.root = ReactDOM.createRoot(this.container);
     this.render();
     return this.container;
