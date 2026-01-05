@@ -5,9 +5,9 @@ import {
   getUserOffersCountApi,
   offerDeleteApi,
   offerPostApi,
-} from "../Services/OfferService";
-import type { CreateOfferRequestDto } from "../Data/CreateOfferRequestDto";
-import type { OfferProps } from "../Data/OfferProps";
+} from "@services/OfferService";
+import type { CreateOfferRequestDto } from "@data/CreateOfferRequestDto";
+import type { OfferProps } from "@data/OfferProps";
 
 type UserOffersContextType = {
   userOffersCount: number;

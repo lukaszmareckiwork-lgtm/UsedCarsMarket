@@ -5,12 +5,20 @@ module.exports = {
   testEnvironment: 'jsdom',
   // Use ts-jest as the transformer and provide its config via the transform entry
   transform: {
-    '^.+\\.(ts|tsx|js|jsx)$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.jest.json', diagnostics: { warnOnly: true } }],
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.jest.json', diagnostics: { warnOnly: true } }],
   },
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   // Note: ts-jest config is provided in the transform entry (recommended)
   moduleNameMapper: {
-    // mock style imports
-    '\\.(css|less|scss|sass)$': '<rootDir>/jest.style.mock.js',
-  },
+    '^@context/(.*)$': '<rootDir>/src/Context/$1',
+    '^@components/(.*)$': '<rootDir>/src/Components/$1',
+    '^@pages/(.*)$': '<rootDir>/src/Pages/$1',
+    '^@helpers/(.*)$': '<rootDir>/src/Helpers/$1',
+    '^@validation/(.*)$': '<rootDir>/src/Validation/$1',
+    '^@data/(.*)$': '<rootDir>/src/Data/$1',
+    '^@routes/(.*)$': '<rootDir>/src/Routes/$1',
+    '^@services/(.*)$': '<rootDir>/src/Services/$1',
+    '^@models/(.*)$': '<rootDir>/src/Models/$1',
+    '\\.(css|less|scss|sass)$': '<rootDir>/jest.style.mock.js'
+  }
 };

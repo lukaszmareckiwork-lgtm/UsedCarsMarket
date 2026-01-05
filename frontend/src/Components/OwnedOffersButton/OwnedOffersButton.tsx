@@ -1,8 +1,8 @@
 import "./OwnedOffersButton.css";
-import IconCounterButton from "../IconCounterButton/IconCounterButton";
+import IconCounterButton from "@components/IconCounterButton/IconCounterButton";
 import { IoDocuments } from "react-icons/io5";
-import { ROUTES } from "../../Routes/Routes";
-import { useAuth } from "../../Context/useAuth";
+import { ROUTES } from "@routes/Routes";
+import { useAuth } from "@context/useAuth";
 
 type Props = {
   count: number;

@@ -6,7 +6,7 @@ import {
   type Path,
 } from "react-hook-form";
 import "./ParamInput.css";
-import { dropdownStyles } from "../../Helpers/dropdownStyles";
+import { dropdownStyles } from "@helpers/dropdownStyles";
 
 interface ParamInputProps<T extends FieldValues, G> {
   name: Path<T>;

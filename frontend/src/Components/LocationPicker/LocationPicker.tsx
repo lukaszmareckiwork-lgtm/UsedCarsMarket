@@ -4,9 +4,9 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "./LocationPicker.css";
-import { addCircle, removeCircle } from "../../Helpers/AddRemoveMapCricle";
-import { RangeControl } from "../RangeControl/RangeControl";
-import { getPlaceName } from '../../Services/MapboxService'
+import { addCircle, removeCircle } from "@helpers/AddRemoveMapCricle";
+import { RangeControl } from "@components/RangeControl/RangeControl";
+import { getPlaceName } from '@services/MapboxService'
 import { PiLineVertical } from "react-icons/pi";
 
 export const LocationPickerModeEnum = {

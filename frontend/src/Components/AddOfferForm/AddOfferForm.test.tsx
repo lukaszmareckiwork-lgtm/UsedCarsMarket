@@ -2,14 +2,14 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import AddOfferForm from "./AddOfferForm";
 import userEvent from "@testing-library/user-event";
 
-jest.mock("../LocationPicker/LocationPicker", () => ({
+jest.mock("@components/LocationPicker/LocationPicker", () => ({
   LocationPicker: ({ onChange }: any) => {
     return <div data-testid="location-picker-mock" onClick={() => onChange(40.7128, -74.0060, "New York")} />;
   },
   LocationPickerModeEnum: { PickDirect: 0 },
 }));
 
-jest.mock("../../Context/MakesContext", () => ({
+jest.mock("@context/MakesContext", () => ({
   useMakes: () => ({
     makes: [
       {

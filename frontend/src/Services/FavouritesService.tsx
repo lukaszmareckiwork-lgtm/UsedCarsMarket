@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleError } from "../Helpers/handleError";
+import { handleError } from "@helpers/handleError";
 
 const api = "http://localhost:5261/api/favouriteoffers/";
 

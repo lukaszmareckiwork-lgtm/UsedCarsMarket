@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { ParamInput } from "../ParamInput/ParamInput";
+import { ParamInput } from "@components/ParamInput/ParamInput";
 import "./AddOfferForm.css";
 import {
   FuelTypeEnum,
@@ -10,17 +10,17 @@ import {
   getReadableCurrencyType,
   FeatureTypeEnum,
   getReadableFeatureType,
-} from "../../Data/OfferProps";
-import { useMakes } from "../../Context/MakesContext";
+} from "@data/OfferProps";
+import { useMakes } from "@context/MakesContext";
 import { yupResolver } from "@hookform/resolvers/yup";
-import type { CreateOfferRequestDto } from "../../Data/CreateOfferRequestDto";
-import { PhotoUploader } from "../PhotoUploader/PhotoUploader";
-import { LocationPicker, LocationPickerModeEnum } from "../LocationPicker/LocationPicker";
-import BlockingLoader from "../BlockingLoader/BlockingLoader";
-import DetailsItem from "../DetailsPage/DetailsItem/DetailsItem";
+import type { CreateOfferRequestDto } from "@data/CreateOfferRequestDto";
+import { PhotoUploader } from "@components/PhotoUploader/PhotoUploader";
+import { LocationPicker, LocationPickerModeEnum } from "@components/LocationPicker/LocationPicker";
+import BlockingLoader from "@components/BlockingLoader/BlockingLoader";
+import DetailsItem from "@components/DetailsPage/DetailsItem/DetailsItem";
 import { FaCar, FaIdCard } from "react-icons/fa";
-import Spacer from "../Spacer/Spacer";
-import { addOfferValidationSchema } from "../../Validation/addOfferValidationSchema";
+import Spacer from "@components/Spacer/Spacer";
+import { addOfferValidationSchema } from "@validation/addOfferValidationSchema";
 
 interface Props {
   handleOfferFormSubmit: (newOffer: CreateOfferRequestDto) => void;

@@ -1,8 +1,8 @@
 import type { JSX } from 'react'
 import './OffersList.css'
-import Offer from '../Offer/Offer'
-import type { OfferProps } from '../../Data/OfferProps'
-import Spinner from '../Spinner/Spinner'
+import Offer from '@components/Offer/Offer'
+import type { OfferProps } from '@data/OfferProps'
+import Spinner from '@components/Spinner/Spinner'
 
 
 const OffersList: React.FC<{offers: OfferProps[] | undefined, isLoadingOffers: boolean}> = ({offers, isLoadingOffers}): JSX.Element => {

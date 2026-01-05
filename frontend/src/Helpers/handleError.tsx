@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios"
 import { toast } from "react-toastify";
-import { ROUTES } from "../Routes/Routes";
+import { ROUTES } from "@routes/Routes";
 
 export const handleError = (error: any) => {
   let message = "Unknown error occurred";
