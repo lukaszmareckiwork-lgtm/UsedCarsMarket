@@ -20,5 +20,7 @@ module.exports = {
     '^@services/(.*)$': '<rootDir>/src/Services/$1',
     '^@models/(.*)$': '<rootDir>/src/Models/$1',
     '\\.(css|less|scss|sass)$': '<rootDir>/jest.style.mock.js'
-  }
+  },
+  transformIgnorePatterns: ['node_modules/'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/']
 };
