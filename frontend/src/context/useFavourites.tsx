@@ -4,7 +4,7 @@ import {
   addFavouriteApi,
   getFavouritesCountApi,
   removeFavouriteApi,
-} from "../Services/FavouritesService";
+} from "@services/FavouritesService";
 import { toast } from "react-toastify";
 
 const addedSet = new Set<number>();

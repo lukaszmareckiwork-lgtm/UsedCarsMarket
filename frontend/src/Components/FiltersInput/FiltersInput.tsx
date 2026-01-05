@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import FiltersInputFrame from "../FiltersInputFrame/FiltersInputFrame";
+import FiltersInputFrame from "@components/FiltersInputFrame/FiltersInputFrame";
 import "./FiltersInput.css";
-import RedCrossButton from "../RedCrossButton/RedCrossButton";
+import RedCrossButton from "@components/RedCrossButton/RedCrossButton";
 
 export interface FiltersInputProps<T extends string | number> {
   type: "text" | "number";

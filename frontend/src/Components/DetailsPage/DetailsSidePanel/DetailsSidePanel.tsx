@@ -1,19 +1,19 @@
 import "./DetailsSidePanel.css"
-import { getReadableSellerType, SellerTypeEnum, type OfferProps } from '../../../Data/OfferProps'
-import DetailsItem from "../DetailsItem/DetailsItem"
+import { getReadableSellerType, SellerTypeEnum, type OfferProps } from '@data/OfferProps'
+import DetailsItem from "@components/DetailsPage/DetailsItem/DetailsItem"
 import { FaIdCard, FaTools } from "react-icons/fa"
-import HiddenString from "../../HiddenString/HiddenString"
+import HiddenString from "@components/HiddenString/HiddenString"
 import { GoPersonFill } from "react-icons/go"
 import { PiBuildingOfficeBold } from "react-icons/pi"
-import Spacer from "../../Spacer/Spacer"
+import Spacer from "@components/Spacer/Spacer"
 import { IoEarth } from "react-icons/io5"
-import AddFavouritesButton from "../../AddFavouritesButton/AddFavouritesButton"
-import { useAuth } from "../../../Context/useAuth"
+import AddFavouritesButton from "@components/AddFavouritesButton/AddFavouritesButton"
+import { useAuth } from "@context/useAuth"
 import { useState } from "react"
 import { toast } from "react-toastify"
-import { useUserOffers } from "../../../Context/useUserOffers"
-import BlockingLoader from "../../BlockingLoader/BlockingLoader"
-import { useRedirectBack } from "../../../Helpers/useRedirectBack"
+import { useUserOffers } from "@context/useUserOffers"
+import BlockingLoader from "@components/BlockingLoader/BlockingLoader"
+import { useRedirectBack } from "@helpers/useRedirectBack"
 
 interface Props {
   offerProps: OfferProps

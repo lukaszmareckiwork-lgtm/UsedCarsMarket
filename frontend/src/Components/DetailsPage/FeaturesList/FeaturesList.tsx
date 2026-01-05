@@ -2,8 +2,8 @@ import "./FeaturesList.css";
 import {
   getReadableFeatureType,
   type OfferProps,
-} from "../../../Data/OfferProps";
-import Feature from "../Feature/Feature";
+} from "@data/OfferProps";
+import Feature from "@components/DetailsPage/Feature/Feature";
 
 interface Props {
   offerProps: OfferProps;

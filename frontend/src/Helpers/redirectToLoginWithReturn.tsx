@@ -1,5 +1,5 @@
 import type { NavigateFunction, Location } from "react-router-dom";
-import { ROUTES } from "../Routes/Routes";
+import { ROUTES } from "@routes/Routes";
 
 /**
  * Redirects non-logged-in users to login page and stores the original location

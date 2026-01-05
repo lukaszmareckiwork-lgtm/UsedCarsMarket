@@ -1,7 +1,7 @@
 import axios from "axios";
-import { handleError } from "../Helpers/handleError";
-import type { UserProfileToken } from "../Models/User";
-import type { SellerTypeEnum } from "../Data/OfferProps";
+import { handleError } from "@helpers/handleError";
+import type { UserProfileToken } from "@models/User";
+import type { SellerTypeEnum } from "@data/OfferProps";
 
 const api = "http://localhost:5261/api/";
 

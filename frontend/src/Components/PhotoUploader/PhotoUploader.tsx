@@ -8,7 +8,7 @@ import {
 
 import "./PhotoUploader.css";
 import { IoClose } from "react-icons/io5";
-import Spacer from "../Spacer/Spacer";
+import Spacer from "@components/Spacer/Spacer";
 import { FaFileImage } from "react-icons/fa";
 
 interface PhotoUploaderProps<T extends FieldValues> {

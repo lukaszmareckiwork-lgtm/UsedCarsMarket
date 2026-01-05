@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./FiltersDropdown.css";
-import Spinner from "../Spinner/Spinner";
-import FiltersInputFrame from "../FiltersInputFrame/FiltersInputFrame";
-import RedCrossButton from "../RedCrossButton/RedCrossButton";
+import Spinner from "@components/Spinner/Spinner";
+import FiltersInputFrame from "@components/FiltersInputFrame/FiltersInputFrame";
+import RedCrossButton from "@components/RedCrossButton/RedCrossButton";
 import { IoIosArrowDown } from "react-icons/io";
 
 interface FiltersDropdownProps<T> {

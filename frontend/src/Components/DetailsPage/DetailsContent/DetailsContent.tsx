@@ -1,13 +1,13 @@
 import "./DetailsContent.css"
-import PhotoViewer from '../PhotoViewer/PhotoViewer'
-import { getReadableCurrencyType, type OfferProps } from '../../../Data/OfferProps'
-import ParamsWithIcons from '../../ParamsWithIcons/ParamsWithIcons'
-import FeaturesList from "../FeaturesList/FeaturesList"
-import DetailsItem from "../DetailsItem/DetailsItem"
+import PhotoViewer from '@components/DetailsPage/PhotoViewer/PhotoViewer'
+import { getReadableCurrencyType, type OfferProps } from '@data/OfferProps'
+import ParamsWithIcons from '@components/ParamsWithIcons/ParamsWithIcons'
+import FeaturesList from "@components/DetailsPage/FeaturesList/FeaturesList"
+import DetailsItem from "@components/DetailsPage/DetailsItem/DetailsItem"
 import { FaBars, FaCar, FaList, FaMapMarkedAlt } from "react-icons/fa"
 import { IoMdSettings } from "react-icons/io"
-import SpecsList from "../SpecsList/SpecsList"
-import { LocationPicker, LocationPickerModeEnum } from "../../LocationPicker/LocationPicker"
+import SpecsList from "@components/DetailsPage/SpecsList/SpecsList"
+import { LocationPicker, LocationPickerModeEnum } from "@components/LocationPicker/LocationPicker"
 
 interface Props {
   offerProps: OfferProps

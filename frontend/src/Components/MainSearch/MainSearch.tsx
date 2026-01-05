@@ -1,10 +1,10 @@
 import "./MainSearch.css";
-import OffersList from '../OffersList/OffersList';
-import OffersFiltersControls from '../OffersFiltersControls/OffersFiltersControls';
+import OffersList from '@components/OffersList/OffersList';
+import OffersFiltersControls from '@components/OffersFiltersControls/OffersFiltersControls';
 import ReactPaginate from 'react-paginate';
-import { useOfferFilters } from '../../Helpers/useOffersFilters';
-import OffersSortControl from "../OffersSortControl/OffersSortControl";
-import SEO from '../SEO/SEO';
+import { useOfferFilters } from '@helpers/useOffersFilters';
+import OffersSortControl from "@components/OffersSortControl/OffersSortControl";
+import SEO from '@components/SEO/SEO';
 
 const MainSearch = () => {
   const {
