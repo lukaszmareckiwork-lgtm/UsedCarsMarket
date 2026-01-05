@@ -9,19 +9,19 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace api.Tests.Integration
 {
-    public class OfferIntegrationTests : IClassFixture<CustomWebApplicationFactory>
+    public class OfferControllerIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly HttpClient _client;
         private readonly IServiceScopeFactory _scopeFactory;
 
-        public OfferIntegrationTests(CustomWebApplicationFactory factory)
+        public OfferControllerIntegrationTests(CustomWebApplicationFactory factory)
         {
             _client = factory.CreateClient();
             _scopeFactory = factory.Services.GetRequiredService<IServiceScopeFactory>();
         }
 
         [Fact]
-        public async Task POST_offer_creates_offer_and_persists_it()
+        public async Task POST_offer_controller_creates_offer_and_persists_it()
         {
             // Arrange – create user + JWT
             string token;
