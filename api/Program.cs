@@ -34,10 +34,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddDbContext<ApplicationDBContext>(options =>
+var isIntegrationTests = builder.Environment.EnvironmentName == "IntegrationTests";
+
+if (!isIntegrationTests)
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+    builder.Services.AddDbContext<ApplicationDBContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
 
 // Bind and validate options
 builder.Services.Configure<api.Options.AzureBlobOptions>(builder.Configuration.GetSection("AzureBlob"));
