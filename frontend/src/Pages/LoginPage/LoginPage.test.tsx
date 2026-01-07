@@ -23,7 +23,7 @@ describe('LoginPage', () => {
 
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument();
   });
 
   test('submits valid credentials', async () => {
@@ -34,7 +34,7 @@ describe('LoginPage', () => {
 
     await user.type(screen.getByLabelText(/email/i), 'john@example.com');
     await user.type(screen.getByLabelText(/password/i), 'secret123');
-    await user.click(screen.getByRole('button', { name: /login/i }));
+    await user.click(screen.getByRole('button', { name: 'Login' }));
 
     expect(loginUserMock).toHaveBeenCalledTimes(1);
     expect(loginUserMock).toHaveBeenCalledWith(
