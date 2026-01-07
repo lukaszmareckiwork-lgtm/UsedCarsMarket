@@ -25,7 +25,7 @@ const DEFAULT_QUERY: OfferQueryObject = {
   SortBy: null,
   SortDescending: undefined,
   PageNumber: 1,
-  PageSize: 3,
+  PageSize: 6,
 };
 
 // ------------------------------

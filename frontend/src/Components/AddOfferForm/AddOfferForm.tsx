@@ -79,7 +79,7 @@ const AddOfferForm = ({ handleOfferFormSubmit, waitingForResponse }: Props) => {
 
   return (
     <form className="add-offer-form" onSubmit={handleSubmit(onSubmit)}>
-      <div data-testid="hook-form-errors">{JSON.stringify(errors)}</div>
+      {/* <div data-testid="hook-form-errors">{JSON.stringify(errors)}</div> */}
       <h2>Add a New Offer</h2>
 
       {/* Vehicle Information */}
