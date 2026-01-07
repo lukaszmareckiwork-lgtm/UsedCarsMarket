@@ -24,7 +24,6 @@
 }
 
 .mainFooter-demo-info {
-    padding-top: var(--spacing-xs);
     color: var(--colorsMuted);
 }
 

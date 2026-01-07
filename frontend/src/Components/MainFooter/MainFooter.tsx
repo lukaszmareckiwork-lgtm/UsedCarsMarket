@@ -1,9 +1,7 @@
-import React from "react";
 import "./MainFooter.css";
+import Spacer from "@components/Spacer/Spacer";
 
-type Props = {};
-
-const MainFooter = (props: Props) => {
+const MainFooter = () => {
   return (
     <footer className="mainFooter">
       <p>© 2026 Łukasz Marecki</p>
@@ -30,7 +28,9 @@ const MainFooter = (props: Props) => {
           LinkedIn
         </a>
       </p>
-      <p className="mainFooter-demo-info">It's a portfolio DEMO project not a fully functional app.</p>
+      <Spacer size={8} />
+      <p className="mainFooter-demo-info">Used Cars Market — Portfolio Demo</p>
+      <p className="mainFooter-demo-info">Built with React (TypeScript) · ASP.NET Core · SQL Server</p>
     </footer>
   );
 };

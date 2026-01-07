@@ -7,6 +7,7 @@ import BlockingLoader from "@components/BlockingLoader/BlockingLoader";
 import { useState } from "react";
 import SEO from "@components/SEO/SEO";
 import { loginValidationSchema } from "@validation/loginValidationSchema";
+import DemoComment from "@components/DemoComment/DemoComment";
 
 type LoginFormInputs = {
   email: string;
@@ -20,6 +21,7 @@ const LoginPage = () => {
   const {
     handleSubmit,
     control,
+    setValue,
   } = useForm<LoginFormInputs>({
     resolver: yupResolver(loginValidationSchema),
     mode: "onChange",
@@ -41,7 +43,10 @@ const LoginPage = () => {
 
   return (
     <div className="login-container">
-      <SEO title="Login — Used Cars Market" description="Login to your Used Cars Market account to manage offers and favourites." />
+      <SEO
+        title="Login — Used Cars Market"
+        description="Login to your Used Cars Market account to manage offers and favourites."
+      />
       <section className="login-frame">
         <h2 className="login-title">Welcome Back</h2>
         <p className="login-subtitle">Login to your account</p>
@@ -59,6 +64,15 @@ const LoginPage = () => {
             type="password"
             control={control}
             placeholder="Enter your password"
+          />
+
+          <DemoComment
+            textContent={`You can use demo account for testing.`}
+            showButton={true}
+            onButtonClicked={() => {
+              setValue("email", "zxc@zxc.com");
+              setValue("password", "zxczxc");
+            }}
           />
 
           <div className="login-btn-wrapper">

@@ -1,0 +1,36 @@
+.demo-comment {
+    margin-bottom: 16px;
+    border-radius: var(--radiusSmall);
+    background-color: #f2f3f8;
+
+    font-style: var(--fontFamilyPrimary);
+    font-size: var(--fontSizeBodyExtraSmall);
+}
+
+.demo-comment-text {
+    padding: 8px;
+    color: var(--colorsMuted);
+    display: block;
+
+    white-space: pre-wrap;
+}
+
+.demo-comment-button {
+    padding: 0.3rem 0.6rem;
+    font-weight: var(--fontWeightSemibold);
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: #4d4d4d;
+
+    margin-left: 8px;
+    margin-bottom: 8px;
+    background-color: #c5c5c5;
+}
+
+.demo-comment-button:hover {
+    color: #3a3a3a;
+    background-color: #cccccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
