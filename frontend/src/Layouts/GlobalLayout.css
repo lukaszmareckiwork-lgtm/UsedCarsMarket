@@ -14,4 +14,6 @@ body,
 .app-content {
   flex: 1 0 auto;
   min-height: 0;
+
+  padding-top: var(--header-height);
 }

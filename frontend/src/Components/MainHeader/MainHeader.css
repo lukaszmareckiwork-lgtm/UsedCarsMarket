@@ -1,13 +1,14 @@
 .mainHeader {
     display: flex;
-    position: sticky;
+    position: fixed; 
+    width: 100%;
     top: 0;
     justify-content: space-between;
     align-items: center;
 
     padding: 0 16px;
-    height: 70px;
-    min-height: 70px;
+    height: var(--header-height);
+    min-height: var(--header-height);
     background-color: var(--colorsSurface);
     gap: 16px;
 
