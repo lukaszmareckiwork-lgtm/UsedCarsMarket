@@ -8,6 +8,7 @@ import BlockingLoader from "@components/BlockingLoader/BlockingLoader";
 import { useState } from "react";
 import SEO from "@components/SEO/SEO";
 import { registerValidationSchema } from "@validation/registerValidationSchema";
+import DemoComment from "@components/DemoComment/DemoComment";
 
 type RegisterFormInputs = {
   username: string;
@@ -103,6 +104,10 @@ const RegisterPage = () => {
             type="password"
             control={control}
             placeholder="Enter your password"
+          />
+
+          <DemoComment
+            textContent={`Password restrictions are intentionally disabled.\nPassword confirmation is not required.\nEmail confirmation is not required.\nYou can use non-existing email and weak password for testing.`}
           />
 
           <div className="login-btn-wrapper">

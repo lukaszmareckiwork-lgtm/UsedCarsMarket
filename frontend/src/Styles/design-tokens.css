@@ -9,6 +9,9 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 :root {
+    /* Layout sizes */
+    --header-height: 70px;
+
     /* Fonts */
     --fontFamilyPrimary: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --fontFamilySecondary: var(--fontFamilyPrimary);
@@ -22,6 +25,7 @@
     --fontSizeBodyBase: 16px;
     --fontSizeBodySmall: 14px;
     --fontSizeBodyExtraSmall: 12px;
+    --fontSizeBodyMicro: 10px;
 
     /* line heights */
     --lineHeightDisplay: 34px;
