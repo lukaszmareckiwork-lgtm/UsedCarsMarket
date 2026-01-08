@@ -41,6 +41,11 @@ jobs:
         run: npm run build
         working-directory: ./frontend
 
+      - name: Debug folder structure
+        run: |
+          pwd
+          ls -R ./frontend
+
       - name: Deploy to Azure Static Web Apps
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
