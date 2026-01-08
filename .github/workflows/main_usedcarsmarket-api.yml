@@ -27,13 +27,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish ./api/api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./api/api.csproj -c Release -o ${{env.DOTNET_ROOT}}/api_publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{env.DOTNET_ROOT}}/api_publish
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,14 +55,14 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EEA42AF30A134E258998C10F53F622E6 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6E14DB4927064D24A3BA98E8F3559FB6 }}
 
-      - name: List files after artifact download
-        run: ls -R ${{ github.workspace }}
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'usedcarsmarket-api'
           slot-name: 'Production'
-          package: ${{ github.workspace }}/.github/workflows/.net-app
+          package: ${{ github.workspace }}/.net-app/api_publish
+
+      - name: List files after artifact download
+        run: ls -R ${{ github.workspace }}
           
