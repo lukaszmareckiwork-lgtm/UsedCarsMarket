@@ -139,6 +139,12 @@ app.MapControllers();
 
 app.UseRequestLocalization();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+    db.Database.Migrate(); // applies all pending migrations
+}
+
 // Seed makes nad models from json to database
 try
 {
