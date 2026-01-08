@@ -18,9 +18,9 @@ jobs:
     permissions:
        id-token: write
        contents: read
-    # env:
-    #   VITE_API_URL: ${{ secrets.VITE_API_URL }}
-    #   VITE_MAPBOX_TOKEN: ${{ secrets.VITE_MAPBOX_TOKEN }}
+    env:
+      VITE_API_URL: ${{ secrets.VITE_API_URL }}
+      VITE_MAPBOX_TOKEN: ${{ secrets.VITE_MAPBOX_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
