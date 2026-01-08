@@ -1,10 +1,11 @@
 import axios from "axios";
 import { handleError } from "@helpers/handleError";
+import { MAPBOX_TOKEN } from "@config/env";
 
 export const getPlaceName = async (lng: number, lat: number) =>{
     try {
         const userLang = navigator.language.split("-")[0]; // "en", "fr", etc.
-        const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN || "";
+        const mapboxToken = MAPBOX_TOKEN;
 
         const { data } = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json`,
         {

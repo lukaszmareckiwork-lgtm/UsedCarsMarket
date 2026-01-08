@@ -2,8 +2,9 @@ import axios from "axios";
 import { handleError } from "@helpers/handleError";
 import type { UserProfileToken } from "@models/User";
 import type { SellerTypeEnum } from "@data/OfferProps";
+import { API_URL } from "@config/env";
 
-const api = import.meta.env.VITE_API_URL;
+const api = API_URL;
 
 export const loginApi = async (email: string, password: string) =>{
     try {
