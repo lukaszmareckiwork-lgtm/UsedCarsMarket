@@ -38,7 +38,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: .nvmrc
+          node-version: 20.19.5
           cache: npm
 
       - name: Build And Deploy
