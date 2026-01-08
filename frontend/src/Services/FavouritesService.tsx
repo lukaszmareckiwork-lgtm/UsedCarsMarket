@@ -1,7 +1,7 @@
 import axios from "axios";
 import { handleError } from "@helpers/handleError";
 
-const api = "http://localhost:5261/api/favouriteoffers/";
+const api = `${import.meta.env.VITE_API_URL}/favouriteoffers/`;
 
 export type AddRemoveFavouriteResponse = {
   offerId: number;
