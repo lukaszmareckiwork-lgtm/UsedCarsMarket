@@ -3,7 +3,7 @@ import { handleError } from "@helpers/handleError";
 import type { UserProfileToken } from "@models/User";
 import type { SellerTypeEnum } from "@data/OfferProps";
 
-const api = "http://localhost:5261/api/";
+const api = import.meta.env.VITE_API_URL;
 
 export const loginApi = async (email: string, password: string) =>{
     try {
