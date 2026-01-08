@@ -32,7 +32,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
+          name: api_publish
           path: ${{env.DOTNET_ROOT}}/api_publish
 
   deploy:
@@ -46,7 +46,13 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
+          name: api_publish
+
+      - name: Move downloaded artifact to correct folder
+        # after download, the artifact is in ./api_publish, move to a path Azure can use
+        run: |
+          mkdir -p ${{ github.workspace }}/api_publish
+          mv ./api_publish/* ${{ github.workspace }}/api_publish/
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -64,5 +70,5 @@ jobs:
         with:
           app-name: 'usedcarsmarket-api'
           slot-name: 'Production'
-          package: ${{ github.workspace }}/.net-app
+          package: ${{ github.workspace }}/api_publish
           
