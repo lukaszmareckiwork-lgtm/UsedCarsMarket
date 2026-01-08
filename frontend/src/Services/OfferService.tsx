@@ -1,13 +1,13 @@
 import axios, { type AxiosResponse } from "axios";
-import type { OfferProps } from "../Data/OfferProps";
-import { handleError } from "../Helpers/handleError";
-import type { PagedResult } from "../Helpers/PagedResult";
-import type { CreateOfferRequestDto } from "../Data/CreateOfferRequestDto";
-import type { OfferQueryObject } from "../Data/OfferQueryObject";
-import type { CreateOfferResponseDto } from "../Data/CreateOfferResponseDto";
-import type { DeleteOfferResponseDto } from "../Data/DeleteOfferResponseDto";
+import type { OfferProps } from "@data/OfferProps";
+import { handleError } from "@helpers/handleError";
+import type { PagedResult } from "@helpers/PagedResult";
+import type { CreateOfferRequestDto } from "@data/CreateOfferRequestDto";
+import type { OfferQueryObject } from "@data/OfferQueryObject";
+import type { CreateOfferResponseDto } from "@data/CreateOfferResponseDto";
+import type { DeleteOfferResponseDto } from "@data/DeleteOfferResponseDto";
 
-const api = "http://localhost:5261/api/offer/";
+const api = `${import.meta.env.VITE_API_URL}/offer/`;
 
 export function buildOfferQueryString(query: OfferQueryObject): string {
   const params = new URLSearchParams();

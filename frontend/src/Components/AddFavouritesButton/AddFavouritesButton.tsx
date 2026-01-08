@@ -1,10 +1,10 @@
 import { FaHeart } from "react-icons/fa";
 import "./AddFavouritesButton.css";
-import type { OfferProps } from "../../Data/OfferProps";
-import { useFavourites } from "../../Context/useFavourites";
+import type { OfferProps } from "@data/OfferProps";
+import { useFavourites } from "@context/useFavourites";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../Context/useAuth";
-import { redirectToLoginWithReturn } from "../../Helpers/redirectToLoginWithReturn";
+import { useAuth } from "@context/useAuth";
+import { redirectToLoginWithReturn } from "@helpers/redirectToLoginWithReturn";
 
 type Props = {
   offerProps: OfferProps

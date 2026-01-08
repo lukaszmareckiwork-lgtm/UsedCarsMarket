@@ -1,13 +1,14 @@
 import "./RegisterPage.css";
-import { useAuth } from "../../Context/useAuth";
+import { useAuth } from "@context/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ParamInput } from "../../Components/ParamInput/ParamInput";
-import { getReadableSellerType, SellerTypeEnum } from "../../Data/OfferProps";
-import BlockingLoader from "../../Components/BlockingLoader/BlockingLoader";
+import { ParamInput } from "@components/ParamInput/ParamInput";
+import { getReadableSellerType, SellerTypeEnum } from "@data/OfferProps";
+import BlockingLoader from "@components/BlockingLoader/BlockingLoader";
 import { useState } from "react";
-import SEO from "../../Components/SEO/SEO";
-import { registerValidationSchema } from "../../Validation/registerValidationSchema";
+import SEO from "@components/SEO/SEO";
+import { registerValidationSchema } from "@validation/registerValidationSchema";
+import DemoComment from "@components/DemoComment/DemoComment";
 
 type RegisterFormInputs = {
   username: string;
@@ -103,6 +104,10 @@ const RegisterPage = () => {
             type="password"
             control={control}
             placeholder="Enter your password"
+          />
+
+          <DemoComment
+            textContent={`Password restrictions are intentionally disabled.\nPassword confirmation is not required.\nEmail confirmation is not required.\nYou can use non-existing email and weak password for testing.`}
           />
 
           <div className="login-btn-wrapper">

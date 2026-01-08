@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import "./MainHeader.css";
-import { useAuth } from "../../Context/useAuth";
-import FavouritesButton from "../FavouritesButton/FavouritesButton";
+import { useAuth } from "@context/useAuth";
+import FavouritesButton from "@components/FavouritesButton/FavouritesButton";
 import { PiLineVertical } from "react-icons/pi";
-import { useFavourites } from "../../Context/useFavourites";
-import { ROUTES } from "../../Routes/Routes";
-import OwnedOffersButton from "../OwnedOffersButton/OwnedOffersButton";
-import { useUserOffers } from "../../Context/useUserOffers";
+import { useFavourites } from "@context/useFavourites";
+import { ROUTES } from "@routes/Routes";
+import OwnedOffersButton from "@components/OwnedOffersButton/OwnedOffersButton";
+import { useUserOffers } from "@context/useUserOffers";
 
 const MainHeader = () => {
   const location = useLocation();
@@ -23,6 +23,7 @@ const MainHeader = () => {
         <Link to={ROUTES.HOME} className="mainHeader-title">
           Used Cars Market
         </Link>
+        <h2 className="mainHeader-subtitle">Portfolio DEMO project by Łukasz Marecki</h2>
       </div>
       <nav className="mainHeader-right" aria-label="Primary">
         <FavouritesButton count={favouritesCount} />
@@ -47,8 +48,8 @@ const MainHeader = () => {
           </>
         )}
 
-  <PiLineVertical size={40} color={"var(--colorsPlaceholder)"} aria-hidden="true" focusable={false} />
-  <OwnedOffersButton count={userOffersCount} />
+        <PiLineVertical size={40} color={"var(--colorsPlaceholder)"} aria-hidden="true" focusable={false} />
+        <OwnedOffersButton count={userOffersCount} />
         {!isAddOfferPage && <Link to={ROUTES.ADD_OFFER} className="mainHeader-addOfferButton main-button">
           Add offer
         </Link>}

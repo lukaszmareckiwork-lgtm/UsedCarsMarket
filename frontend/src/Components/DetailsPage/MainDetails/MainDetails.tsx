@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import "./MainDetails.css"
 import { Link, useParams } from 'react-router-dom'
-import { offerGetSingleApi } from '../../../Services/OfferService'
-import { type OfferProps } from '../../../Data/OfferProps'
-import DetailsContent from '../DetailsContent/DetailsContent'
-import DetailsSidePanel from '../DetailsSidePanel/DetailsSidePanel'
+import { offerGetSingleApi } from '@services/OfferService'
+import { type OfferProps } from '@data/OfferProps'
+import DetailsContent from '@components/DetailsPage/DetailsContent/DetailsContent'
+import DetailsSidePanel from '@components/DetailsPage/DetailsSidePanel/DetailsSidePanel'
 import { IoArrowBackOutline } from 'react-icons/io5'
-import Spinner from '../../Spinner/Spinner'
-import { useRedirectBack } from '../../../Helpers/useRedirectBack'
-import SEO from '../../SEO/SEO'
+import Spinner from '@components/Spinner/Spinner'
+import { useRedirectBack } from '@helpers/useRedirectBack'
+import SEO from '@components/SEO/SEO'
 
 
 const MainDetails = () => {

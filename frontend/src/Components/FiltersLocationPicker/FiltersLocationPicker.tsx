@@ -1,11 +1,11 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useRef, useState } from "react";
-import { LocationPicker, LocationPickerModeEnum } from "../LocationPicker/LocationPicker";
+import { LocationPicker, LocationPickerModeEnum } from "@components/LocationPicker/LocationPicker";
 import "./FiltersLocationPicker.css";
 import { FaMapMarkedAlt } from "react-icons/fa";
-import { getPlaceName } from "../../Services/MapboxService";
+import { getPlaceName } from "@services/MapboxService";
 import { PiLineVertical } from "react-icons/pi";
-import RedCrossButton from "../RedCrossButton/RedCrossButton";
+import RedCrossButton from "@components/RedCrossButton/RedCrossButton";
 
 interface FiltersLocationPickerProps {
   initialCoordinates?: { lat: number; lng: number };

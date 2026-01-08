@@ -1,6 +1,7 @@
-import MainHeader from "../Components/MainHeader/MainHeader";
+import MainHeader from "@components/MainHeader/MainHeader";
 import { Outlet } from "react-router-dom";
 import "./GlobalLayout.css";
+import MainFooter from "@components/MainFooter/MainFooter";
 
 const AppLayout = () => {
   return (
@@ -9,6 +10,7 @@ const AppLayout = () => {
       <main id="main-content" className="app-content">
         <Outlet />
       </main>
+      <MainFooter />
     </div>
   );
 };

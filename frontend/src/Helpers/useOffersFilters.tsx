@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import type { OfferProps } from "../Data/OfferProps";
-import type { OfferQueryObject } from "../Data/OfferQueryObject";
-import { offerPreviewGetApi } from "../Services/OfferService";
+import type { OfferProps } from "@data/OfferProps";
+import type { OfferQueryObject } from "@data/OfferQueryObject";
+import { offerPreviewGetApi } from "@services/OfferService";
 import { clamp } from "./math";
 
 const DEFAULT_QUERY: OfferQueryObject = {
@@ -25,7 +25,7 @@ const DEFAULT_QUERY: OfferQueryObject = {
   SortBy: null,
   SortDescending: undefined,
   PageNumber: 1,
-  PageSize: 3,
+  PageSize: 6,
 };
 
 // ------------------------------

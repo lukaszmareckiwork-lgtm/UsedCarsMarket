@@ -1,9 +1,9 @@
-import { handleError } from '../Helpers/handleError';
+import { handleError } from '@helpers/handleError';
 import axios from 'axios';
-import type { GetMakesResponseDto } from '../Data/GetMakesResponseDto';
-import type { GetModelsResponseDto } from '../Data/GetModelsResponseDto';
+import type { GetMakesResponseDto } from '@data/GetMakesResponseDto';
+import type { GetModelsResponseDto } from '@data/GetModelsResponseDto';
 
-const api = "http://localhost:5261/api/makes";
+const api = `${import.meta.env.VITE_API_URL}/makes`;
 
 
 export const makesGetApi = () => {

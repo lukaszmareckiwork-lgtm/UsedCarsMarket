@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import RegisterPage from './RegisterPage';
-import { useAuth } from '../../Context/useAuth';
+import { useAuth } from '@context/useAuth';
 
-jest.mock('../../Context/useAuth');
+jest.mock('@context/useAuth');
 
 describe('RegisterPage', () => {
   const registerUserMock = jest.fn();

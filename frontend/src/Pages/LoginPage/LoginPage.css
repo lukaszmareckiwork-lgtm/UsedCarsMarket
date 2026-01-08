@@ -6,6 +6,7 @@
   background: linear-gradient(135deg, var(--colorsPrimary), var(--colorsPrimaryAccent));
   
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
+  padding: var(--spacing500) 0;
 }
 
 .login-frame {
