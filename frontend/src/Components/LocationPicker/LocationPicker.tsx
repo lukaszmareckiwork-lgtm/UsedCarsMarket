@@ -8,6 +8,7 @@ import { addCircle, removeCircle } from "@helpers/AddRemoveMapCricle";
 import { RangeControl } from "@components/RangeControl/RangeControl";
 import { getPlaceName } from '@services/MapboxService'
 import { PiLineVertical } from "react-icons/pi";
+import { MAPBOX_TOKEN } from "@config/env";
 
 export const LocationPickerModeEnum = {
   OnlyShow: 0,
@@ -109,7 +110,7 @@ export const LocationPicker: React.FC<LocationPickerProps> = ({
     if(mapRef.current) removeCircle(mapRef.current, "my-circle");
   }
 
-  const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN || "";
+  const mapboxToken = MAPBOX_TOKEN;
 
   const onControlRangeChange = (value: number) => {
     setRange(value);

@@ -19,7 +19,9 @@ module.exports = {
     '^@routes/(.*)$': '<rootDir>/src/Routes/$1',
     '^@services/(.*)$': '<rootDir>/src/Services/$1',
     '^@models/(.*)$': '<rootDir>/src/Models/$1',
-    '\\.(css|less|scss|sass)$': '<rootDir>/jest.style.mock.js'
+    "^@config/env$": "<rootDir>/src/Config/__mocks__/env.ts",
+    '^@config/(.*)$': '<rootDir>/src/Config/$1',
+    '\\.(css|less|scss|sass)$': '<rootDir>/jest.style.mock.js',
   },
   transformIgnorePatterns: ['node_modules/'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/']
