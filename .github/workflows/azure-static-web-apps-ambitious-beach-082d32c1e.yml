@@ -35,8 +35,11 @@ jobs:
                return await coredemo.getIDToken()
            result-encoding: string
 
-      - name: Set Node version
-        run: echo "NODE_VERSION=20.19.0" >> $GITHUB_ENV
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: .nvmrc
+          cache: npm
 
       - name: Build And Deploy
         id: builddeploy
