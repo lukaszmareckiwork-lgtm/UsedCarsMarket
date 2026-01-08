@@ -35,6 +35,7 @@
       "@routes/*": ["Routes/*"],
       "@services/*": ["Services/*"],
       "@models/*": ["Models/*"],
+      "@config/*": ["Config/*"],
     }
   },
   "include": ["src", "tests", "setupTests.ts"]

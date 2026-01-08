@@ -2,8 +2,9 @@ import { handleError } from '@helpers/handleError';
 import axios from 'axios';
 import type { GetMakesResponseDto } from '@data/GetMakesResponseDto';
 import type { GetModelsResponseDto } from '@data/GetModelsResponseDto';
+import { API_URL } from '@config/env';
 
-const api = `${import.meta.env.VITE_API_URL}/makes`;
+const api = `${API_URL}/makes`;
 
 
 export const makesGetApi = () => {

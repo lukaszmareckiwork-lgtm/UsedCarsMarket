@@ -21,6 +21,7 @@ export default defineConfig({
       '@data': path.resolve(__dirname, 'src/Data'),
       '@routes': path.resolve(__dirname, 'src/Routes'),
       '@models': path.resolve(__dirname, 'src/Models'),
+      '@config': path.resolve(__dirname, 'src/Config'),
     }
   }
 })

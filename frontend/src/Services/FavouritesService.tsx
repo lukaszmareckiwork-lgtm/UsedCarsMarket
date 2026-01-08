@@ -1,7 +1,8 @@
 import axios from "axios";
 import { handleError } from "@helpers/handleError";
+import { API_URL } from "@config/env";
 
-const api = `${import.meta.env.VITE_API_URL}/favouriteoffers/`;
+const api = `${API_URL}/favouriteoffers/`;
 
 export type AddRemoveFavouriteResponse = {
   offerId: number;
