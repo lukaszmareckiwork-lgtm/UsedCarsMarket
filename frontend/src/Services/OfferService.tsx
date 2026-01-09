@@ -6,8 +6,9 @@ import type { CreateOfferRequestDto } from "@data/CreateOfferRequestDto";
 import type { OfferQueryObject } from "@data/OfferQueryObject";
 import type { CreateOfferResponseDto } from "@data/CreateOfferResponseDto";
 import type { DeleteOfferResponseDto } from "@data/DeleteOfferResponseDto";
+import { API_URL } from "@config/env";
 
-const api = `${import.meta.env.VITE_API_URL}/offer/`;
+const api = `${API_URL}/offer/`;
 
 export function buildOfferQueryString(query: OfferQueryObject): string {
   const params = new URLSearchParams();
