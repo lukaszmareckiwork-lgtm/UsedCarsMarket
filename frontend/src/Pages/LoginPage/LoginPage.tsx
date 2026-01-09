@@ -70,8 +70,8 @@ const LoginPage = () => {
             textContent={`You can use demo account for testing.`}
             showButton={true}
             onButtonClicked={() => {
-              setValue("email", "zxc@zxc.com");
-              setValue("password", "zxczxc");
+              setValue("email", "demo@usedcarsmarket.com");
+              setValue("password", "demopass");
             }}
           />
 

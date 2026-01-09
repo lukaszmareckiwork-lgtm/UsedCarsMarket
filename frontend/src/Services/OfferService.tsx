@@ -115,7 +115,9 @@ export const offerPreviewGetApi = (queryObj: OfferQueryObject) => {
 
     const finalRoute = `${api}preview${favourites}?${query}`;
 
-    console.log(`offerGetApi - finalRoute: ${finalRoute}`);
+    if (process.env.NODE_ENV === "development") 
+      console.log(`offerGetApi - finalRoute: ${finalRoute}`);
+    
     const data = axios
       .get<PagedResult<OfferProps>>(finalRoute)
       .catch((error) => {
