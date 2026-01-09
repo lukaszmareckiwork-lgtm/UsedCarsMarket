@@ -26,7 +26,7 @@ namespace api.Dtos.Offer
         [Required]
         public FuelType FuelType { get; set; }
 
-        [Range(0.1, 20.0, ErrorMessage = "Engine displacement must be realistic.")]
+        [Range(0.1, 20000.0, ErrorMessage = "Engine displacement must be realistic.")]
         public decimal? EngineDisplacement { get; set; }
 
         [Range(0, 3000, ErrorMessage = "Engine power must be realistic.")]
@@ -73,7 +73,7 @@ namespace api.Dtos.Offer
         public decimal Price { get; set; }
 
         [Required]
-        [RegularExpression("^[A-Z]{3}$", ErrorMessage = "Currency must be a 3-letter ISO code.")]
+        [RegularExpression("^[A-Za-z]{3}$", ErrorMessage = "Currency must be a 3-letter ISO code.")]
         public string Currency { get; set; } = "EUR";
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
