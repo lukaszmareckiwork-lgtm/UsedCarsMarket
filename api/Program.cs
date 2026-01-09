@@ -13,9 +13,6 @@ using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-// builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -117,7 +114,6 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -128,8 +124,9 @@ app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
-    // .WithOrigins("http://localhost:5261")
-    .SetIsOriginAllowed(origin => true)
+    .WithOrigins(
+        "https://ambitious-beach-082d32c1e.6.azurestaticapps.net",
+        "http://localhost:5173") // intentionally added for simplification of portfolio project, it should be removed and/or adjusted based on enviro in real project
 );
 
 app.UseAuthentication();
