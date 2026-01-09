@@ -4,10 +4,16 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/azure-static-web-apps-ambitious-beach-082d32c1e.yml'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/azure-static-web-apps-ambitious-beach-082d32c1e.yml'
 
 jobs:
   build_and_deploy_job:
