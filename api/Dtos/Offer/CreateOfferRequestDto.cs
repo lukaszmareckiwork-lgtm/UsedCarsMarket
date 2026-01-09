@@ -26,7 +26,7 @@ namespace api.Dtos.Offer
         [Required]
         public FuelType FuelType { get; set; }
 
-        [Range(0.1, 20000.0, ErrorMessage = "Engine displacement must be realistic.")]
+        [Range(0.0, 20000.0, ErrorMessage = "Engine displacement must be realistic.")]
         public decimal? EngineDisplacement { get; set; }
 
         [Range(0, 3000, ErrorMessage = "Engine power must be realistic.")]
