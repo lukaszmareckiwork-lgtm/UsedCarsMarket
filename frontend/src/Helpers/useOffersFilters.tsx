@@ -117,7 +117,8 @@ export function useOfferFilters() {
         .finally(() => setLoading(false));
     }, 500); // adjust delay as needed
 
-    console.log("Query changed:", query);
+    if (process.env.NODE_ENV === "development") 
+      console.log("Query changed:", query);
 
     // Cleanup if query changes before timeout
     return () => clearTimeout(timer);

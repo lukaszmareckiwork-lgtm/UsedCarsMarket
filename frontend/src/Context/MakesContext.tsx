@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -35,6 +36,8 @@ const MakesContext = createContext<MakesContextType>({
 export const MakesProvider = ({ children }: { children: ReactNode }) => {
   const [makes, setMakes] = useState<MakeData[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const firstLoadRef = useRef(true);
 
   useEffect(() => {
     refreshMakesAndModels();
@@ -80,6 +83,28 @@ export const MakesProvider = ({ children }: { children: ReactNode }) => {
   const getMakes = async () => {
     setLoading(true);
 
+    let toastTimerShort: NodeJS.Timeout | null = null;
+    let toastTimerLong: NodeJS.Timeout | null = null;
+
+    // Only show cold-start messages on first load
+    if (firstLoadRef.current) {
+      // Short delay toast (~3s)
+      toastTimerShort = setTimeout(() => {
+        toast.info("First load may take longer while backend services wake up.", {
+          autoClose: false,
+          toastId: "cold-start-toast",
+        });
+      }, 3000);
+
+      // Long delay toast (~10s)
+      toastTimerLong = setTimeout(() => {
+        toast.update("cold-start-toast", {
+          render: "Database is resuming from idle state. This can take up to ~1 minute.",
+          autoClose: false,
+        });
+      }, 10000);
+    }
+
     var res = await makesGetApi()
       ?.then((res) => {
         // console.log("getMakes response:", res);
@@ -91,7 +116,15 @@ export const MakesProvider = ({ children }: { children: ReactNode }) => {
         return undefined;
       })
       .finally(() => {
+        // Clear timers
+        if (toastTimerShort) clearTimeout(toastTimerShort);
+        if (toastTimerLong) clearTimeout(toastTimerLong);
+
+        // Dismiss toast if still visible
+        toast.dismiss("cold-start-toast");
+
         setLoading(false);
+        firstLoadRef.current = false;
       });
 
     return res;
