@@ -79,7 +79,7 @@ export const UserProvider = ({ children }: Props) => {
     // console.log("Calling login API with:", email, password);
     await loginApi(email, password)
       .then((res) => {
-        console.log("Login response:", res);
+        // console.log("Login response:", res);
 
         if (res) {
           localStorage.setItem("token", res?.data.token);
