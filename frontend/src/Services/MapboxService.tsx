@@ -1,6 +1,6 @@
-import axios from "axios";
 import { handleError } from "@helpers/handleError";
 import { MAPBOX_TOKEN } from "@config/env";
+import axios from "axios";
 
 export const getPlaceName = async (lng: number, lat: number) =>{
     try {

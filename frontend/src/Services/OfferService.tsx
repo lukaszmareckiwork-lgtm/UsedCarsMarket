@@ -7,6 +7,7 @@ import type { OfferQueryObject } from "@data/OfferQueryObject";
 import type { CreateOfferResponseDto } from "@data/CreateOfferResponseDto";
 import type { DeleteOfferResponseDto } from "@data/DeleteOfferResponseDto";
 import { API_URL } from "@config/env";
+import { apiClient } from "@helpers/apiClient";
 
 const api = `${API_URL}/offer/`;
 
@@ -85,7 +86,7 @@ export const offerPostApi = async (offer: CreateOfferRequestDto) => {
 
     // console.log(`formData: ${Array.from(formData.entries()).map(([k, v]) => `${k}: ${v instanceof File ? v.name : v}`).join(", ") }`);
 
-    const response = await axios.post<CreateOfferResponseDto>(api, formData, {
+    const response = await apiClient.post<CreateOfferResponseDto>(api, formData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "multipart/form-data",
@@ -101,7 +102,7 @@ export const offerPostApi = async (offer: CreateOfferRequestDto) => {
 
 export const offerDeleteApi = async (offerId: number) =>{
     try {
-        const response = await axios.delete<DeleteOfferResponseDto>(api + offerId);
+        const response = await apiClient.delete<DeleteOfferResponseDto>(api + offerId);
         return response.data;
     } catch (error) {
         handleError(error);
@@ -153,7 +154,7 @@ export const offerGetSingleApi = (offerId: number) => {
 
 export const getUserOffersCountApi = async () =>{
     try {
-        const data = await axios.get<number>(api + "userofferscount");
+        const data = await apiClient.get<number>(api + "userofferscount");
         return data;
     } catch (error) {
         handleError(error);

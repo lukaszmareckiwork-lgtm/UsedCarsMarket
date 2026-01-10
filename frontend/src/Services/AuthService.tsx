@@ -1,14 +1,14 @@
-import axios from "axios";
 import { handleError } from "@helpers/handleError";
 import type { UserProfileToken } from "@models/User";
 import type { SellerTypeEnum } from "@data/OfferProps";
 import { API_URL } from "@config/env";
+import { apiClient } from "@helpers/apiClient";
 
 const api = API_URL;
 
 export const loginApi = async (email: string, password: string) =>{
     try {
-        const data = await axios.post<UserProfileToken>(api + "/account/login",{
+        const data = await apiClient.post<UserProfileToken>(api + "/account/login",{
             email: email,
             password: password,
         });
@@ -21,7 +21,7 @@ export const loginApi = async (email: string, password: string) =>{
 
 export const registerApi = async (email: string, username: string, phone: string, sellerType: SellerTypeEnum, password: string) =>{
     try {
-        const data = await axios.post<UserProfileToken>(api + "/account/register",{
+        const data = await apiClient.post<UserProfileToken>(api + "/account/register",{
             email: email,
             username: username,
             phone: phone,
