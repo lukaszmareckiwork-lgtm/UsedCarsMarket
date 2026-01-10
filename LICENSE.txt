@@ -1,0 +1,6 @@
+All Rights Reserved © 2026 Łukasz Marecki
+
+This repository is for demonstration and portfolio purposes only.  
+You may view, fork, or clone the repository for educational purposes, but you may not claim the project as your own or use it for commercial purposes.  
+
+No part of this repository may be republished, redistributed, or reused without explicit permission from the author.
