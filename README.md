@@ -77,9 +77,9 @@ This README improves the high-level explanation for the demo. For full developer
 
 ## Author
 
-Łukasz Marecki
-Email: lukaszmarecki.work@gmail.com
-LinkedIn: https://www.linkedin.com/in/łukasz-marecki-651b52346
+- Name: Łukasz Marecki
+- Email: lukaszmarecki.work@gmail.com
+- LinkedIn: https://www.linkedin.com/in/łukasz-marecki-651b52346
 
 ## License & Attribution
 
