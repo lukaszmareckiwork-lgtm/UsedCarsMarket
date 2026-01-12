@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -119,6 +120,38 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Lightweight health endpoint to check whether app and its database are responsive.
+// Returns 200 when DB can be reached, or 503 otherwise. Uses a short timeout so
+// probes return quickly while the server/database is still cold-starting.
+app.MapGet("api/health", async (IServiceProvider services, CancellationToken ct) =>
+{
+    // If DB isn't registered (e.g., IntegrationTests), consider the app healthy.
+    try
+    {
+        using var scope = services.CreateScope();
+        var db = scope.ServiceProvider.GetService<ApplicationDBContext>();
+        if (db == null)
+            return Results.Ok("Healthy");
+
+        // Short timeout for health checks
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        cts.CancelAfter(3000);
+
+        var canConnect = await db.Database.CanConnectAsync(cts.Token);
+        if (canConnect)
+            return Results.Ok("Healthy");
+        return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+    }
+    catch (OperationCanceledException)
+    {
+        return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+    }
+    catch (Exception)
+    {
+        return Results.StatusCode(StatusCodes.Status503ServiceUnavailable);
+    }
+});
 
 app.UseCors(x => x
     .AllowAnyMethod()
