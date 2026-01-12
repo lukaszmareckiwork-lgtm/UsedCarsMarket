@@ -124,7 +124,7 @@ app.UseHttpsRedirection();
 // Lightweight health endpoint to check whether app and its database are responsive.
 // Returns 200 when DB can be reached, or 503 otherwise. Uses a short timeout so
 // probes return quickly while the server/database is still cold-starting.
-app.MapGet("/health", async (IServiceProvider services, CancellationToken ct) =>
+app.MapGet("api/health", async (IServiceProvider services, CancellationToken ct) =>
 {
     // If DB isn't registered (e.g., IntegrationTests), consider the app healthy.
     try
