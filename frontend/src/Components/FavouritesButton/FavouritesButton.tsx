@@ -18,7 +18,7 @@ const FavouritesButton = ({ count }: Props) => {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (!isLoggedIn()) {
       e.preventDefault();
-      redirectToLoginWithReturn(navigate, location); // <- use utility here
+      redirectToLoginWithReturn(navigate, location);
     }
   };
 

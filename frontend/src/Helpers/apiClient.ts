@@ -36,7 +36,7 @@ apiClient.interceptors.response.use(
     config.__isRetry = true;
 
     // Small delay to allow backend to fully wake
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
     return apiClient(config);
   }
