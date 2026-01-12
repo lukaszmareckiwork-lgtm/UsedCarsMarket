@@ -15,7 +15,7 @@ const AddOffer = () => {
     const navigate = useNavigate();
 
     const handleOfferSubmit = async (newOffer: CreateOfferRequestDto) => {
-      console.log("handleOfferSubmit:", newOffer);
+      if (process.env.NODE_ENV === "development") console.log("handleOfferSubmit:", newOffer);
 
       setLoading(true);
 

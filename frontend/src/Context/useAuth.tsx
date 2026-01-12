@@ -3,10 +3,10 @@ import type { UserProfile } from "@models/User";
 import { useNavigate } from "react-router-dom";
 import { loginApi, registerApi } from "@services/AuthService";
 import { toast } from "react-toastify";
-import axios from "axios";
 import type { SellerTypeEnum } from "@data/OfferProps";
 import { ROUTES } from "@routes/Routes";
 import { useRedirectBack } from "@helpers/useRedirectBack";
+import { apiClient } from "@helpers/apiClient";
 
 type UserContextType = {
   user: UserProfile | null;
@@ -37,7 +37,7 @@ export const UserProvider = ({ children }: Props) => {
     if (user && token) {
       setUser(JSON.parse(user));
       setToken(token);
-      axios.defaults.headers.common.Authorization = "Bearer " + token;
+      apiClient.defaults.headers.common.Authorization = "Bearer " + token;
     }
     setIsReady(true);
   }, []);
@@ -62,7 +62,7 @@ export const UserProvider = ({ children }: Props) => {
 
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token!);
-          axios.defaults.headers.common.Authorization = "Bearer " + res?.data.token!;
+          apiClient.defaults.headers.common.Authorization = "Bearer " + res?.data.token!;
           setUser(userObj!);
           toast.success("Login success.");
           // navigate(ROUTES.HOME);
@@ -91,7 +91,7 @@ export const UserProvider = ({ children }: Props) => {
 
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token!);
-          axios.defaults.headers.common.Authorization = "Bearer " + res?.data.token!;
+          apiClient.defaults.headers.common.Authorization = "Bearer " + res?.data.token!;
           setUser(userObj!);
           toast.success("Login success.");
           // navigate(ROUTES.HOME);
@@ -113,7 +113,7 @@ export const UserProvider = ({ children }: Props) => {
     localStorage.removeItem("token");
     setUser(null);
     setToken("");
-    delete axios.defaults.headers.common.Authorization;
+    delete apiClient.defaults.headers.common.Authorization;
     toast.info("You have been logged out.");
     navigate(ROUTES.HOME);
   };

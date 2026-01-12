@@ -1,4 +1,3 @@
-import axios, { type AxiosResponse } from "axios";
 import type { OfferProps } from "@data/OfferProps";
 import { handleError } from "@helpers/handleError";
 import type { PagedResult } from "@helpers/PagedResult";
@@ -8,6 +7,7 @@ import type { CreateOfferResponseDto } from "@data/CreateOfferResponseDto";
 import type { DeleteOfferResponseDto } from "@data/DeleteOfferResponseDto";
 import { API_URL } from "@config/env";
 import { apiClient } from "@helpers/apiClient";
+import type { AxiosResponse } from "axios";
 
 const api = `${API_URL}/offer/`;
 
@@ -119,7 +119,7 @@ export const offerPreviewGetApi = (queryObj: OfferQueryObject) => {
     if (process.env.NODE_ENV === "development") 
       console.log(`offerGetApi - finalRoute: ${finalRoute}`);
     
-    const data = axios
+    const data = apiClient
       .get<PagedResult<OfferProps>>(finalRoute)
       .catch((error) => {
         console.log(`offerGetApi - error: ${error}`);
@@ -136,9 +136,9 @@ export const offerPreviewGetApi = (queryObj: OfferQueryObject) => {
 
 export const offerGetSingleApi = (offerId: number) => {
   try { 
-    console.log(`offerGetSingleApi - :${api}${offerId}`);
+    if (process.env.NODE_ENV === "development") console.log(`offerGetSingleApi - :${api}${offerId}`);
 
-    const data = axios
+    const data = apiClient
       .get<OfferProps>(`${api}${offerId}`)
       .catch((error) => {
         console.log(`offerGetApi - error: ${error}`);
