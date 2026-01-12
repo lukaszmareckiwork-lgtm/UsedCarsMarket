@@ -48,7 +48,7 @@ export const UserOffersProvider = ({ children }: Props) => {
   const addOffer = async (request: CreateOfferRequestDto) => {
     const res = await offerPostApi(request);
 
-    console.log("addOffer response:", res);
+    // console.log("addOffer response:", res);
 
     if (!res || typeof res.userOffersCount !== "number") {
         throw new Error("Invalid server response");
