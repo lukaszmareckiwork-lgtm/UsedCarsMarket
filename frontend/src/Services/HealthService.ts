@@ -18,15 +18,19 @@ export function waitForReady(maxWaitMs = 120_000): Promise<void> {
   if (wakePromise) return wakePromise;
 
   wakePromise = (async () => {
+    if (process.env.NODE_ENV === "development") console.log(`healthService - wakePromise - start`);
+
     const start = Date.now();
 
     // Backoff params
     let delay = 3000; // initial delay between probes (ms)
-    const maxDelay = 30_000; // max delay between probes (ms)
+    const maxDelay = 15_000; // max delay between probes (ms)
     const timeoutPerProbe = 5000; // axios probe timeout
 
     // Initial short wait to give Azure some time to start
     await sleep(3000);
+
+    if (process.env.NODE_ENV === "development") console.log(`healthService - wakePromise - afterSleep:${(Date.now() - start) / 1000}s`);
 
     while (Date.now() - start < maxWaitMs) {
       try {
@@ -37,6 +41,8 @@ export function waitForReady(maxWaitMs = 120_000): Promise<void> {
           timeout: timeoutPerProbe,
         });
 
+        if (process.env.NODE_ENV === "development") console.log(`healthService - wakePromise - axiosRequest:${(Date.now() - start) / 1000}s`);
+
         isReady = true;
         wakePromise = null;
         return;
@@ -46,6 +52,8 @@ export function waitForReady(maxWaitMs = 120_000): Promise<void> {
         const waitMs = Math.min(maxDelay, Math.round(delay + jitter));
 
         if (Date.now() - start + waitMs >= maxWaitMs) break;
+
+        if (process.env.NODE_ENV === "development") console.log(`healthService - wakePromise - catch:${(Date.now() - start) / 1000}s`);
 
         await sleep(waitMs);
 

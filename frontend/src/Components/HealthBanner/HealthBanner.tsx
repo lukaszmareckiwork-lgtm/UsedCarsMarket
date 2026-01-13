@@ -12,7 +12,7 @@ export default function HealthBanner() {
     // Show initial banner after a small delay so short failures don't flash UI
     const shortDelay = 3000;
     const shortTimer = setTimeout(() => {
-      toast.info("Backend is waking up from paused state. This can take up to ~1 minute.", {
+      toast.info("Backend is waking up from paused state. This can take up to 2 minutes.", {
         autoClose: false,
         toastId: TOAST_ID,
       });
