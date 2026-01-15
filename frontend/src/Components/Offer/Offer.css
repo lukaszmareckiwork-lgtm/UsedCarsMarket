@@ -44,7 +44,22 @@
     padding: 16px;
     row-gap: 16px;
     grid:
-        "thumbnail header price" auto "thumbnail content price" auto "thumbnail content price" 1fr "thumbnail content actions" auto / minmax(auto, var(--media-width)) 1fr minmax(165px, 20%);
+        "thumbnail header price" auto 
+        "thumbnail content price" auto 
+        "thumbnail content price" 1fr 
+        "thumbnail content actions" auto / minmax(auto, var(--media-width)) 1fr minmax(165px, 20%);
+}
+
+@media (max-width: 575px) {
+    [data-orientation="horizontal"] .offer-section {
+        padding: 16px;
+        row-gap: 16px;
+        grid:
+            "thumbnail thumbnail thumbnail" auto
+            "price price price" auto
+            "header header actions" auto
+            "content content content" 1fr / 1fr 1fr auto;
+    }
 }
 
 .offer-section {
