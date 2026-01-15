@@ -35,6 +35,12 @@
     }
 }
 
+@media (max-width: 485px) {
+    .main-details {
+        padding: 0px 0px;
+    }
+}
+
 .main-details-side-panel {
     grid-area: sidePanel;
 }

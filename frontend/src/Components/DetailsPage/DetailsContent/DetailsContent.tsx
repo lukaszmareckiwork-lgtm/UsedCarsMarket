@@ -36,7 +36,7 @@ const DetailsContent = ({ offerProps }: Props) => {
             </span>
           </div>
         </DetailsItem>
-        <DetailsItem label="Key Specifications" iconNode={<FaCar size={22} aria-hidden={true} focusable={false}/>}>
+        <DetailsItem className="details-content-key-spec-item" label="Key Specifications" iconNode={<FaCar size={22} aria-hidden={true} focusable={false}/>}>
           <ParamsWithIcons offerProps={offerProps} iconSize={36} hideLabel={false} spaceEvenly={true}/>
         </DetailsItem>
         <DetailsItem className="details-content-description" label="Description" iconNode={<FaBars size={22} aria-hidden={true} focusable={false}/>}>
@@ -45,7 +45,7 @@ const DetailsContent = ({ offerProps }: Props) => {
         <DetailsItem label="Specifications" iconNode={<IoMdSettings size={22} aria-hidden={true} focusable={false}/>}>
           <SpecsList offerProps={offerProps} />
         </DetailsItem>
-        <DetailsItem label="Features" iconNode={<FaList size={22} aria-hidden={true} focusable={false}/>}>
+        <DetailsItem className="details-content-features-item" label="Features" iconNode={<FaList size={22} aria-hidden={true} focusable={false}/>}>
           <FeaturesList offerProps={offerProps} />
         </DetailsItem>
         <DetailsItem label="Location" iconNode={<FaMapMarkedAlt size={22} aria-hidden={true} focusable={false}/>}>
