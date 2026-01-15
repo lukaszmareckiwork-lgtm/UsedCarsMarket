@@ -20,6 +20,12 @@
   border-radius: var(--radius-md);
 }
 
+@media (max-width: 485px){
+  .location-picker-map {
+    height: 200px;
+  }
+}
+
 .location-picker-address {
   margin-top: 0.4rem;
   padding: 0.6rem;

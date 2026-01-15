@@ -33,3 +33,38 @@
 .details-content-description {
     white-space: pre-line;
 }
+
+@media (max-width: 455px) {
+    .details-content-key-spec-item svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .paramsWithIcons.evenly .paramWithIconWrapper {
+        grid-template-columns: 25px 80px !important;
+    }
+
+    .paramWithIconLabel {
+        font-size: var(--fontSizeBodyMicro);
+    }
+
+    .paramsWithIcons.evenly .paramWithIconValue {
+        font-size: var(--fontSizeBodyExtraSmall);
+    }
+}
+
+@media (max-width: 485px) {
+    .details-content-features-item svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .details-content-features-item .feature {
+        width: 120px;
+        gap: 2px;
+    }
+
+    .details-content-features-item .feature .feature-label {
+        font-size: var(--fontSizeBodyMicro);
+    }
+}
