@@ -29,9 +29,9 @@ function App() {
         </Route>
       </Routes>
 
-      <ToastContainer 
+      <ToastContainer
+        className={"toast-container"}
         newestOnTop={true}
-        style={{ top: "75px" }}
       />
     </>
   );
