@@ -11,7 +11,7 @@
 }
 
 .feature-label {
-    font-size: 12px;
+    font-size: var(--fontSizeBodyExtraSmall);
     color: var(--colorsForegroundPrimary);
     font-weight: var(--font-weight-bold);
     font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);

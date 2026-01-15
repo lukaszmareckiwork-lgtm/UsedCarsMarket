@@ -18,6 +18,7 @@
   justify-content: center;
   user-select: none;
   text-decoration: none;
+  text-wrap-mode: nowrap;
 }
 
 .main-button:hover {
@@ -65,4 +66,17 @@
 .delete-button:focus-visible {
   outline: 2px solid rgba(198, 40, 40, 0.4);
   outline-offset: 2px;
+}
+
+.toast-container {
+  top: 80px !important;
+}
+
+@media (max-width: 745px) {
+  .toast-container {
+    width: 100%;
+    max-width: calc(100vw - 104px) !important;
+    margin-left: 96px !important;
+    top: 140px !important;
+  }
 }

@@ -30,6 +30,13 @@
   font-family: var(--fontFamilyPrimary, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
 }
 
+@media (max-width: 485px) {
+  .flp-content {
+    transform: translate(-50%, -40%);
+    max-height: 70vh;
+  }
+}
+
 .flp-title {
   font-size: var(--fontSizeHeadlineMedium);
   font-weight: var(--fontWeightSemibold);
@@ -43,7 +50,7 @@
 }
 
 .flp-map-wrapper .location-picker-wrapper .location-picker-map {
-  height: 500px;
+  height: 40vh;
 }
 
 .flp-actions {
